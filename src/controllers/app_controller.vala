@@ -64,6 +64,7 @@ namespace App.Controllers {
 
         public void quit () {
             window.destroy ();
+            httpserver.disconnect();
         }
 
         private void connect_signals() {
@@ -73,7 +74,7 @@ namespace App.Controllers {
         public bool star_sharing_files(int port, string path) {
             stdout.printf("Start the server\n");
             httpserver = new SimpleHTTPServer.with_port_and_path(port, path);
-            httpserver.run ();
+            httpserver.run_async ();
             return true;
         }
     }

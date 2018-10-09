@@ -18,7 +18,11 @@
 using Soup;
 
 public class SimpleHTTPServer : Soup.Server {
-        public static string basedir;
+        public string basedir;
+        public signal void sig_directory_requested(Soup.Message msg, File file);
+        public signal void sig_file_requested(Soup.Message msg, File file);
+        public signal void sig_error(Soup.Message msg, File file);
+
 
         public SimpleHTTPServer () {
                 this.with_port_and_path(8088, "");
@@ -41,36 +45,44 @@ public class SimpleHTTPServer : Soup.Server {
                     if (this.basedir.get_char(this.basedir.length-1) != '/') this.basedir = this.basedir + "/";
                 }
                 this.add_handler (null, default_handler);
+                this.sig_directory_requested.connect(dir_handle);
+                this.sig_file_requested.connect(file_handle);
+                this.sig_error.connect(error_handle);
         }
 
         private static void default_handler (Server server, Soup.Message msg, string path, GLib.HashTable? query, Soup.ClientContext client) {
+                // The default handler checks the type of the file requested (the file is calculated with basedir + request_path)
+                // Then, if it is a directory sends the signal sig_directory_requested of server.
+                // If it is a file sends the signal sig_file_requested of server.
+                // And if the file doesn't exists sends the signal sig_erro of server
+                unowned SimpleHTTPServer self = server as SimpleHTTPServer;
                 if (msg.uri.get_path() == "favicon.ico") return;
                 string rel_path = msg.get_uri().get_path();
                 File rfile;
-                if (rel_path == "/" && basedir == "/")  rfile = File.new_for_path(rel_path);
-                else  rfile = File.new_for_path(basedir+rel_path);
+                if (rel_path == "/" && self.basedir == "/")  rfile = File.new_for_path(rel_path);
+                else  rfile = File.new_for_path(self.basedir+rel_path);
                 stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-                if (ftype == FileType.DIRECTORY) dir_handle(server, msg, rfile);
-                else if (ftype == FileType.REGULAR) file_handle(server, msg, rfile);
-                else error_handle(server, msg, rfile);
+                if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
+                else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
+                else self.sig_error(msg, rfile);
                 stdout.printf("END of Request\n======================================================\n");
         }
 
-        private static void dir_handle(Server server, Soup.Message msg, File file) {
-            if (has_index(file)) send_index(server, msg, file);
-            else send_list_dir(server, msg, file);
+        private void dir_handle(Soup.Message msg, File file) {
+            if (has_index(file)) this.send_index(msg, file);
+            else this.send_list_dir(msg, file);
         }
 
-        private static void file_handle(Server server, Soup.Message msg, File file) {
+        private void file_handle(Soup.Message msg, File file) {
         }
 
-        private static void error_handle(Server server, Soup.Message msg, File file) {
+        private void error_handle(Soup.Message msg, File file) {
             msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><head><title>404</title></head><body><h1>404</h1><p>File not found.</p></body></html>".data);
             msg.status_code = 404;
         }
 
-        private static  bool has_index(File file) {
+        private bool has_index(File file) {
             FileEnumerator enumerator = file.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
     	    FileInfo info = null;
     	    while (((info = enumerator.next_file (null)) != null)) {
@@ -79,11 +91,11 @@ public class SimpleHTTPServer : Soup.Server {
             return false;
         }
 
-        private static void send_index(Server server, Soup.Message msg, File file) {
+        private void send_index(Soup.Message msg, File file) {
             msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><head><title>404</title></head><body><h1>Index</h1></body></html>".data);
         }
 
-        private static void send_list_dir(Server server, Soup.Message msg, File file) {
+        private void send_list_dir(Soup.Message msg, File file) {
             string newindex = "<html><body>";
             File fbase = File.new_for_path(basedir);
             if (fbase.get_path() != file.get_path() &&  file.has_parent(null)) {
@@ -105,7 +117,6 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private static string add_link(string path, string? name) {
-
             string spath = name;
             if (spath == null) {
                 if (path == "/") spath = "/";
