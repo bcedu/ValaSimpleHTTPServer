@@ -67,8 +67,8 @@ public class SimpleHTTPServer : Soup.Server {
                 if (rel_path == "/" && self.basedir == "/")  rfile = File.new_for_path(rel_path);
                 else  rfile = File.new_for_path(self.basedir+rel_path);
                 //PRINT// stdout.printf("====================================================\nSTART of Request\n");
-                //PRINT// stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+                //PRINT// stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());stdout.printf("TYPE: %s\n", ftype.to_string());
                 if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
                 else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
                 else self.sig_error(msg, rfile);
@@ -133,6 +133,56 @@ public class SimpleHTTPServer : Soup.Server {
             return "<br><a href=\"%s\">%s</a>".printf(path, spath);
         }
 
+        private void send_file(Soup.Message msg, File file) {
+            uint8[] content = get_file_content(file);
+            string type = get_file_type(file);
+            //PRINT//
+            //print("TYPE: %s\nCONTENT:\n--------------------------------\n|%s|\n--------------------------------\n", type, (string)content);
+            //print("===============================================\n%s\n===============================================\n", content.length.to_string());
+            msg.set_response (type, Soup.MemoryUse.COPY, content);
+            //msg.response_headers.set_content_length(content.data.length);
+        }
+
+        private static uint8[] get_file_content(File file) {
+            var file_stream = file.read ();
+            var data_stream = new DataInputStream (file_stream);
+            data_stream.set_byte_order (DataStreamByteOrder.LITTLE_ENDIAN);
+            uint8[] contents = new uint8[8];
+            int readed = 0;
+            try {
+                while (true) {
+                    if (contents.length <= readed) contents.resize(readed*2);
+                    contents[readed] = data_stream.read_byte();
+                    readed += 1;
+                }
+            } catch (Error e) {}
+            contents = contents[0:readed-1];
+            /*uint8[] contents;
+            try {
+                try {
+                    string etag_out;
+                    file.load_contents (null, out contents, out etag_out);
+                }catch (Error e){
+                    error("%s", e.message);
+                }
+            }catch (Error e){
+                error("%s", e.message);
+            }*/
+            //PRINT//stderr.printf("CONTENT: %d ||%s||\nSTR: %d ||%s||\n", contents.length, (string) contents, ((string)contents).data.length, (string) (((string)contents).strip()).data);
+            return contents;
+        }
+
+        private static string get_file_type(File file) {
+            string res = "text/html";
+            try {
+                FileInfo inf = file.query_info("*", 0);
+                res = inf.get_content_type();
+                //print("\n%s   -> type: %s\n", file.get_path(), res);
+            }catch (Error e){
+                error("%s", e.message);
+            }
+            return res;
+        }
         // public static int main (string[] args) {
         //         SimpleHTTPServer server = new SimpleHTTPServer.with_path ("");
         //         server.run ();
