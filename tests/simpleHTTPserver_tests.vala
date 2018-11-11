@@ -17,7 +17,10 @@ print_bytes(res);print_bytes(root_res);
         add_test(" * Test directory request subfolder level 1 (test_subfolder_lv1_ok)", test_subfolder_lv1_ok);
         add_test(" * Test directory request subfolder level 2 (test_subfolder_lv2_ok)", test_subfolder_lv2_ok);
         add_test(" * Test directory request with index (test_directory_index_ok)", test_directory_index_ok);
-        add_test(" * Test file request (test_file_ok)", test_file_ok);
+        add_test(" * Test text file request (test_text_file_ok)", test_text_file_ok);
+        add_test(" * Test image file request (test_image_file_ok)", test_image_file_ok);
+        add_test(" * Test audio file request (test_audio_file_ok)", test_audio_file_ok);
+        add_test(" * Test video file request (test_video_file_ok)", test_video_file_ok);
         add_test(" * Test error request (test_error_ok)", test_error_ok);
     }
 
@@ -151,14 +154,39 @@ print_bytes(res);print_bytes(root_res);
         assert_bytes (res, root_res);
     }
 
-    public void test_file_ok() {
+    public void test_text_file_ok() {
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/text_test.txt\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/text_test.txt");
         assert_bytes (res, root_res);
     }
 
+    public void test_image_file_ok() {
+        server.run_async();
+        uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/img_test.jpg\n".printf((int)server.port));
+        uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/img_test.jpg");
+        assert_bytes (res, root_res);
+    }
+
+    public void test_audio_file_ok() {
+        server.run_async();
+        uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/demo.mp3\n".printf((int)server.port));
+        uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/demo.mp3");
+        assert_bytes (res, root_res);
+    }
+
+    public void test_video_file_ok() {
+        server.run_async();
+        uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/demo.mp4\n".printf((int)server.port));
+        uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/demo.mp4");
+        assert_bytes (res, root_res);
+    }
+
     public void test_error_ok() {
+        server.run_async();
+        uint8[] res = make_get_request("http://localhost:%d/carpeta_inventada\n".printf((int)server.port));
+        uint8[] root_res = get_fixture_content("error.html");
+        assert_bytes (res, root_res);
     }
 
     public override void tear_down () {
