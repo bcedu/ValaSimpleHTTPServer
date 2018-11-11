@@ -19,26 +19,27 @@ using Soup;
 
 public class SimpleHTTPServer : Soup.Server {
         public string basedir;
+        public uint port;
         public signal void sig_directory_requested(Soup.Message msg, File file);
         public signal void sig_file_requested(Soup.Message msg, File file);
         public signal void sig_error(Soup.Message msg, File file);
 
 
         public SimpleHTTPServer () {
-                this.with_port_and_path(8088, "");
+                this.with_port_and_path(8080, Environment.get_current_dir());
         }
 
         public SimpleHTTPServer.with_path(string path) {
-                this.with_port_and_path(8088, path);
+                this.with_port_and_path(8080, path);
         }
 
        public SimpleHTTPServer.with_port(int port) {
-                this.with_port_and_path(port, "");
+                this.with_port_and_path(port, Environment.get_current_dir());
        }
 
         public SimpleHTTPServer.with_port_and_path(int port, string path) {
-                Object (port: port);
                 assert (this != null);
+                this.port = port;
                 if (path == "" || path == "/") this.basedir = "/";
                 else {
                     this.basedir = path;
@@ -48,6 +49,10 @@ public class SimpleHTTPServer : Soup.Server {
                 this.sig_directory_requested.connect(dir_handle);
                 this.sig_file_requested.connect(file_handle);
                 this.sig_error.connect(error_handle);
+        }
+
+        public void run_async() {
+            this.listen_all(this.port, 0);
         }
 
         private static void default_handler (Server server, Soup.Message msg, string path, GLib.HashTable? query, Soup.ClientContext client) {
@@ -61,12 +66,13 @@ public class SimpleHTTPServer : Soup.Server {
                 File rfile;
                 if (rel_path == "/" && self.basedir == "/")  rfile = File.new_for_path(rel_path);
                 else  rfile = File.new_for_path(self.basedir+rel_path);
-                stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
+                //PRINT// stdout.printf("====================================================\nSTART of Request\n");
+                //PRINT// stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
                 if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
                 else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
                 else self.sig_error(msg, rfile);
-                stdout.printf("END of Request\n======================================================\n");
+                //PRINT// stdout.printf("END of Request\n======================================================\n");
         }
 
         private void dir_handle(Soup.Message msg, File file) {
@@ -75,6 +81,7 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private void file_handle(Soup.Message msg, File file) {
+            this.send_file(msg, file);
         }
 
         private void error_handle(Soup.Message msg, File file) {
@@ -92,7 +99,8 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private void send_index(Soup.Message msg, File file) {
-            msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><head><title>404</title></head><body><h1>Index</h1></body></html>".data);
+            File index = File.new_for_path(file.get_path()+"/index.html");
+            this.send_file(msg, index);
         }
 
         private void send_list_dir(Soup.Message msg, File file) {
@@ -102,14 +110,14 @@ public class SimpleHTTPServer : Soup.Server {
                 File parent = file.get_parent();
                 string rel_path = parent.get_path().substring(fbase.get_path().length);
                 if (rel_path == "") rel_path = "/";
-                stdout.printf("Parent: %s\n", rel_path);
+                //PRINT// stdout.printf("Parent: %s\n", rel_path);
                 newindex = "%s%s".printf(newindex, add_link(rel_path, "../"));
             }
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
             FileEnumerator enumerator = file.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
             FileInfo info = null;
             while (((info = enumerator.next_file (null)) != null)) {
-                stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
+                //PRINT// stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
                 newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null));
             }
             newindex = "%s</body></html>".printf(newindex);
