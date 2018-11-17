@@ -174,7 +174,7 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private static string get_file_type(File file) {
-            string res = "text/html";
+            string res = "text/text";
             try {
                 FileInfo inf = file.query_info("*", 0);
                 res = inf.get_content_type();
