@@ -69,6 +69,7 @@ public class SimpleHTTPServer : Soup.Server {
                 //PRINT// stdout.printf("====================================================\nSTART of Request\n");
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
                 stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
+                msg.status_code = 200;
                 // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
                 if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
                 else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
