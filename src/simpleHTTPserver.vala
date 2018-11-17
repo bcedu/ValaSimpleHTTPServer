@@ -148,7 +148,7 @@ public class SimpleHTTPServer : Soup.Server {
         private static uint8[] get_file_content(File file) {
             var file_stream = file.read ();
             var data_stream = new DataInputStream (file_stream);
-            data_stream.set_byte_order (DataStreamByteOrder.LITTLE_ENDIAN);
+            /*data_stream.set_byte_order (DataStreamByteOrder.LITTLE_ENDIAN);
             uint8[] contents = new uint8[8];
             int readed = 0;
             try {
@@ -158,8 +158,8 @@ public class SimpleHTTPServer : Soup.Server {
                     readed += 1;
                 }
             } catch (Error e) {}
-            contents = contents[0:readed-1];
-            /*uint8[] contents;
+            contents = contents[0:readed-1];*/
+            uint8[] contents;
             try {
                 try {
                     string etag_out;
@@ -169,7 +169,7 @@ public class SimpleHTTPServer : Soup.Server {
                 }
             }catch (Error e){
                 error("%s", e.message);
-            }*/
+            }
             //PRINT//stderr.printf("CONTENT: %d ||%s||\nSTR: %d ||%s||\n", contents.length, (string) contents, ((string)contents).data.length, (string) (((string)contents).strip()).data);
             return contents;
         }

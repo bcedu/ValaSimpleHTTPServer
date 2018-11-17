@@ -54,7 +54,7 @@ print_bytes(res);print_bytes(root_res);
         File file = File.new_for_path (abs_path);
         var file_stream = file.read ();
         var data_stream = new DataInputStream (file_stream);
-        data_stream.set_byte_order (DataStreamByteOrder.LITTLE_ENDIAN);
+        /*data_stream.set_byte_order (DataStreamByteOrder.LITTLE_ENDIAN);
         uint8[]  contents = new uint8[8];
         int readed = 0;
         try {
@@ -64,8 +64,8 @@ print_bytes(res);print_bytes(root_res);
                 readed += 1;
             }
         } catch (Error e) {}
-        contents = contents[0:readed-1];
-        /*uint8[]  contents;
+        contents = contents[0:readed-1];*/
+        uint8[]  contents;
         try {
             try {
                 string etag_out;
@@ -75,7 +75,7 @@ print_bytes(res);print_bytes(root_res);
             }
         }catch (Error e){
             error("%s", e.message);
-        }*/
+        }
         return contents;
     }
 
@@ -104,6 +104,16 @@ print_bytes(res);print_bytes(root_res);
         }
     }
 
+    public void assert_strings(uint8[] res1, uint8[] res2) {
+        string s1 = (string)res1;
+        string s2 = (string)res2;
+        if (s1 == null) s1 = " ";
+        if (s2 == null) s2 = " ";
+        s1 = s1.strip();
+        s2 = s2.strip();
+        assert (s1 == s2);
+    }
+
     public void test_default_dir() {
         server = new SimpleHTTPServer.with_port(9999);
         string current = Environment.get_current_dir()+"/";
@@ -127,7 +137,7 @@ print_bytes(res);print_bytes(root_res);
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("test_directory_requests.html");
-        assert_bytes (res, root_res);
+        assert_strings (res, root_res);
     }
 
     public void test_subfolder_lv1_ok() {
@@ -135,7 +145,7 @@ print_bytes(res);print_bytes(root_res);
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d/carpeta_1\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("carpeta_1.html");
-        assert_bytes (res, root_res);
+        assert_strings (res, root_res);
     }
 
     public void test_subfolder_lv2_ok() {
@@ -143,7 +153,7 @@ print_bytes(res);print_bytes(root_res);
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d/carpeta_1/carpeta_2\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("carpeta_2.html");
-        assert_bytes (res, root_res);
+        assert_strings (res, root_res);
     }
 
     public void test_directory_index_ok() {
@@ -186,7 +196,7 @@ print_bytes(res);print_bytes(root_res);
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d/carpeta_inventada\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("error.html");
-        assert_bytes (res, root_res);
+        assert_strings (res, root_res);
     }
 
     public override void tear_down () {
