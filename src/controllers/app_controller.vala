@@ -72,8 +72,8 @@ namespace App.Controllers {
         }
 
         public bool star_sharing_files(int port, string path) {
-            stdout.printf("Start the server\n");
             httpserver = new SimpleHTTPServer.with_port_and_path(port, path);
+            print("Server is listening on: "+httpserver.get_link()+"\n");
             httpserver.run_async ();
             return true;
         }

@@ -68,7 +68,8 @@ public class SimpleHTTPServer : Soup.Server {
                 else  rfile = File.new_for_path(self.basedir+rel_path);
                 //PRINT// stdout.printf("====================================================\nSTART of Request\n");
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-                //PRINT// stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());stdout.printf("TYPE: %s\n", ftype.to_string());
+                stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
+                // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
                 if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
                 else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
                 else self.sig_error(msg, rfile);
@@ -182,6 +183,10 @@ public class SimpleHTTPServer : Soup.Server {
                 error("%s", e.message);
             }
             return res;
+        }
+
+        public string get_link() {
+            return "http://0.0.0.0:"+this.port.to_string();
         }
         // public static int main (string[] args) {
         //         SimpleHTTPServer server = new SimpleHTTPServer.with_path ("");

@@ -52,13 +52,18 @@ namespace App.Views {
 
         public void connect_signals (AppController controler) {
             this.continue_button.clicked.connect(() => {
-                bool ok = controler.star_sharing_files(8000, "/home");
-                if (ok) controler.view_controler.state = "sharing";
-                else controler.view_controler.state = "error";
+                string dir_selected = "";
+                string? sel = file_chooser.get_filename ();
+                if (sel != null) {
+                    dir_selected = sel;
+                    bool ok = controler.star_sharing_files(8888, dir_selected);
+                    if (ok) controler.view_controler.state = "sharing";
+                    else controler.view_controler.state = "error";
+                }else {
+                    controler.view_controler.state = "error";
+                }
                 controler.update_window_view();
-                stdout.printf("'Continue' clicked.\n");
             });
-            stdout.printf("Signals of InitialView connected\n");
         }
 
         public class FolderSelectView : Gtk.HBox {
