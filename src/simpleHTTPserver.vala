@@ -19,26 +19,27 @@ using Soup;
 
 public class SimpleHTTPServer : Soup.Server {
         public string basedir;
+        public uint port;
         public signal void sig_directory_requested(Soup.Message msg, File file);
         public signal void sig_file_requested(Soup.Message msg, File file);
         public signal void sig_error(Soup.Message msg, File file);
 
 
         public SimpleHTTPServer () {
-                this.with_port_and_path(8088, "");
+                this.with_port_and_path(8080, Environment.get_current_dir());
         }
 
         public SimpleHTTPServer.with_path(string path) {
-                this.with_port_and_path(8088, path);
+                this.with_port_and_path(8080, path);
         }
 
        public SimpleHTTPServer.with_port(int port) {
-                this.with_port_and_path(port, "");
+                this.with_port_and_path(port, Environment.get_current_dir());
        }
 
         public SimpleHTTPServer.with_port_and_path(int port, string path) {
-                Object (port: port);
                 assert (this != null);
+                this.port = port;
                 if (path == "" || path == "/") this.basedir = "/";
                 else {
                     this.basedir = path;
@@ -48,6 +49,10 @@ public class SimpleHTTPServer : Soup.Server {
                 this.sig_directory_requested.connect(dir_handle);
                 this.sig_file_requested.connect(file_handle);
                 this.sig_error.connect(error_handle);
+        }
+
+        public void run_async() {
+            this.listen_all(this.port, 0);
         }
 
         private static void default_handler (Server server, Soup.Message msg, string path, GLib.HashTable? query, Soup.ClientContext client) {
@@ -61,12 +66,15 @@ public class SimpleHTTPServer : Soup.Server {
                 File rfile;
                 if (rel_path == "/" && self.basedir == "/")  rfile = File.new_for_path(rel_path);
                 else  rfile = File.new_for_path(self.basedir+rel_path);
-                stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
+                //PRINT// stdout.printf("====================================================\nSTART of Request\n");
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+                stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
+                msg.status_code = 200;
+                // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
                 if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
                 else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
                 else self.sig_error(msg, rfile);
-                stdout.printf("END of Request\n======================================================\n");
+                //PRINT// stdout.printf("END of Request\n======================================================\n");
         }
 
         private void dir_handle(Soup.Message msg, File file) {
@@ -75,6 +83,7 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private void file_handle(Soup.Message msg, File file) {
+            this.send_file(msg, file);
         }
 
         private void error_handle(Soup.Message msg, File file) {
@@ -92,7 +101,8 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private void send_index(Soup.Message msg, File file) {
-            msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><head><title>404</title></head><body><h1>Index</h1></body></html>".data);
+            File index = File.new_for_path(file.get_path()+"/index.html");
+            this.send_file(msg, index);
         }
 
         private void send_list_dir(Soup.Message msg, File file) {
@@ -102,14 +112,14 @@ public class SimpleHTTPServer : Soup.Server {
                 File parent = file.get_parent();
                 string rel_path = parent.get_path().substring(fbase.get_path().length);
                 if (rel_path == "") rel_path = "/";
-                stdout.printf("Parent: %s\n", rel_path);
+                //PRINT// stdout.printf("Parent: %s\n", rel_path);
                 newindex = "%s%s".printf(newindex, add_link(rel_path, "../"));
             }
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
             FileEnumerator enumerator = file.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
             FileInfo info = null;
             while (((info = enumerator.next_file (null)) != null)) {
-                stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
+                //PRINT// stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
                 newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null));
             }
             newindex = "%s</body></html>".printf(newindex);
@@ -123,6 +133,61 @@ public class SimpleHTTPServer : Soup.Server {
                 else spath = path.split("/")[path.split("/").length-1];
             }
             return "<br><a href=\"%s\">%s</a>".printf(path, spath);
+        }
+
+        private void send_file(Soup.Message msg, File file) {
+            uint8[] content = get_file_content(file);
+            string type = get_file_type(file);
+            //PRINT//
+            //print("TYPE: %s\nCONTENT:\n--------------------------------\n|%s|\n--------------------------------\n", type, (string)content);
+            //print("===============================================\n%s\n===============================================\n", content.length.to_string());
+            msg.set_response (type, Soup.MemoryUse.COPY, content);
+            //msg.response_headers.set_content_length(content.data.length);
+        }
+
+        private static uint8[] get_file_content(File file) {
+            var file_stream = file.read ();
+            var data_stream = new DataInputStream (file_stream);
+            uint8[] contents;
+            try {
+                try {
+                    string etag_out;
+                    file.load_contents (null, out contents, out etag_out);
+                }catch (Error e){
+                    error("%s", e.message);
+                }
+            }catch (Error e){
+                error("%s", e.message);
+            }
+            //PRINT//stderr.printf("CONTENT: %d ||%s||\nSTR: %d ||%s||\n", contents.length, (string) contents, ((string)contents).data.length, (string) (((string)contents).strip()).data);
+            return contents;
+        }
+
+        private static string get_file_type(File file) {
+            string res = "text/text";
+            try {
+                FileInfo inf = file.query_info("*", 0);
+                res = inf.get_content_type();
+                //print("\n%s   -> type: %s\n", file.get_path(), res);
+            }catch (Error e){
+                error("%s", e.message);
+            }
+            return res;
+        }
+
+        public string get_link() {
+            return "http://"+resolve_server_address()+":"+this.port.to_string();
+        }
+        public string resolve_server_address() {
+            // Resolve hostname to IP address
+           var resolver = Resolver.get_default ();
+           var addresses = resolver.lookup_by_name ("www.google.com", null);
+           var address = addresses.nth_data (0);
+
+           var client = new SocketClient ();
+           var conn = client.connect (new InetSocketAddress (address, 80));
+           InetSocketAddress local = conn.get_local_address() as InetSocketAddress;
+           return local.get_address().to_string();
         }
 
         // public static int main (string[] args) {

@@ -30,9 +30,9 @@ namespace App.Controllers {
 
         public  App.Application            application;
         public  ViewControler              view_controler;
-        private SimpleHTTPServer           httpserver;
-        private Gtk.HeaderBar              headerbar;
-        private Gtk.ApplicationWindow      window { get; private set; default = null; }
+        public  SimpleHTTPServer           httpserver;
+        public  Gtk.HeaderBar              headerbar;
+        public  Gtk.ApplicationWindow      window { get; private set; default = null; }
 
         /**
          * Constructs a new {@code AppController} object.
@@ -41,7 +41,7 @@ namespace App.Controllers {
             this.application = application;
             this.window = new AppWindow (this.application);
             this.headerbar = new HeaderBar ();
-            this.view_controler = new ViewControler ();
+            this.view_controler = new ViewControler (this);
 
             this.update_window_view();
             this.window.set_titlebar (this.headerbar);
@@ -55,11 +55,14 @@ namespace App.Controllers {
                     this.window.remove (element);
                 }
             });
-            this.window.add (this.view_controler.get_current_view());
+            var aux = this.view_controler.get_current_view();
+            aux.update_view(this);
+            this.window.add (aux);
         }
 
         public void activate () {
             window.show_all ();
+            update_window_view();
         }
 
         public void quit () {
@@ -72,10 +75,16 @@ namespace App.Controllers {
         }
 
         public bool star_sharing_files(int port, string path) {
-            stdout.printf("Start the server\n");
             httpserver = new SimpleHTTPServer.with_port_and_path(port, path);
+            print("Server is listening on: "+httpserver.get_link()+"\n");
             httpserver.run_async ();
             return true;
         }
+
+        public void stop_sharing_files() {
+            httpserver.disconnect();
+            httpserver = null;
+        }
+
     }
 }

@@ -30,71 +30,131 @@ namespace App.Views {
      */
     public interface AppView : VBox {
         public abstract void connect_signals (AppController controler);
+        public abstract void update_view(AppController controler);
     }
 
     public class InitialView : AppView, VBox {
 
-        private FileChooserButton file_chooser;
-        private Button continue_button;
+        private FileChooserDialog file_chooser;
+        private Granite.Widgets.Welcome welcome;
+        private int open_index;
 
-        public InitialView () {
-            var welcome = new Granite.Widgets.Welcome ("Welcome!", "Start sharing your files");
+        public InitialView (AppController controler) {
+            welcome = new Granite.Widgets.Welcome ("Share your files", "Select a folder and start sharing");
             this.pack_start (welcome, false, false, 0);
 
-            var chooserbox = new FolderSelectView(ref file_chooser);
-            this.pack_start (chooserbox, true, false, 0);
-
-            var buttonbox = new ContinueButtonView(ref continue_button);
-            this.pack_start (buttonbox, true, false, 0);
+            welcome.margin_start = welcome.margin_end = 6;
+            open_index = welcome.append ("document-open", "Open", "Browse to select a folder");
 
             this.get_style_context().add_class ("mainbox");
+            this.show_all();
         }
 
         public void connect_signals (AppController controler) {
-            this.continue_button.clicked.connect(() => {
-                bool ok = controler.star_sharing_files(8000, "/home");
-                if (ok) controler.view_controler.state = "sharing";
-                else controler.view_controler.state = "error";
-                controler.update_window_view();
-                stdout.printf("'Continue' clicked.\n");
+            // Connect welcome button activated
+            this.welcome.activated.connect ((index) => {
+                if (index == open_index) {
+                    file_chooser = new Gtk.FileChooserDialog (
+                        "Select packages to install", controler.window, Gtk.FileChooserAction.SELECT_FOLDER, "Cancel", 
+                        Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.ACCEPT
+                    );
+
+                    // Connect folder selected
+                    this.file_chooser.response.connect((response) => {
+                        if (response == Gtk.ResponseType.ACCEPT) {
+                            string dir_selected = "";
+                            string? sel = file_chooser.get_filename ();
+                            if (sel != null) {
+                                dir_selected = sel;
+                                bool ok = controler.star_sharing_files(8888, dir_selected);
+                                if (ok) controler.view_controler.state = "sharing";
+                                else controler.view_controler.state = "error";
+                            }else {
+                                controler.view_controler.state = "error";
+                            }
+                            file_chooser.destroy ();
+                            controler.update_window_view();
+                        } else {
+                            file_chooser.destroy();
+                        }
+                    });
+
+                    file_chooser.run ();
+                }
             });
-            stdout.printf("Signals of InitialView connected\n");
         }
 
-        public class FolderSelectView : Gtk.HBox {
+        public void update_view(AppController controler) {
 
-            public FolderSelectView (ref FileChooserButton? chooser) {
-                var lb = new Label("Which folder do you want to share?");
-                lb.get_style_context().add_class ("select_folder_label");
-
-                chooser = new FileChooserButton("Which folder do you want to share?", Gtk.FileChooserAction.SELECT_FOLDER);
-                chooser.select_multiple = false;
-
-                this.pack_start (lb, true, false, 0);
-                this.pack_end (chooser, true, false, 0);
-            }
-        }
-
-        public class ContinueButtonView : Gtk.HBox {
-
-            public ContinueButtonView (ref Button? continue_button) {
-                continue_button = new Button.with_label("Continue");
-                continue_button.get_style_context().add_class ("continue_button");
-                continue_button.set_relief(ReliefStyle.NONE);
-                this.pack_start (continue_button, true, true, 0);
-            }
         }
 
     }
 
     public class SharingView : AppView, VBox {
+        private Gtk.LinkButton direcciolink;
+        private Gtk.Label sharedpath;
+        private Gtk.Button back_button;
+
+        public SharingView(AppController controler) {
+            // Add resume view
+            var resumebox = new ResumeView(ref direcciolink, ref sharedpath, controler);
+            this.pack_start (resumebox, true, false, 0);
+            // Add button to go back in headerbar
+            back_button = new Gtk.Button ();
+            back_button.label = "Back";
+            back_button.visible = false;
+            back_button.get_style_context ().add_class ("back-button");
+            controler.headerbar.pack_start(back_button);
+            // Set view style
+            this.get_style_context().add_class ("mainbox");
+            this.show_all();
+        }
+
+        public void connect_signals (AppController controler) {
+            back_button.clicked.connect(() => {
+                controler.stop_sharing_files();
+                controler.view_controler.state = "init";
+                controler.update_window_view();
+                back_button.visible = false;
+            });
+            return;
+        }
+
+        public void update_view(AppController controler) {
+            string direccio = controler.httpserver.get_link();
+            direcciolink.set_uri(direccio);
+            direcciolink.set_label(direccio);
+            if (controler.view_controler.state != "sharing") back_button.visible = false;
+            else back_button.visible = true;
+        }
+
+        public class ResumeView : Gtk.VBox {
+
+            public ResumeView (ref Gtk.LinkButton? direcciolink, ref Gtk.Label? sharedpath, AppController controler) {
+                Gtk.Label maintext = new Gtk.Label ("Your files are at ");
+                maintext.get_style_context().add_class ("app_text");
+                this.pack_start (maintext, false, false, 0);
+
+                string direccio = controler.httpserver.get_link();
+                if (direccio == "" || direccio == null) direccio = "";
+                direcciolink = new Gtk.LinkButton(direccio);
+                direcciolink.get_style_context().add_class ("app_button");
+                this.pack_start (direcciolink, false, false, 0);
+            }
+        }
+    }
+
+    public class ErrorView : AppView, VBox {
+
+        public ErrorView(AppController controler) {
+
+        }
+
         public void connect_signals (AppController controler) {
             return;
         }
-    }
-    public class ErrorView : AppView, VBox {
-        public void connect_signals (AppController controler) {
-            return;
+        public void update_view(AppController controler) {
+            
         }
     }
 

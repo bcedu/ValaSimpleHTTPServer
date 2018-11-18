@@ -70,12 +70,33 @@ namespace App {
 
         public void init_css() {
             // Load CSS
-            string css_file = Constants.PKGDATADIR + Constants.URL_CSS;
             var provider = new Gtk.CssProvider();
             try {
-                provider.load_from_path(css_file);
+                string cssdata = """
+                    mainbox, .mainbox {
+                      background-color: white;
+                    }
+
+                    select_folder_label, .app_text {
+                      /* font-weight: bolder; */
+                      color: #333333;
+                      font-size: 18px;
+                    }
+
+                    app_button, .app_button {
+                      font-weight: bolder;
+                      color: #5B5B5B;
+                      /* border-color: white; */
+                      background-color: white;
+                      font-size: 15px;
+                     }
+                    app_button:hover, .app_button:hover{
+                      /* background-color: grey; */
+                      background-color: ghostwhite;
+                    }
+                """;
+                provider.load_from_data(cssdata);
                 Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-                stdout.printf("Successfully loaded %s\n", css_file);
             } catch (Error e) {
                 stderr.printf("\nError: %s\n", e.message);
             }
