@@ -187,8 +187,20 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         public string get_link() {
-            return "http://0.0.0.0:"+this.port.to_string();
+            return "http://"+resolve_server_address()+":"+this.port.to_string();
         }
+        public string resolve_server_address() {
+            // Resolve hostname to IP address
+           var resolver = Resolver.get_default ();
+           var addresses = resolver.lookup_by_name ("www.google.com", null);
+           var address = addresses.nth_data (0);
+
+           var client = new SocketClient ();
+           var conn = client.connect (new InetSocketAddress (address, 80));
+           InetSocketAddress local = conn.get_local_address() as InetSocketAddress;
+           return local.get_address().to_string();
+        }
+
         // public static int main (string[] args) {
         //         SimpleHTTPServer server = new SimpleHTTPServer.with_path ("");
         //         server.run ();

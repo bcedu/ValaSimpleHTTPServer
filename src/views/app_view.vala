@@ -30,28 +30,30 @@ namespace App.Views {
      */
     public interface AppView : VBox {
         public abstract void connect_signals (AppController controler);
+        public abstract void update_view(AppController controler);
     }
 
     public class InitialView : AppView, VBox {
 
         private FileChooserButton file_chooser;
-        private Button continue_button;
+        private Button app_button;
 
-        public InitialView () {
-            var welcome = new Granite.Widgets.Welcome ("Welcome!", "Start sharing your files");
+        public InitialView (AppController controler) {
+            var welcome = new Granite.Widgets.Welcome ("Share your files", "Select a folder and start sharing");
             this.pack_start (welcome, false, false, 0);
 
             var chooserbox = new FolderSelectView(ref file_chooser);
             this.pack_start (chooserbox, true, false, 0);
 
-            var buttonbox = new ContinueButtonView(ref continue_button);
+            var buttonbox = new ContinueButtonView(ref app_button);
             this.pack_start (buttonbox, true, false, 0);
 
             this.get_style_context().add_class ("mainbox");
+            this.show_all();
         }
 
         public void connect_signals (AppController controler) {
-            this.continue_button.clicked.connect(() => {
+            this.app_button.clicked.connect(() => {
                 string dir_selected = "";
                 string? sel = file_chooser.get_filename ();
                 if (sel != null) {
@@ -66,11 +68,15 @@ namespace App.Views {
             });
         }
 
+        public void update_view(AppController controler) {
+
+        }
+
         public class FolderSelectView : Gtk.HBox {
 
             public FolderSelectView (ref FileChooserButton? chooser) {
                 var lb = new Label("Which folder do you want to share?");
-                lb.get_style_context().add_class ("select_folder_label");
+                lb.get_style_context().add_class ("app_text");
 
                 chooser = new FileChooserButton("Which folder do you want to share?", Gtk.FileChooserAction.SELECT_FOLDER);
                 chooser.select_multiple = false;
@@ -82,24 +88,66 @@ namespace App.Views {
 
         public class ContinueButtonView : Gtk.HBox {
 
-            public ContinueButtonView (ref Button? continue_button) {
-                continue_button = new Button.with_label("Continue");
-                continue_button.get_style_context().add_class ("continue_button");
-                continue_button.set_relief(ReliefStyle.NONE);
-                this.pack_start (continue_button, true, true, 0);
+            public ContinueButtonView (ref Button? app_button) {
+                app_button = new Button.with_label("Continue");
+                app_button.get_style_context().add_class ("app_button");
+                app_button.set_relief(ReliefStyle.NONE);
+                this.pack_start (app_button, true, true, 0);
             }
         }
 
     }
 
     public class SharingView : AppView, VBox {
+        private Gtk.LinkButton direcciolink;
+        private Gtk.Label sharedpath;
+
+        public SharingView(AppController controler) {
+            var resumebox = new ResumeView(ref direcciolink, ref sharedpath, controler);
+            this.pack_start (resumebox, true, false, 0);
+            this.get_style_context().add_class ("mainbox");
+            this.show_all();
+        }
+
         public void connect_signals (AppController controler) {
             return;
         }
+
+        public void update_view(AppController controler) {
+            string direccio = controler.httpserver.get_link();
+            print("direccio : "+direccio+"\n");
+            direcciolink.set_uri(direccio);
+            direcciolink.set_label(direccio);
+            this.show_all();
+        }
+
+        public class ResumeView : Gtk.VBox {
+
+            public ResumeView (ref Gtk.LinkButton? direcciolink, ref Gtk.Label? sharedpath, AppController controler) {
+                Gtk.Label maintext = new Gtk.Label ("Your files are at ");
+                maintext.get_style_context().add_class ("app_text");
+                this.pack_start (maintext, false, false, 0);
+
+                string direccio = controler.httpserver.get_link();
+                if (direccio == "" || direccio == null) direccio = "";
+                direcciolink = new Gtk.LinkButton(direccio);
+                direcciolink.get_style_context().add_class ("app_button");
+                this.pack_start (direcciolink, false, false, 0);
+            }
+        }
     }
+
     public class ErrorView : AppView, VBox {
+
+        public ErrorView(AppController controler) {
+
+        }
+
         public void connect_signals (AppController controler) {
             return;
+        }
+        public void update_view(AppController controler) {
+            
         }
     }
 

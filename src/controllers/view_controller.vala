@@ -32,17 +32,17 @@ namespace App.Controllers {
         private HashMap<string, AppView>    state_to_view_dict;
         public string                       state;
 
-        public ViewControler () {
+        public ViewControler (AppController controler) {
             this.state = "init";
             this.state_to_view_dict = new HashMap<string, AppView>();
             // The initial view
-            InitialView initv = new InitialView();
+            InitialView initv = new InitialView(controler);
             this.state_to_view_dict.set("init", initv);
             // The sharing view
-            SharingView sharev = new SharingView();
+            SharingView sharev = new SharingView(controler);
             this.state_to_view_dict.set("sharing", sharev);
             // The error view
-            ErrorView errorv = new ErrorView();
+            ErrorView errorv = new ErrorView(controler);
             this.state_to_view_dict.set("error", errorv);
         }
 
