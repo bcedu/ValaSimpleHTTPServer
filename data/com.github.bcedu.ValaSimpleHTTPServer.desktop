@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Simple File Server
+Comment=Open an http server in the selected folder and shhare your files.
+Icon=com.github.bcedu.ValaSimpleHTTPServer
+Exec=com.github.bcedu.ValaSimpleHTTPServer
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=GNOME;GTK;Network;
+Keywords=app;vala;share;files;server;

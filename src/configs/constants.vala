@@ -26,19 +26,19 @@ namespace App.Configs {
      */
     public class Constants {
 
-        public abstract const string ID = "com.github.bcedu.simplefileserver";
+        public abstract const string ID = "com.github.bcedu.ValaSimpleHTTPServer";
         public abstract const string VERSION = "1.0.0";
         public abstract const string PROGRAME_NAME = "Simple File Server";
         public abstract const string APP_YEARS = "2018";
-        public abstract const string APP_ICON = "com.github.bcedu.simplefileserver";
+        public abstract const string APP_ICON = "com.github.bcedu.ValaSimpleHTTPServer";
         public abstract const string ABOUT_COMMENTS = "Simple File Server";
         public abstract const string MAIN_URL = "https://github.com/bcedu";
-        public abstract const string BUG_URL = "https://github.com/bcedu/SimpleFileServer/issues";
-        public abstract const string HELP_URL = "https://github.com/bcedu/SimpleFileServer/wiki";
-        public abstract const string TRANSLATE_URL = "https://github.com/bcedu/SimpleFileServer";
+        public abstract const string BUG_URL = "https://github.com/bcedu/ValaSimpleHTTPServer/issues";
+        public abstract const string HELP_URL = "https://github.com/bcedu/ValaSimpleHTTPServer/wiki";
+        public abstract const string TRANSLATE_URL = "https://github.com/bcedu/ValaSimpleHTTPServer";
         public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE = "Website";
         public abstract const string TEXT_FOR_ABOUT_DIALOG_WEBSITE_URL = "https://github.com/bcedu";
-        public abstract const string URL_CSS = "data/css/style.css";
+        public abstract const string URL_CSS = "/com/github/bcedu/ValaSimpleHTTPServer/css/style.css";
         public abstract const string PKGDATADIR = "./";
         public abstract const string [] ABOUT_AUTHORS = { "Eduard Berloso Clarà <eduard.bc.95@gmail.com>" };
         public abstract const Gtk.License ABOUT_LICENSE_TYPE = Gtk.License.CUSTOM;
