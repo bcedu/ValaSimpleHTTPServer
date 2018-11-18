@@ -148,17 +148,6 @@ public class SimpleHTTPServer : Soup.Server {
         private static uint8[] get_file_content(File file) {
             var file_stream = file.read ();
             var data_stream = new DataInputStream (file_stream);
-            /*data_stream.set_byte_order (DataStreamByteOrder.LITTLE_ENDIAN);
-            uint8[] contents = new uint8[8];
-            int readed = 0;
-            try {
-                while (true) {
-                    if (contents.length <= readed) contents.resize(readed*2);
-                    contents[readed] = data_stream.read_byte();
-                    readed += 1;
-                }
-            } catch (Error e) {}
-            contents = contents[0:readed-1];*/
             uint8[] contents;
             try {
                 try {

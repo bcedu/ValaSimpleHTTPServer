@@ -31,7 +31,7 @@ namespace App.Controllers {
         public  App.Application            application;
         public  ViewControler              view_controler;
         public  SimpleHTTPServer           httpserver;
-        private Gtk.HeaderBar              headerbar;
+        public  Gtk.HeaderBar              headerbar;
         public  Gtk.ApplicationWindow      window { get; private set; default = null; }
 
         /**
@@ -62,6 +62,7 @@ namespace App.Controllers {
 
         public void activate () {
             window.show_all ();
+            update_window_view();
         }
 
         public void quit () {
@@ -78,6 +79,11 @@ namespace App.Controllers {
             print("Server is listening on: "+httpserver.get_link()+"\n");
             httpserver.run_async ();
             return true;
+        }
+
+        public void stop_sharing_files() {
+            httpserver.disconnect();
+            httpserver = null;
         }
 
     }

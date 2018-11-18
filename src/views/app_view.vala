@@ -46,12 +46,6 @@ namespace App.Views {
             welcome.margin_start = welcome.margin_end = 6;
             open_index = welcome.append ("document-open", "Open", "Browse to select a folder");
 
-            /*var chooserbox = new FolderSelectView(ref file_chooser);
-            this.pack_start (chooserbox, true, false, 0);
-
-            var buttonbox = new ContinueButtonView(ref app_button);
-            this.pack_start (buttonbox, true, false, 0);*/
-
             this.get_style_context().add_class ("mainbox");
             this.show_all();
         }
@@ -99,24 +93,39 @@ namespace App.Views {
     public class SharingView : AppView, VBox {
         private Gtk.LinkButton direcciolink;
         private Gtk.Label sharedpath;
+        private Gtk.Button back_button;
 
         public SharingView(AppController controler) {
+            // Add resume view
             var resumebox = new ResumeView(ref direcciolink, ref sharedpath, controler);
             this.pack_start (resumebox, true, false, 0);
+            // Add button to go back in headerbar
+            back_button = new Gtk.Button ();
+            back_button.label = "Back";
+            back_button.visible = false;
+            back_button.get_style_context ().add_class ("back-button");
+            controler.headerbar.pack_start(back_button);
+            // Set view style
             this.get_style_context().add_class ("mainbox");
             this.show_all();
         }
 
         public void connect_signals (AppController controler) {
+            back_button.clicked.connect(() => {
+                controler.stop_sharing_files();
+                controler.view_controler.state = "init";
+                controler.update_window_view();
+                back_button.visible = false;
+            });
             return;
         }
 
         public void update_view(AppController controler) {
             string direccio = controler.httpserver.get_link();
-            print("direccio : "+direccio+"\n");
             direcciolink.set_uri(direccio);
             direcciolink.set_label(direccio);
-            this.show_all();
+            if (controler.view_controler.state != "sharing") back_button.visible = false;
+            else back_button.visible = true;
         }
 
         public class ResumeView : Gtk.VBox {
