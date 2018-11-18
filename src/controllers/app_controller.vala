@@ -32,7 +32,7 @@ namespace App.Controllers {
         public  ViewControler              view_controler;
         public  SimpleHTTPServer           httpserver;
         private Gtk.HeaderBar              headerbar;
-        private Gtk.ApplicationWindow      window { get; private set; default = null; }
+        public  Gtk.ApplicationWindow      window { get; private set; default = null; }
 
         /**
          * Constructs a new {@code AppController} object.
