@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Simple File Server
+Name=HTTP File Server
 Comment=Open an http server in the selected folder and shhare your files.
-Icon=com.github.bcedu.ValaSimpleHTTPServer
-Exec=com.github.bcedu.ValaSimpleHTTPServer
+Icon=com.github.bcedu.valasimplehttpserver
+Exec=com.github.bcedu.valasimplehttpserver
 Terminal=false
 Type=Application
 StartupNotify=true

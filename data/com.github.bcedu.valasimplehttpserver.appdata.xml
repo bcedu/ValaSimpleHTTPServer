@@ -2,14 +2,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 Eduard Berloso Clarà <eduard.bc.95@gmail.com> -->
 <component type="desktop-application">
-    <id>com.github.bcedu.simplefileserver.desktop</id>
+    <id>com.github.bcedu.valasimplehttpserver.desktop</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>AGPL-3.0</project_license>
-    <name>Simple File Server</name>
+    <name>HTTP File Server</name>
     <summary>Acces to your files from any device in the same network.</summary>
     <developer_name>Eduard Berloso Clarà</developer_name>
     <provides>
-        <binary>com.github.bcedu.simplefileserver</binary>
+        <binary>com.github.bcedu.valasimplehttpserver</binary>
     </provides>
     <screenshots>
         <screenshot type="default">

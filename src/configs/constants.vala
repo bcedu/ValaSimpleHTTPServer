@@ -26,11 +26,11 @@ namespace App.Configs {
      */
     public class Constants {
 
-        public abstract const string ID = "com.github.bcedu.ValaSimpleHTTPServer";
+        public abstract const string ID = "com.github.bcedu.valasimplehttpserver";
         public abstract const string VERSION = "1.0.0";
-        public abstract const string PROGRAME_NAME = "Simple File Server";
+        public abstract const string PROGRAME_NAME = "HTTP File Server";
         public abstract const string APP_YEARS = "2018";
-        public abstract const string APP_ICON = "com.github.bcedu.ValaSimpleHTTPServer";
+        public abstract const string APP_ICON = "com.github.bcedu.valasimplehttpserver";
         public abstract const string ABOUT_COMMENTS = "Simple File Server";
         public abstract const string MAIN_URL = "https://github.com/bcedu";
         public abstract const string BUG_URL = "https://github.com/bcedu/ValaSimpleHTTPServer/issues";

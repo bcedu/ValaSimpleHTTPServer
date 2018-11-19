@@ -1,5 +1,5 @@
 # project name and programming language
-project('com.github.bcedu.ValaSimpleHTTPServer', 'vala', 'c')
+project('com.github.bcedu.valasimplehttpserver', 'vala', 'c')
 
 # Create a new executable, list the files we want to compile, list the dependencies we need, and install
 # Files to compile
