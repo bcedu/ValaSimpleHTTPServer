@@ -18,9 +18,15 @@
 
 public class Main {
     private static bool version = false;
+    private static bool no_interface = false;
+    private static int port = 0;
+    private static string? path = null;
 
     private const OptionEntry[] options = {
-        { "version", 0, 0, OptionArg.NONE, ref version, "Display Version Number", null },
+        {"version", 0, 0, OptionArg.NONE, ref version, "Display Version Number", null },
+        {"no-interface", 0, 0, OptionArg.NONE, ref no_interface, "Open an http server without gui.", null },
+        {"directory", 'd', 0, OptionArg.FILENAME, ref path, "Directory to share", "DIRECTORY"},
+        {"port", 'p', 0, OptionArg.INT, ref port, "Port where server will be listening", "INT"},
         { null }
     };
 
@@ -44,10 +50,23 @@ public class Main {
         if (version) {
             stdout.printf (App.Configs.Constants.PROGRAME_NAME +" "+ App.Configs.Constants.VERSION + "\r\n");
             return 0;
+        } else if (no_interface) {
+            SimpleHTTPServer server;
+            if (port != 0 && path != null) {
+                server = new SimpleHTTPServer.with_port_and_path(port, path);
+            }else if (port != 0) {
+                server = new SimpleHTTPServer.with_port(port);
+            }else if (path != null) {
+                server = new SimpleHTTPServer.with_path(path);
+            }else {
+                server = new SimpleHTTPServer();
+            }
+            server.run();
+            return 0;
+        } else {
+            var app = new App.Application ();
+            app.run (args);
         }
-
-        var app = new App.Application ();
-        app.run (args);
 
         return 0;
     }

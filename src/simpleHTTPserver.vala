@@ -23,6 +23,7 @@ public class SimpleHTTPServer : Soup.Server {
         public signal void sig_directory_requested(Soup.Message msg, File file);
         public signal void sig_file_requested(Soup.Message msg, File file);
         public signal void sig_error(Soup.Message msg, File file);
+        public static bool log = false;
 
 
         public SimpleHTTPServer () {
@@ -55,6 +56,14 @@ public class SimpleHTTPServer : Soup.Server {
             this.listen_all(this.port, 0);
         }
 
+        public void run() {
+            log = true;
+            MainLoop loop = new MainLoop ();
+            this.listen_all(this.port, 0);
+            print("Listening on: "+get_link()+"\n");
+			loop.run ();
+        }
+
         private static void default_handler (Server server, Soup.Message msg, string path, GLib.HashTable? query, Soup.ClientContext client) {
                 // The default handler checks the type of the file requested (the file is calculated with basedir + request_path)
                 // Then, if it is a directory sends the signal sig_directory_requested of server.
@@ -68,7 +77,7 @@ public class SimpleHTTPServer : Soup.Server {
                 else  rfile = File.new_for_path(self.basedir+rel_path);
                 //PRINT// stdout.printf("====================================================\nSTART of Request\n");
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-                stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
+                if (log) stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
                 msg.status_code = 200;
                 // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
                 if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
@@ -179,15 +188,19 @@ public class SimpleHTTPServer : Soup.Server {
             return "http://"+resolve_server_address()+":"+this.port.to_string();
         }
         public string resolve_server_address() {
-            // Resolve hostname to IP address
-           var resolver = Resolver.get_default ();
-           var addresses = resolver.lookup_by_name ("www.google.com", null);
-           var address = addresses.nth_data (0);
+            try {
+                // Resolve hostname to IP address
+               var resolver = Resolver.get_default ();
+               var addresses = resolver.lookup_by_name ("www.google.com", null);
+               var address = addresses.nth_data (0);
 
-           var client = new SocketClient ();
-           var conn = client.connect (new InetSocketAddress (address, 80));
-           InetSocketAddress local = conn.get_local_address() as InetSocketAddress;
-           return local.get_address().to_string();
+               var client = new SocketClient ();
+               var conn = client.connect (new InetSocketAddress (address, 80));
+               InetSocketAddress local = conn.get_local_address() as InetSocketAddress;
+               return local.get_address().to_string();
+            } catch (Error e){
+                return "0.0.0.0";
+            }
         }
 
         // public static int main (string[] args) {

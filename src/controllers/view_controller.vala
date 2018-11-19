@@ -54,7 +54,7 @@ namespace App.Controllers {
         }
 
         public AppView get_current_view() {
-            stdout.printf("Current state: %s\n", this.state);
+            //stdout.printf("Current state: %s\n", this.state);
             return state_to_view_dict[this.state];
         }
 
