@@ -2,7 +2,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 Eduard Berloso Clarà <eduard.bc.95@gmail.com> -->
 <component type="desktop-application">
-    <id>com.github.bcedu.valasimplehttpserver.desktop</id>
+    <id>com.github.bcedu.valasimplehttpserver</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>AGPL-3.0</project_license>
     <name>HTTP File Server</name>
@@ -13,19 +13,24 @@
     </provides>
     <screenshots>
         <screenshot type="default">
-            <image>{{ screenshot-url }}</image>
+            <image></image>
         </screenshot>
     </screenshots>
     <description>
-        <p>Acces to your files from any device in the same network.</p>
+        <p>Acces to your files from any device in the same network!</p>
         <br><br>
         <p>ValaSimpleHTTPServers opens an http server in a selected folder. You can acces to the files of the selected folder from any device in the same network by going to the given link.
         <br>It has been developed to follow the same behaviour than the wellknown python's simpleHTTPserver.</p>
+        <br><p>It also works throught comand line options. Try typing 'com.github.bcedu.valasimplehttpserver --help' to learn more.</p>
     </description>  
     <releases>
-      <release version="1.0.0" date="2018-06-04">
+      <release version="1.0.0" date="2018-11-19">
         <description>
-          <p>Initial 1.0.0 release!</p>
+          <p>Initial 1.0.2 release!</p>
+          <ul>
+          <li>Start an http server through a clean and minimalist gui.</li>
+          <li>Use the command line options to start an http server through the console.</li>
+          </ul>
         </description>
       </release>
     </releases>
