@@ -39,7 +39,7 @@
     <url type="help">https://github.com/bcedu/ValaSimpleHTTPServer/issues</url>
     <update_contact>eduard.bc.95@gmail.com</update_contact>
     <custom>
-        <value key="x-appcenter-color-primary">#FFFFFF</value>
+        <value key="x-appcenter-color-primary">#56A9E3</value>
         <value key="x-appcenter-color-primary-text">#000000</value>
         <value key="x-appcenter-suggested-price">0</value>
     </custom>
