@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=HTTP File Server
-Comment=Open an http server in the selected folder and shhare your files.
+Name=VServer
+Comment=Open an http server in the selected folder and share your files.
 Icon=com.github.bcedu.valasimplehttpserver
 Exec=com.github.bcedu.valasimplehttpserver
 Terminal=false
 Type=Application
 StartupNotify=true
 Categories=GNOME;GTK;Network;
-Keywords=app;vala;share;files;server;
+Keywords=app;vala;share;files;server;http;

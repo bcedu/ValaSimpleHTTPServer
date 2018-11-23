@@ -1,52 +1,52 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2018 Eduard Berloso Clarà <eduard.bc.95@gmail.com> -->
-<component type="desktop-application">
+<component type="desktop">
     <id>com.github.bcedu.valasimplehttpserver</id>
     <metadata_license>CC0-1.0</metadata_license>
-    <project_license>AGPL-3.0</project_license>
-    <name>HTTP File Server</name>
-    <summary>Acces to your files from any device in the same network.</summary>
+    <project_license>GPL-3.0+</project_license>
     <developer_name>Eduard Berloso Clarà</developer_name>
-    <provides>
-        <binary>com.github.bcedu.valasimplehttpserver</binary>
-    </provides>
+    <name>VServer</name>
+    <summary>Acces to your files from any device in the same network</summary>
+    <description>
+        <p>Acces to your files from any device in the same network with VServer!
+</p>
+        <p>VServer opens an http server in a selected folder. You can acces to the files of the selected folder from any device in the same network by going to the given link.</p>
+        <p>It has been developed to follow the same behaviour than the wellknown python's simpleHTTPserver.
+</p>
+        <p>It also works throught comand line options. Try typing 'com.github.bcedu.valasimplehttpserver --help' to learn more.</p>
+    </description>
+    <custom>
+        <value key="x-appcenter-color-primary">#56A9E3</value>
+        <value key="x-appcenter-color-primary-text">rgb(0,0,0)</value>
+        <value key="x-appcenter-suggested-price">0</value>
+    </custom>
     <screenshots>
         <screenshot type="default">
-            <image>https://github.com/bcedu/ValaSimpleHTTPServer/blob/master/data/imgs/init.png</image>
+            <image>https://raw.githubusercontent.com/bcedu/ValaSimpleHTTPServer/master/data/imgs/init.png</image>
         </screenshot>
         <screenshot type="default">
-            <image>https://github.com/bcedu/ValaSimpleHTTPServer/blob/master/data/imgs/sharing.png</image>
+            <image>https://raw.githubusercontent.com/bcedu/ValaSimpleHTTPServer/master/data/imgs/sharing.png</image>
         </screenshot>
         <screenshot type="default">
-            <image>https://github.com/bcedu/ValaSimpleHTTPServer/blob/master/data/imgs/browser.png</image>
+            <image>https://raw.githubusercontent.com/bcedu/ValaSimpleHTTPServer/master/data/imgs/browser.png</image>
         </screenshot>
     </screenshots>
-    <description>
-        <p>Acces to your files from any device in the same network!</p>
-        <br><br>
-        <p>ValaSimpleHTTPServers opens an http server in a selected folder. You can acces to the files of the selected folder from any device in the same network by going to the given link.
-        <br>It has been developed to follow the same behaviour than the wellknown python's simpleHTTPserver.</p>
-        <br><p>It also works throught comand line options. Try typing 'com.github.bcedu.valasimplehttpserver --help' to learn more.</p>
-    </description>  
     <releases>
       <release version="1.0.0" date="2018-11-19">
         <description>
           <p>Initial 1.0.2 release!</p>
           <ul>
           <li>Start an http server through a clean and minimalist gui.</li>
-          <li>Use the command line options to start an http server through the console.</li>
+          <li>Use the command line options to start an http server through the console (type "com.github.bcedu.valasimplehttpserver --help" to learn more).</li>
           </ul>
         </description>
       </release>
     </releases>
+    <provides>
+        <binary>com.github.bcedu.valasimplehttpserver</binary>
+    </provides>
     <url type="homepage">https://github.com/bcedu/ValaSimpleHTTPServer</url>
     <url type="bugtracker">https://github.com/bcedu/ValaSimpleHTTPServer/issues</url>
     <url type="help">https://github.com/bcedu/ValaSimpleHTTPServer/issues</url>
     <update_contact>eduard.bc.95@gmail.com</update_contact>
-    <custom>
-        <value key="x-appcenter-color-primary">#56A9E3</value>
-        <value key="x-appcenter-color-primary-text">#000000</value>
-        <value key="x-appcenter-suggested-price">0</value>
-    </custom>
 </component>
