@@ -8,9 +8,8 @@
     <name>VServer</name>
     <summary>Acces to your files from any device in the same network</summary>
     <description>
-        <p>Acces to your files from any device in the same network with VServer!
-</p>
-        <p>VServer opens an http server in a selected folder. You can acces to the files of the selected folder from any device in the same network by going to the given link.</p>
+        <p>VServer opens an http server in the desired folder. Very usefull to share files in a easy and fast way.
+Do you have a film in the computer and you want to watch it on the mobile phone? Just start Vserver in you computer and go to the given link with the mobile phone, you will have the film right there!</p>
         <p>It has been developed to follow the same behaviour than the wellknown python's simpleHTTPserver.
 </p>
         <p>It also works throught comand line options. Try typing 'com.github.bcedu.valasimplehttpserver --help' to learn more.</p>
@@ -24,14 +23,24 @@
         <screenshot type="default">
             <image>https://raw.githubusercontent.com/bcedu/ValaSimpleHTTPServer/master/data/imgs/init.png</image>
         </screenshot>
-        <screenshot type="default">
+        <screenshot>
             <image>https://raw.githubusercontent.com/bcedu/ValaSimpleHTTPServer/master/data/imgs/sharing.png</image>
         </screenshot>
-        <screenshot type="default">
+        <screenshot>
             <image>https://raw.githubusercontent.com/bcedu/ValaSimpleHTTPServer/master/data/imgs/browser.png</image>
         </screenshot>
     </screenshots>
     <releases>
+      <release version="1.1.0" date="2018-12-01">
+        <description>
+          <p>VServer release</p>
+          <ul>
+          <li>Start an http server through a clean and minimalist gui.</li>
+          <li>Use the command line options to start an http server through the console (type "com.github.bcedu.valasimplehttpserver --help" to learn more).</li>
+          <li>Choose the port where vserver listens through the gui.</li>
+          </ul>
+        </description>
+      </release>
       <release version="1.0.0" date="2018-11-19">
         <description>
           <p>Initial 1.0.2 release!</p>
