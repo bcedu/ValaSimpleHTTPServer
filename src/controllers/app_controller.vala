@@ -58,8 +58,8 @@ namespace App.Controllers {
                     this.window.remove (element);
                 }
             });
+            this.view_controler.update_views(this);
             var aux = this.view_controler.get_current_view();
-            aux.update_view(this);
             this.window.add (aux);
         }
 

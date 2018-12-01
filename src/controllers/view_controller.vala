@@ -61,5 +61,11 @@ namespace App.Controllers {
             return state_to_view_dict[this.state];
         }
 
+        public void update_views(AppController controler) {
+            foreach (AppView v in state_to_view_dict.values) {
+                v.update_view(controler);
+            }
+        }
+
     }
 }
