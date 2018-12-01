@@ -47,6 +47,9 @@ namespace App.Controllers {
             this.window.set_titlebar (this.headerbar);
             this.application.add_window (window);
             this.connect_signals();
+
+            httpserver = new SimpleHTTPServer.with_port(8888);
+            httpserver.disconnect();
         }
 
         public void update_window_view() {
@@ -74,16 +77,18 @@ namespace App.Controllers {
             this.view_controler.connect_signals(this);
         }
 
-        public bool star_sharing_files(int port, string path) {
-            httpserver = new SimpleHTTPServer.with_port_and_path(port, path);
-            print("Server is listening on: "+httpserver.get_link()+"\n");
+        public bool star_sharing_files(int? port, string? path) {
+            if (httpserver == null) httpserver = new SimpleHTTPServer();
+            httpserver.disconnect();
+            if (port != null) httpserver.port = port;
+            if (path != null) httpserver.basedir = path;
             httpserver.run_async ();
+            print("Server is listening on: "+httpserver.get_link()+"\n");
             return true;
         }
 
         public void stop_sharing_files() {
             httpserver.disconnect();
-            httpserver = null;
         }
 
     }

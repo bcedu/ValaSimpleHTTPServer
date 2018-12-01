@@ -44,6 +44,9 @@ namespace App.Controllers {
             // The error view
             ErrorView errorv = new ErrorView(controler);
             this.state_to_view_dict.set("error", errorv);
+            // The config view
+            ConfigView configv = new ConfigView(controler);
+            this.state_to_view_dict.set("config", configv);
         }
 
         public void connect_signals(AppController controler) {

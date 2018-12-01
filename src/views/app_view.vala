@@ -66,7 +66,7 @@ namespace App.Views {
                             string? sel = file_chooser.get_filename ();
                             if (sel != null) {
                                 dir_selected = sel;
-                                bool ok = controler.star_sharing_files(8888, dir_selected);
+                                bool ok = controler.star_sharing_files(null, dir_selected);
                                 if (ok) controler.view_controler.state = "sharing";
                                 else controler.view_controler.state = "error";
                             }else {
@@ -155,6 +155,68 @@ namespace App.Views {
         }
         public void update_view(AppController controler) {
             
+        }
+    }
+
+    public class ConfigView : AppView, VBox {
+        private Gtk.Entry selected_port;
+        private Gtk.Button back_button;
+        private Gtk.Button menu_button;
+
+        public ConfigView(AppController controler) {
+            // Add port view
+            ConfPortView portv = new ConfPortView(ref selected_port, controler);
+            this.pack_start (portv, true, false, 0);
+            // Add button to go back in headerbar
+            back_button = new Gtk.Button ();
+            back_button.label = "Save";
+            back_button.visible = false;
+            back_button.get_style_context ().add_class ("back-button");
+            controler.headerbar.pack_start(back_button);
+            // Add settings button in headerbar
+            menu_button = new Gtk.Button ();
+            menu_button.set_image (new Gtk.Image .from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+            menu_button.tooltip_text = "Settings";
+            controler.headerbar.pack_end (menu_button);
+            // Set view style
+            this.get_style_context().add_class ("mainbox");
+            this.show_all();
+        }
+
+        public void connect_signals (AppController controler) {
+            back_button.clicked.connect(() => {
+                if (selected_port.get_text() != "0") controler.httpserver.set_port(int.parse(selected_port.get_text()));
+                controler.view_controler.state = "init";
+                controler.update_window_view();
+                back_button.visible = false;
+            });
+            menu_button.clicked.connect(() => {
+                controler.stop_sharing_files();
+                controler.view_controler.state = "config";
+                back_button.visible = true;
+                controler.update_window_view();
+            });
+            return;
+        }
+
+        public void update_view(AppController controler) {
+            uint port = controler.httpserver.get_port();
+            selected_port.set_text(port.to_string());
+            if (controler.view_controler.state != "config") back_button.visible = false;
+            else back_button.visible = true;
+        }
+
+        public class ConfPortView : Gtk.HBox {
+
+            public ConfPortView (ref Gtk.Entry? selected_port, AppController controler) {
+                Gtk.Label maintext = new Gtk.Label ("Listening at port: ");
+                maintext.get_style_context().add_class ("app_text");
+                this.pack_start (maintext, true, false, 0);
+                selected_port = new Gtk.Entry();
+                uint port = controler.httpserver.get_port();
+                selected_port.set_text(port.to_string());
+                this.pack_start (selected_port, true, false, 0);
+            }
         }
     }
 

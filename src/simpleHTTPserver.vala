@@ -202,6 +202,12 @@ public class SimpleHTTPServer : Soup.Server {
                 return "0.0.0.0";
             }
         }
+        public uint get_port() {
+            return this.port;
+        }
+        public void set_port(int nport) {
+            this.port = nport;
+        }
 
         // public static int main (string[] args) {
         //         SimpleHTTPServer server = new SimpleHTTPServer.with_path ("");

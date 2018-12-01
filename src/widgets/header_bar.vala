@@ -28,9 +28,6 @@ namespace App.Widgets {
      */
     public class HeaderBar : Gtk.HeaderBar {
 
-        public signal void menu_clicked ();
-        public Gtk.MenuButton menu_button { get; private set; }
-
         /**
          * Constructs a new {@code HeaderBar} object.
          *
@@ -38,19 +35,9 @@ namespace App.Widgets {
          * @see icon_settings
          */
         public HeaderBar () {
-
-
-            menu_button = new Gtk.MenuButton ();
-            menu_button.set_image (new Gtk.Image .from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
-            menu_button.tooltip_text = "Settings";
-            menu_button.clicked.connect (() => {
-                menu_clicked ();
-            });
-
             this.set_title ("Simple File Server");
             this.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
             this.show_close_button = true;
-            this.pack_end (menu_button);
         }
     }
 }
