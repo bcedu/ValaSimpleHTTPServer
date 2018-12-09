@@ -117,21 +117,23 @@ public class SimpleHTTPServer : Soup.Server {
         private void send_list_dir(Soup.Message msg, File file) {
             string newindex = "<html><body>";
             File fbase = File.new_for_path(basedir);
+            string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
+            newindex = "%s<h1>Listing files of: %s</h1>".printf(newindex, base_rel_path);
             if (fbase.get_path() != file.get_path() &&  file.has_parent(null)) {
                 File parent = file.get_parent();
                 string rel_path = parent.get_path().substring(fbase.get_path().length);
                 if (rel_path == "") rel_path = "/";
                 //PRINT// stdout.printf("Parent: %s\n", rel_path);
-                newindex = "%s%s".printf(newindex, add_link(rel_path, "../"));
+                newindex = "%s<ul>%s</ul>".printf(newindex, add_link(rel_path, "../"));
             }
-            string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
             FileEnumerator enumerator = file.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
             FileInfo info = null;
+            newindex = "%s%s".printf(newindex, "<ul>");
             while (((info = enumerator.next_file (null)) != null)) {
                 //PRINT// stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
                 newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null));
             }
-            newindex = "%s</body></html>".printf(newindex);
+            newindex = "%s</ul></body></html>".printf(newindex);
             msg.set_response ("text/html", Soup.MemoryUse.COPY, newindex.data);
         }
 
@@ -141,7 +143,7 @@ public class SimpleHTTPServer : Soup.Server {
                 if (path == "/") spath = "/";
                 else spath = path.split("/")[path.split("/").length-1];
             }
-            return "<br><a href=\"%s\">%s</a>".printf(path, spath);
+            return "<li><a href=\"%s\">%s</a></li>".printf(path, spath);
         }
 
         private void send_file(Soup.Message msg, File file) {
