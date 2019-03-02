@@ -1,6 +1,12 @@
 # project name and programming language
 project('com.github.bcedu.valasimplehttpserver', 'vala', 'c')
 
+# Include the translations module
+i18n = import('i18n')
+
+# Set our translation domain
+add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
+
 # Create a new executable, list the files we want to compile, list the dependencies we need, and install
 # Files to compile
 srcs = files([
@@ -34,15 +40,22 @@ executable(
     install: true
 )
 
-#Install our .desktop file so the Applications Menu will see it
-install_data(
-    join_paths('data', meson.project_name() + '.desktop'),
+#Translate and install our .desktop file
+i18n.merge_file(
+    input: join_paths('data', meson.project_name() + '.desktop.in'),
+    output: meson.project_name() + '.desktop',
+    po_dir: join_paths(meson.source_root(), 'po'),
+    type: 'desktop',
+    install: true,
     install_dir: join_paths(get_option('datadir'), 'applications')
 )
 
-#Install our .appdata.xml file so AppCenter will see it
-install_data(
-    join_paths('data', meson.project_name() + '.appdata.xml'),
+#Translate and install our .appdata file
+i18n.merge_file(
+    input: join_paths('data', meson.project_name() + '.appdata.xml.in'),
+    output: meson.project_name() + '.appdata.xml',
+    po_dir: join_paths(meson.source_root(), 'po'),
+    install: true,
     install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
@@ -69,6 +82,6 @@ foreach i : icon_sizes
     )
 endforeach
 
+subdir('po')
 # Add in a post install script
 meson.add_install_script('meson/post_install.py')
-

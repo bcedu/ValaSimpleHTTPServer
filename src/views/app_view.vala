@@ -40,11 +40,11 @@ namespace App.Views {
         private int open_index;
 
         public InitialView (AppController controler) {
-            welcome = new Granite.Widgets.Welcome ("Share your files", "Select a folder and start sharing");
+            welcome = new Granite.Widgets.Welcome (_("Share your files"), _("Select a folder and start sharing"));
             this.pack_start (welcome, false, false, 0);
 
             welcome.margin_start = welcome.margin_end = 6;
-            open_index = welcome.append ("document-open", "Open", "Browse to select a folder");
+            open_index = welcome.append ("document-open", _("Open"), _("Browse to select a folder"));
 
             this.get_style_context().add_class ("mainbox");
             this.show_all();
@@ -55,8 +55,8 @@ namespace App.Views {
             this.welcome.activated.connect ((index) => {
                 if (index == open_index) {
                     file_chooser = new Gtk.FileChooserDialog (
-                        "Select packages to install", controler.window, Gtk.FileChooserAction.SELECT_FOLDER, "Cancel", 
-                        Gtk.ResponseType.CANCEL, "Open", Gtk.ResponseType.ACCEPT
+                        _("Select packages to install"), controler.window, Gtk.FileChooserAction.SELECT_FOLDER, _("Cancel"),
+                        Gtk.ResponseType.CANCEL, _("Open"), Gtk.ResponseType.ACCEPT
                     );
 
                     // Connect folder selected
@@ -131,7 +131,7 @@ namespace App.Views {
         public class ResumeView : Gtk.VBox {
 
             public ResumeView (ref Gtk.LinkButton? direcciolink, ref Gtk.Label? sharedpath, AppController controler) {
-                Gtk.Label maintext = new Gtk.Label ("Your files are at ");
+                Gtk.Label maintext = new Gtk.Label (_("Your files are at "));
                 maintext.get_style_context().add_class ("app_text");
                 this.pack_start (maintext, false, false, 0);
 
@@ -176,7 +176,7 @@ namespace App.Views {
             // Add settings button in headerbar
             menu_button = new Gtk.Button ();
             menu_button.set_image (new Gtk.Image .from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
-            menu_button.tooltip_text = "Settings";
+            menu_button.tooltip_text = _("Settings");
             controler.headerbar.pack_end (menu_button);
             // Set view style
             this.get_style_context().add_class ("mainbox");
@@ -209,7 +209,7 @@ namespace App.Views {
         public class ConfPortView : Gtk.HBox {
 
             public ConfPortView (ref Gtk.Entry? selected_port, AppController controler) {
-                Gtk.Label maintext = new Gtk.Label ("Listening at port: ");
+                Gtk.Label maintext = new Gtk.Label (_("Listening at port: "));
                 maintext.get_style_context().add_class ("app_text");
                 this.pack_start (maintext, true, false, 0);
                 selected_port = new Gtk.Entry();

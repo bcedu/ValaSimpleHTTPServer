@@ -1,0 +1,10 @@
+src/controllers/app_controller.vala
+src/controllers/view_controller.vala
+src/views/app_view.vala
+src/widgets/header_bar.vala
+src/application.vala
+src/main.vala
+src/simpleHTTPserver.vala
+src/window.vala
+data/com.github.bcedu.valasimplehttpserver.desktop.in
+data/com.github.bcedu.valasimplehttpserver.appdata.xml.in

@@ -16,6 +16,7 @@
 *
 */
 using Soup;
+using App.Configs;
 
 public class SimpleHTTPServer : Soup.Server {
         public string basedir;
@@ -60,7 +61,7 @@ public class SimpleHTTPServer : Soup.Server {
             log = true;
             MainLoop loop = new MainLoop ();
             this.listen_all(this.port, 0);
-            print("Listening on: "+get_link()+"\n");
+            print(_("Listening on: ")+get_link()+"\n");
 			loop.run ();
         }
 
@@ -77,7 +78,7 @@ public class SimpleHTTPServer : Soup.Server {
                 else  rfile = File.new_for_path(self.basedir+rel_path);
                 //PRINT// stdout.printf("====================================================\nSTART of Request\n");
                 var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-                if (log) stdout.printf("Requested: %s, full path: %s\n", rel_path, rfile.get_path());
+                if (log) stdout.printf(_("Requested: %s, full path: %s\n"), rel_path, rfile.get_path());
                 msg.status_code = 200;
                 // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
                 if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
@@ -118,7 +119,7 @@ public class SimpleHTTPServer : Soup.Server {
             string newindex = "<html><body>";
             File fbase = File.new_for_path(basedir);
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
-            newindex = "%s<h1>Listing files of: %s</h1>".printf(newindex, base_rel_path);
+            newindex = _("%s<h1>Listing files of: %s</h1>").printf(newindex, base_rel_path);
             if (fbase.get_path() != file.get_path() &&  file.has_parent(null)) {
                 File parent = file.get_parent();
                 string rel_path = parent.get_path().substring(fbase.get_path().length);

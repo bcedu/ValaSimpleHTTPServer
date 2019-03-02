@@ -27,7 +27,7 @@ namespace App.Configs {
     public class Constants {
 
         public abstract const string ID = "com.github.bcedu.valasimplehttpserver";
-        public abstract const string VERSION = "1.0.0";
+        public abstract const string VERSION = "1.3.0";
         public abstract const string PROGRAME_NAME = "VServer";
         public abstract const string APP_YEARS = "2018";
         public abstract const string APP_ICON = "com.github.bcedu.valasimplehttpserver";

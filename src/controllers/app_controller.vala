@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
-
+using App.Configs;
 using App.Widgets;
 using App.Views;
 
@@ -83,7 +83,7 @@ namespace App.Controllers {
             if (port != null) httpserver.port = port;
             if (path != null) httpserver.basedir = path;
             httpserver.run_async ();
-            print("Server is listening on: "+httpserver.get_link()+"\n");
+            print(_("Server is listening on: ")+httpserver.get_link()+"\n");
             return true;
         }
 

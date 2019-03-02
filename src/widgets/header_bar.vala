@@ -35,7 +35,7 @@ namespace App.Widgets {
          * @see icon_settings
          */
         public HeaderBar () {
-            this.set_title ("Simple File Server");
+            this.set_title (_("Simple File Server"));
             this.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
             this.show_close_button = true;
         }
