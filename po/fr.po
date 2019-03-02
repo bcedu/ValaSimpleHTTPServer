@@ -144,7 +144,7 @@ msgid "Add Catalan translations."
 msgstr "Ajout des traductions en Catalan."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:40
-msgid "Add Catalan translations."
+msgid "Add French translations."
 msgstr "Ajout des traductions françaises."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:48
