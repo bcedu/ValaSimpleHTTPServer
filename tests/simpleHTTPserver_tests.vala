@@ -25,7 +25,7 @@ print_bytes(res);print_bytes(root_res);
     }
 
     public override void set_up () {
-        server = new SimpleHTTPServer.with_port_and_path(9999, Environment.get_current_dir()+"/fixtures/test_directory_requests");
+        server = new SimpleHTTPServer.with_port_and_path(9999, Environment.get_variable("TESTDIR")+"/fixtures/test_directory_requests");
         //server.run_async ();
         //PRINT// stdout.printf("\n");
     }
@@ -50,7 +50,7 @@ print_bytes(res);print_bytes(root_res);
     }
 
     private uint8[]  get_fixture_content(string path, bool delete_final_byte) {
-        string abs_path = Environment.get_current_dir()+"/fixtures/" + path;
+        string abs_path = Environment.get_variable("TESTDIR")+"/fixtures/" + path;
         File file = File.new_for_path (abs_path);
         var file_stream = file.read ();
         var data_stream = new DataInputStream (file_stream);
@@ -123,7 +123,7 @@ print_bytes(res);print_bytes(root_res);
     }
 
     public void test_default_port() {
-        server = new SimpleHTTPServer.with_path(Environment.get_current_dir()+"/fixtures");
+        server = new SimpleHTTPServer.with_path(Environment.get_variable("TESTDIR")+"/fixtures");
         server.run_async ();
         //PRINT// stdout.printf("    - server.port -> %s == %s\n", "8080", server.port.to_string());
         assert (8080 == server.port);
