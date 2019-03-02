@@ -122,7 +122,7 @@ msgid ""
 msgstr ""
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:36
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:45
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:46
 msgid "VServer release"
 msgstr ""
 
@@ -134,22 +134,26 @@ msgstr ""
 msgid "Add Catalan translations."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:47
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:57
-msgid "Start an http server through a clean and minimalist gui."
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:40
+msgid "Add French translations."
 msgstr ""
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:48
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:58
+msgid "Start an http server through a clean and minimalist gui."
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:59
 msgid ""
 "Use the command line options to start an http server through the console "
 "(type \"com.github.bcedu.valasimplehttpserver --help\" to learn more)."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:50
 msgid "Choose the port where vserver listens through the gui."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:55
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:56
 msgid "Initial 1.0.2 release!"
 msgstr ""
