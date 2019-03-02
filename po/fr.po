@@ -1,0 +1,166 @@
+# French translations for the com.github.bcedu.valasimplehttpserver package.
+# Copyright (C) 2019 THE com.github.bcedu.valasimplehttpserver'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.bcedu.valasimplehttpserver package.
+# NathanBnm, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.bcedu.valasimplehttpserver\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-02 12:14+0100\n"
+"PO-Revision-Date: 2019-03-02 12:45+0100\n"
+"Last-Translator: NathanBnm\n"
+"Language-Team: Français\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/controllers/app_controller.vala:86
+msgid "Server is listening on: "
+msgstr "Le serveur est en écoute sur : "
+
+#: src/views/app_view.vala:43
+msgid "Share your files"
+msgstr "Partagez vos fichiers"
+
+#: src/views/app_view.vala:43
+msgid "Select a folder and start sharing"
+msgstr "Sélectionnez un dossier et commencez à partager"
+
+#: src/views/app_view.vala:47 src/views/app_view.vala:59
+msgid "Open"
+msgstr "Ouvrir"
+
+#: src/views/app_view.vala:47
+msgid "Browse to select a folder"
+msgstr "Parcourir pour sélectionner un dossier"
+
+#: src/views/app_view.vala:58
+msgid "Select packages to install"
+msgstr "Sélectionner les paquets à installer"
+
+#: src/views/app_view.vala:58
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/views/app_view.vala:134
+msgid "Your files are at "
+msgstr "Vos fichiers son situés dans "
+
+#: src/views/app_view.vala:179
+msgid "Settings"
+msgstr "Paramètres"
+
+#: src/views/app_view.vala:212
+msgid "Listening at port: "
+msgstr "A l'écoute du port : "
+
+#: src/widgets/header_bar.vala:38
+msgid "Simple File Server"
+msgstr "Simple serveur de fichiers"
+
+#: src/simpleHTTPserver.vala:64
+msgid "Listening on: "
+msgstr "A l'écoute sur : "
+
+#: src/simpleHTTPserver.vala:81
+#, c-format
+msgid "Requested: %s, full path: %s\n"
+msgstr "Demandé : %s, chemin complet : %s\n"
+
+#: src/simpleHTTPserver.vala:122
+#, c-format
+msgid "%s<h1>Listing files of: %s</h1>"
+msgstr "%s<h1>Liste des fichiers de : %s</h1>"
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:3
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:8
+msgid "VServer"
+msgstr "VServer"
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:4
+msgid "Open an http server in the selected folder and share your files."
+msgstr "Ouvrez un serveur HTTP dans le dossier sélectionné et partagez vos fichiers."
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:5
+msgid "com.github.bcedu.valasimplehttpserver"
+msgstr "com.github.bcedu.valasimplehttpserver"
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:11
+msgid "app;vala;share;files;server;http;"
+msgstr "application;vala;partager;fichiers;serveur;http;"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:7
+msgid "Eduard Berloso Clarà"
+msgstr "Eduard Berloso Clarà"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:9
+msgid "Acces to your files from any device in the same network"
+msgstr "Accédez à vos fichiers depuis n'importe quel appareil du même réseau"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:11
+msgid ""
+"VServer opens an http server in the desired folder. Very usefull to share "
+"files in a easy and fast way. Do you have a film in the computer and you "
+"want to watch it on the mobile phone? Just start Vserver in you computer and "
+"go to the given link with the mobile phone, you will have the film right "
+"there!"
+msgstr ""
+"VServer ouvre un serveur http dans le dossier souhaité. Très utile pour partager "
+"des fichiers de manière simple et rapide. Vous avez un film dans l'ordinateur et vous "
+"voulez le regarder sur votre téléphone portable ? Il suffit de démarrer Vserver dans votre "
+"ordinateur et d'aller au lien donné avec le téléphone portable, vous aurez le film juste "
+"là !"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:13
+msgid ""
+"It has been developed to follow the same behaviour than the wellknown "
+"python's simpleHTTPserver."
+msgstr ""
+"Il a été développé pour suivre le même comportement que le simple serveur "
+"HTTP reconnu de Python."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:15
+msgid ""
+"It also works throught comand line options. Try typing 'com.github.bcedu."
+"valasimplehttpserver --help' to learn more."
+msgstr ""
+"Il fonctionne également grâce aux options de ligne de commande. Essayez de taper'com.github.bcedu."
+"valasimplehttpserver --help' pour en savoir plus."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:36
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:45
+msgid "VServer release"
+msgstr "Version intiale de VServer"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:38
+msgid "Make app translatable."
+msgstr "L'application peut maintenant être traduite."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:39
+msgid "Add Catalan translations."
+msgstr "Ajout des traductions en Catalan."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:47
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:57
+msgid "Start an http server through a clean and minimalist gui."
+msgstr "Démarrez un serveur HTTP via une interface épurée et minimaliste."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:48
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:58
+msgid ""
+"Use the command line options to start an http server through the console "
+"(type \"com.github.bcedu.valasimplehttpserver --help\" to learn more)."
+msgstr ""
+"Utilisez les options de ligne de commande pour démarrer un serveur HTTP via la console "
+"(tapez \"com.github.bcedu.valasimplehttpserver --help\" pour en savoir plus)."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
+msgid "Choose the port where vserver listens through the gui."
+msgstr "Choisissez le port où VServer écoute via l'interface graphique."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:55
+msgid "Initial 1.0.2 release!"
+msgstr "Version 1.0.2 initiale !"
