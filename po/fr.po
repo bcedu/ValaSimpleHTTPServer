@@ -131,7 +131,7 @@ msgstr ""
 "valasimplehttpserver --help' pour en savoir plus."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:36
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:45
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:46
 msgid "VServer release"
 msgstr "Version intiale de VServer"
 
@@ -143,13 +143,17 @@ msgstr "L'application peut maintenant être traduite."
 msgid "Add Catalan translations."
 msgstr "Ajout des traductions en Catalan."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:47
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:57
-msgid "Start an http server through a clean and minimalist gui."
-msgstr "Démarrez un serveur HTTP via une interface épurée et minimaliste."
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:40
+msgid "Add Catalan translations."
+msgstr "Ajout des traductions françaises."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:48
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:58
+msgid "Start an http server through a clean and minimalist gui."
+msgstr "Démarrez un serveur HTTP via une interface épurée et minimaliste."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:59
 msgid ""
 "Use the command line options to start an http server through the console "
 "(type \"com.github.bcedu.valasimplehttpserver --help\" to learn more)."
@@ -157,10 +161,10 @@ msgstr ""
 "Utilisez les options de ligne de commande pour démarrer un serveur HTTP via la console "
 "(tapez \"com.github.bcedu.valasimplehttpserver --help\" pour en savoir plus)."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:50
 msgid "Choose the port where vserver listens through the gui."
 msgstr "Choisissez le port où VServer écoute via l'interface graphique."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:55
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:56
 msgid "Initial 1.0.2 release!"
 msgstr "Version 1.0.2 initiale !"
