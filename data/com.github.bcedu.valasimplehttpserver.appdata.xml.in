@@ -66,6 +66,7 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
     </provides>
     <url type="homepage">https://github.com/bcedu/ValaSimpleHTTPServer</url>
     <url type="bugtracker">https://github.com/bcedu/ValaSimpleHTTPServer/issues</url>
+    <url type="translate">https://github.com/bcedu/ValaSimpleHTTPServer/tree/master/po#readme</url>
     <url type="help">https://github.com/bcedu/ValaSimpleHTTPServer/issues</url>
     <update_contact>eduard.bc.95@gmail.com</update_contact>
 </component>
