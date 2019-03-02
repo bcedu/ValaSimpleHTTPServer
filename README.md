@@ -27,10 +27,14 @@ VServer is "inspired" in the well known python SimpleHTTPServer.
 
 Comming soon.
 
-### Elementary App Store
+### Elementary AppCenter
 
-Download VServer through the elementary app store. It's always updated to lastest version.
+Download VServer through the elementary AppCenter. It's always updated to lastest version.
 Easy and fast.
+
+<p align="center">
+  <a href="https://appcenter.elementary.io/com.github.bcedu.valasimplehttpserver"><img src="https://appcenter.elementary.io/badge.svg" alt="Get it on AppCenter" /></a>
+</p>
 
 ### Manual Instalation
 
