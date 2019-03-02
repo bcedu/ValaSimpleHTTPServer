@@ -31,12 +31,13 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
         </screenshot>
     </screenshots>
     <releases>
-      <release version="1.3.0" date="2019-03-01">
+      <release version="1.3.0" date="2019-03-02">
         <description>
           <p>VServer release</p>
           <ul>
           <li>Make app translatable.</li>
           <li>Add Catalan translations.</li>
+          <li>Add French translations.</li>
           </ul>
         </description>
       </release>
