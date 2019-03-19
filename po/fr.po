@@ -111,15 +111,14 @@ msgstr ""
 "VServer ouvre un serveur http dans le dossier souhaité. Très utile pour partager "
 "des fichiers de manière simple et rapide. Vous avez un film dans l'ordinateur et vous "
 "voulez le regarder sur votre téléphone portable ? Il suffit de démarrer Vserver dans votre "
-"ordinateur et d'aller au lien donné avec le téléphone portable, vous aurez le film juste "
-"là !"
+"ordinateur et d'aller au lien donné avec votre téléphone,vous aurez le film juste là !"
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:13
 msgid ""
 "It has been developed to follow the same behaviour than the wellknown "
 "python's simpleHTTPserver."
 msgstr ""
-"Il a été développé pour suivre le même comportement que le simple serveur "
+"Ce serveur a été développé pour suivre le même comportement que le simple serveur "
 "HTTP reconnu de Python."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:15
@@ -127,7 +126,7 @@ msgid ""
 "It also works throught comand line options. Try typing 'com.github.bcedu."
 "valasimplehttpserver --help' to learn more."
 msgstr ""
-"Il fonctionne également grâce aux options de ligne de commande. Essayez de taper'com.github.bcedu."
+"Il fonctionne également grâce aux options de ligne de commande. Essayez de taper 'com.github.bcedu."
 "valasimplehttpserver --help' pour en savoir plus."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:36
