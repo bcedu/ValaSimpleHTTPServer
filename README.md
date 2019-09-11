@@ -1,5 +1,6 @@
 # VServer
 
+> Flathub page: https://github.com/flathub/com.github.bcedu.valasimplehttpserver
 
 VServer opens an http server in the desired folder. Very usefull to share files in a easy and fast way.
 Do you have a film in the computer and you want to watch it on the mobile phone? Just start Vserver in you computer and go to the given link with the mobile phone, you will have the film right there!
