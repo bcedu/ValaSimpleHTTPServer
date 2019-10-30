@@ -31,6 +31,11 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
         </screenshot>
     </screenshots>
     <releases>
+      <release version="1.3.5" date="2019-10-30">
+        <description>
+          <p>Dutch translations</p>
+        </description>
+      </release>
       <release version="1.3.0" date="2019-03-02">
         <description>
           <p>VServer release</p>
@@ -69,6 +74,8 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
     <url type="translate">https://github.com/bcedu/ValaSimpleHTTPServer/tree/master/po#readme</url>
     <url type="help">https://github.com/bcedu/ValaSimpleHTTPServer/issues</url>
     <update_contact>eduard.bc.95@gmail.com</update_contact>
-    <content_rating type="oars-1.0" />
+    <content_rating type="oars-1.0">
+      <content_attribute id="social-chat">mild</content_attribute>
+    </content_rating>
 </component>
 
