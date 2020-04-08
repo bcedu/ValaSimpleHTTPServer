@@ -10,7 +10,6 @@ add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), la
 # Create a new executable, list the files we want to compile, list the dependencies we need, and install
 # Files to compile
 srcs = files([
-    'src/configs/settings.vala',
     'src/configs/constants.vala',
     'src/controllers/view_controller.vala',
     'src/controllers/app_controller.vala',
