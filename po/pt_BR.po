@@ -55,7 +55,7 @@ msgstr "Configurações"
 
 #: src/views/app_view.vala:212
 msgid "Listening at port: "
-msgstr "Recebendo conexões na porta: "
+msgstr "Receber conexões na porta: "
 
 #: src/widgets/header_bar.vala:38
 msgid "Simple File Server"
