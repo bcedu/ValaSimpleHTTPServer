@@ -1,0 +1,168 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.bcedu.valasimplehttpserver package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.bcedu.valasimplehttpserver\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-03-02 12:14+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/controllers/app_controller.vala:86
+msgid "Server is listening on: "
+msgstr "Recebendo conexões em: "
+
+#: src/views/app_view.vala:43
+msgid "Share your files"
+msgstr "Compartilhe seus arquivos"
+
+#: src/views/app_view.vala:43
+msgid "Select a folder and start sharing"
+msgstr "Selecione uma pasta e comece a compartilhar"
+
+#: src/views/app_view.vala:47 src/views/app_view.vala:59
+msgid "Open"
+msgstr "Abrir"
+
+#: src/views/app_view.vala:47
+msgid "Browse to select a folder"
+msgstr "Navegue para selecionar uma pasta"
+
+#: src/views/app_view.vala:58
+msgid "Select packages to install"
+msgstr "Selecione pacotes para instalar"
+
+#: src/views/app_view.vala:58
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/views/app_view.vala:134
+msgid "Your files are at "
+msgstr "Seus arquivos estão em "
+
+#: src/views/app_view.vala:179
+msgid "Settings"
+msgstr "Configurações"
+
+#: src/views/app_view.vala:212
+msgid "Listening at port: "
+msgstr "Recebendo conexões na porta: "
+
+#: src/widgets/header_bar.vala:38
+msgid "Simple File Server"
+msgstr "Servidor de Arquivos Simples"
+
+#: src/simpleHTTPserver.vala:64
+msgid "Listening on: "
+msgstr "Recebendo conexões em: "
+
+#: src/simpleHTTPserver.vala:81
+#, c-format
+msgid "Requested: %s, full path: %s\n"
+msgstr "Pedido: %s, caminho: %s\n"
+
+#: src/simpleHTTPserver.vala:122
+#, c-format
+msgid "%s<h1>Listing files of: %s</h1>"
+msgstr "%s<h1>Mostrando arquivos de: %s</h1>"
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:3
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:8
+msgid "VServer"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:4
+msgid "Open an http server in the selected folder and share your files."
+msgstr "Abra um servidor http em uma pasta e compartilhe seus arquivos."
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:5
+msgid "com.github.bcedu.valasimplehttpserver"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.desktop.in:11
+msgid "app;vala;share;files;server;http;"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:7
+msgid "Eduard Berloso Clarà"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:9
+msgid "Acces to your files from any device in the same network"
+msgstr "Acesse seus arquivos em qualquer dispositivo na rede"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:11
+msgid ""
+"VServer opens an http server in the desired folder. Very usefull to share "
+"files in a easy and fast way. Do you have a film in the computer and you "
+"want to watch it on the mobile phone? Just start Vserver in you computer and "
+"go to the given link with the mobile phone, you will have the film right "
+"there!"
+msgstr ""
+"O VServer abre um servidor http em uma pasta. Útil para compartilhar "
+"arquivos de forma rápida e fácil. Tem algum filme no seu computador que "
+"deseja assistir no seu celular? É só iniciar o VServer no computador e "
+"usar o link dado pelo VServer e seu filme estará logo ali!"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:13
+msgid ""
+"It has been developed to follow the same behaviour than the wellknown "
+"python's simpleHTTPserver."
+msgstr ""
+"É desenvolvido para seguir o mesmo comportamento do bem conhecido "
+"simpleHTTPserver do Python"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:15
+msgid ""
+"It also works throught comand line options. Try typing 'com.github.bcedu."
+"valasimplehttpserver --help' to learn more."
+msgstr ""
+"Também é possível usar pelo terminal, tente digitar "
+" 'com.github.bcedu.valasimplehttpserver --help' para aprender mais."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:36
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:46
+msgid "VServer release"
+msgstr "Lançamento do VServer"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:38
+msgid "Make app translatable."
+msgstr "Permitir traduções."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:39
+msgid "Add Catalan translations."
+msgstr "Adicionar traduções para o Catalão"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:40
+msgid "Add French translations."
+msgstr "Adicionar traduções para o Francês"
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:48
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:58
+msgid "Start an http server through a clean and minimalist gui."
+msgstr "Inicie um servidor http por uma interface minimalista e limpa."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:59
+msgid ""
+"Use the command line options to start an http server through the console "
+"(type \"com.github.bcedu.valasimplehttpserver --help\" to learn more)."
+msgstr ""
+"Use o terminal para iniciar um servidor http sem uma interface "
+"(digite \"com.github.bcedu.valasimplehttpserver --help\" para aprender mais)."
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:50
+msgid "Choose the port where vserver listens through the gui."
+msgstr "Escolha uma porta para o VServer receber conexões pela interface."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:56
+msgid "Initial 1.0.2 release!"
+msgstr "Lançamento inicial 1.0.2"
