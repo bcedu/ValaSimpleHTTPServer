@@ -1,6 +1,6 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: com.github.bcedu.ValaSimpleHTTPServer
-Source: https://github.com/bcedu/ValaSimpleHTTPServer
+Upstream-Name: com.github.bcedu.valasimplehttpserver
+Source: https://github.com/bcedu/valasimplehttpserver
 
 Files: src/* data/* debian/*
 Copyright: 2018 Eduard Berloso Clarà <eduard.bc.95@gmail.com>

@@ -101,6 +101,7 @@ print_bytes(res);print_bytes(root_res);
     public void assert_bytes(uint8[] res1, uint8[] res2) {
         assert (res1.length == res2.length);
         for (int i=0; i<res1.length;i++) {
+            if (res1[i] != res2[i]) print("\n\nDiferencia al byte numero "+i.to_string()+". Comparant:|"+res1[i].to_string()+"||"+res2[i].to_string()+"|\n\n");
             assert (res1[i] == res2[i]);
         }
     }
@@ -134,10 +135,13 @@ print_bytes(res);print_bytes(root_res);
     }
 
     public void test_root_directory_ok() {
-        //PRINT// stdout.printf("    - request '/' -> %s", "http://localhost:%d\n".printf((int)server.port));
+        //PRINT//stdout.printf("    - request '/' -> %s", "http://localhost:%d\n".printf((int)server.port));
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("test_directory_requests.html", true);
+print("RES---------------------------------------------\n|%s|\n", printable_uint(res));
+print("ROOT_RES---------------------------------------------\n|%s|\n---------------------------------------------------------\n", printable_uint(root_res));
+print_bytes(res);print_bytes(root_res);
         assert_bytes (res, root_res);
     }
 
@@ -207,4 +211,3 @@ print_bytes(res);print_bytes(root_res);
         }
     }
 }
-

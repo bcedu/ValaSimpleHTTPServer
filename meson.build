@@ -1,87 +1,22 @@
-# project name and programming language
-project('com.github.bcedu.valasimplehttpserver', 'vala', 'c')
+project('com.github.bcedu.valasimplehttpserver', 'c', 'vala', version: '0.1.0')
 
-# Include the translations module
 i18n = import('i18n')
+gnome = import('gnome')
+
+# Install files listed in gresources
+asresources = gnome.compile_resources(
+	'as-resources',
+	join_paths('data', 'resources', meson.project_name() + '.gresource.xml'),
+	source_dir: 'data',
+	c_name: 'as'
+)
 
 # Set our translation domain
 add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
+i18n = import('i18n')
 
-# Create a new executable, list the files we want to compile, list the dependencies we need, and install
-# Files to compile
-srcs = files([
-    'src/configs/settings.vala',
-    'src/configs/constants.vala',
-    'src/controllers/view_controller.vala',
-    'src/controllers/app_controller.vala',
-    'src/widgets/header_bar.vala',
-    'src/views/app_view.vala',
-    'src/main.vala',
-    'src/application.vala',
-    'src/window.vala',
-    'src/simpleHTTPserver.vala'
-])
-
-# Dependences
-deps = [
-    dependency('gobject-2.0'),
-    dependency('glib-2.0'),
-    dependency('gtk+-3.0'),
-    dependency('granite'),
-    dependency('gee-0.8'),
-    dependency('libsoup-2.4')
-]
-
-
-executable(
-    meson.project_name(),
-    srcs,
-    dependencies: deps,
-    install: true
-)
-
-#Translate and install our .desktop file
-i18n.merge_file(
-    input: join_paths('data', meson.project_name() + '.desktop.in'),
-    output: meson.project_name() + '.desktop',
-    po_dir: join_paths(meson.source_root(), 'po'),
-    type: 'desktop',
-    install: true,
-    install_dir: join_paths(get_option('datadir'), 'applications')
-)
-
-#Translate and install our .appdata file
-i18n.merge_file(
-    input: join_paths('data', meson.project_name() + '.appdata.xml.in'),
-    output: meson.project_name() + '.appdata.xml',
-    po_dir: join_paths(meson.source_root(), 'po'),
-    install: true,
-    install_dir: join_paths(get_option('datadir'), 'metainfo')
-)
-
-#Install icons
-install_data(
-    join_paths('data/icons', meson.project_name() + '.svg'),
-    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor')
-)
-install_data(
-    join_paths('data/icons', meson.project_name() + '.svg'),
-    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps')
-)
-icon_sizes = ['32', '48', '64', '128', '256']
-foreach i : icon_sizes
-    install_data(
-        join_paths('data/icons', meson.project_name() + '.svg'),
-        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', i + 'x' + i, 'apps')
-    )
-endforeach
-foreach i : icon_sizes
-    install_data(
-        join_paths('data/icons', meson.project_name() + '.svg'),
-        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', i + 'x' + i +'@2', 'apps')
-    )
-endforeach
-
+subdir('src')
+subdir('data')
 subdir('po')
-# Add in a post install script
+
 meson.add_install_script('meson/post_install.py')

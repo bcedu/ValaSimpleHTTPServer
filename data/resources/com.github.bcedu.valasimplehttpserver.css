@@ -1,0 +1,22 @@
+.app_view {
+  background-color: white;
+}
+mainbox, .mainbox {
+  background-color: white;
+}
+select_folder_label, .app_text {
+  /* font-weight: bolder; */
+  color: #333333;
+  font-size: 18px;
+}
+app_button, .app_button {
+  font-weight: bolder;
+  color: #5B5B5B;
+  /* border-color: white; */
+  background-color: white;
+  font-size: 15px;
+ }
+app_button:hover, .app_button:hover{
+  /* background-color: grey; */
+  background-color: ghostwhite;
+}

@@ -46,7 +46,8 @@ namespace App {
             });
 
             add_action (quit_action);
-            add_accelerator ("<Control>q", "app.quit", null);
+            string[] accel_quit = {"<Control>q", "0"};
+            set_accels_for_action ("app.quit", accel_quit);
         }
 
         /**

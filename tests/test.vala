@@ -1,4 +1,4 @@
-public abstract class Gee.TestCase : Object {
+public class Gee.TestCase : Object {
 
 	private GLib.TestSuite suite;
 	private Adaptor[] adaptors = new Adaptor[0];

@@ -38,7 +38,7 @@ public class Main {
      * @since 1.0.0
      */
     public static int main (string [] args) {
-        var options_context = new OptionContext (App.Configs.Constants.PROGRAME_NAME +" "+ "Options");
+        var options_context = new OptionContext (App.Configs.Constants.APP_NAME +" "+ "Options");
         options_context.set_help_enabled (true);
         options_context.add_main_entries (options, null);
 
@@ -48,7 +48,7 @@ public class Main {
         catch (Error error) {}
 
         if (version) {
-            stdout.printf (App.Configs.Constants.PROGRAME_NAME +" "+ App.Configs.Constants.VERSION + "\r\n");
+            stdout.printf (App.Configs.Constants.APP_NAME +" "+ App.Configs.Constants.VERSION + "\r\n");
             return 0;
         } else if (no_interface) {
             SimpleHTTPServer server;

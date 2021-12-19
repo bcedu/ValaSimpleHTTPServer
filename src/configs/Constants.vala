@@ -16,28 +16,19 @@
 *
 */
 
-using App.Configs;
-
-namespace App.Widgets {
+namespace App.Configs {
 
     /**
-     * The {@code HeaderBar} class is responsible for displaying top bar. Similar to a horizontal box.
+     * The {@code Constants} class is responsible for defining all
+     * the constants used in the application.
      *
-     * @see Gtk.HeaderBar
      * @since 1.0.0
      */
-    public class HeaderBar : Gtk.HeaderBar {
-
-        /**
-         * Constructs a new {@code HeaderBar} object.
-         *
-         * @see App.Configs.Properties
-         * @see icon_settings
-         */
-        public HeaderBar () {
-            this.set_title (_("Simple File Server"));
-            this.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
-            this.show_close_button = true;
-        }
+    public class Constants {
+        public abstract const string ID = "com.github.bcedu.valasimplehttpserver";
+        public abstract const string APP_ICON = "com.github.bcedu.valasimplehttpserver";
+        public abstract const string APP_NAME = "VServer";
+        public abstract const string LAUNCHER_ID = "com.github.bcedu.valasimplehttpserver.desktop";
+        public abstract const string VERSION = "1.4.0";
     }
 }

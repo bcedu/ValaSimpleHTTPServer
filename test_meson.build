@@ -1,27 +1,42 @@
-# project name and programming language
-project('com.github.bcedu.valasimplehttpserver', 'vala', 'c')
+project('com.github.bcedu.valasimplehttpserver', 'c', 'vala', version: '1.0.0')
 
-# Include the translations module
+gnome = import('gnome')
 i18n = import('i18n')
 
 # Set our translation domain
-add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()), language:'c')
+add_project_arguments(
+	'-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name()),
+	language:'c'
+)
 
-# Create a new executable, list the files we want to compile, list the dependencies we need, and install
-# Files to compile
+# Install files listed in gresources
+asresources = gnome.compile_resources(
+	'as-resources',
+	join_paths('data', 'resources', meson.project_name() + '.gresource.xml'),
+	source_dir: 'data',
+	c_name: 'as'
+)
+
+
+
 srcs = files([
-    'src/configs/settings.vala',
-    'src/configs/constants.vala',
-    'src/controllers/view_controller.vala',
-    'src/controllers/app_controller.vala',
-    'src/widgets/header_bar.vala',
-    'src/views/app_view.vala',
-    'src/application.vala',
-    'src/window.vala',
+    'src/configs/Constants.vala',
+    'src/configs/Settings.vala',
+    'src/widgets/HeaderBar.vala',
+    'src/views/AppView.vala',
+    'src/views/InitialView.vala',
+    'src/views/SharingView.vala',
+    'src/views/ErrorView.vala',
+    'src/views/ViewConf.vala',
+    'src/controllers/ViewController.vala',
+    'src/controllers/AppController.vala',
+    'src/Application.vala',
+    'src/Window.vala',
     'src/simpleHTTPserver.vala',
     'tests/test.vala',
-    'tests/simpleHTTPserver_tests.vala'
+    'tests/valasimplehttpserver_tests.vala'
 ])
+
 
 # Dependences
 deps = [
@@ -30,13 +45,33 @@ deps = [
     dependency('gtk+-3.0'),
     dependency('granite'),
     dependency('gee-0.8'),
-    dependency('libsoup-2.4')
+    dependency('libsoup-2.4'),
+    meson.get_compiler('vala').find_library('posix'),
 ]
 
+# Optional Dependences
+libunity_dep = dependency('unity', required : false)
+if libunity_dep.found()
+    add_project_arguments('-D', 'LIBUNITY', language: 'vala')
+    deps += [libunity_dep]
+endif
+
+libappindicator_dep = dependency('appindicator3-0.1', required : false)
+if libappindicator_dep.found()
+    add_project_arguments('-D', 'LIBAPPINDICATOR', language: 'vala')
+    deps += [libappindicator_dep]
+endif
 
 executable(
     meson.project_name(),
     srcs,
+    asresources,
     dependencies: deps,
     install: true
 )
+
+subdir('data')
+
+meson.add_install_script('meson/post_install.py')
+
+
