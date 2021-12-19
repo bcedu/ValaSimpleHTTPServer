@@ -3,6 +3,7 @@ class TestSimpleHTTPServer : Gee.TestCase {
 print("RES---------------------------------------------\n|%s|\n", printable_uint(res));
 print("ROOT_RES---------------------------------------------\n|%s|\n---------------------------------------------------------\n", printable_uint(root_res));
 print_bytes(res);print_bytes(root_res);
+print("-----------------------------------------------------------------------------------------------------\n");
 */
 
     SimpleHTTPServer server;
@@ -206,8 +207,8 @@ print_bytes(res);print_bytes(root_res);
     public void test_special_chars_in_filename_ok() {
         server = new SimpleHTTPServer.with_port_and_path(9999, Environment.get_variable("TESTDIR")+"/fixtures/test_directory_requests_2");
         server.run_async();
-        uint8[] res = make_get_request("http://localhost:%d/".printf((int)server.port)+"test_fitxer_caracters_exttranys_%20Ñ%26%25%3B%3A%3F.txt\n");
-        uint8[] root_res = get_fixture_content("test_directory_requests_2/test_fitxer_caracters_exttranys_ Ñ&%;:?.txt", false);
+        uint8[] res = make_get_request("http://localhost:%d/".printf((int)server.port)+"test_fitxer_caracters_exttranys_%20%C3%A7%C3%91%21%23%24%25%26%27%28%29%2A%2B%2C%3A%3B%3D%3F%40%5B%5D%60%C2%B4%5E%40.txt\n");
+        uint8[] root_res = get_fixture_content("test_directory_requests_2/test_fitxer_caracters_exttranys_ çÑ!#$%&'()*+,:;=?@[]`´^@.txt", false);
         assert_strings (res, root_res);
     }
 
@@ -216,9 +217,6 @@ print_bytes(res);print_bytes(root_res);
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("test_directory_requests_2.html", false);
-print("RES---------------------------------------------\n|%s|\n", printable_uint(res));
-print("ROOT_RES---------------------------------------------\n|%s|\n---------------------------------------------------------\n", printable_uint(root_res));
-print_bytes(res);print_bytes(root_res);
         assert_strings (res, root_res);
     }
 

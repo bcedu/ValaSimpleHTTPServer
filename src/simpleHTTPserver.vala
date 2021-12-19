@@ -65,6 +65,34 @@ public class SimpleHTTPServer : Soup.Server {
 			loop.run ();
         }
 
+        private static string normalize_path(string path) {
+            if (path == "/") return path;
+            string normalized_path = "";
+            foreach (string partial_path in path.split("/")) {
+                if (partial_path != "") normalized_path += "/%s".printf(Soup.URI.encode(partial_path, null));
+            }
+            // Caracters que el encode del URI no fa no se perque, ja que també son caracters especials...
+            normalized_path = normalized_path.replace("!", "%21");
+            normalized_path = normalized_path.replace("#", "%23");
+            normalized_path = normalized_path.replace("$", "%24");
+            normalized_path = normalized_path.replace("&", "%26");
+            normalized_path = normalized_path.replace("'", "%27");
+            normalized_path = normalized_path.replace("(", "%28");
+            normalized_path = normalized_path.replace(")", "%29");
+            normalized_path = normalized_path.replace("*", "%2A");
+            normalized_path = normalized_path.replace("+",  "%2B");
+            normalized_path = normalized_path.replace(",", "%2C");
+            normalized_path = normalized_path.replace(":", "%3A");
+            normalized_path = normalized_path.replace(";", "%3B");
+            normalized_path = normalized_path.replace("=", "%3D");
+            normalized_path = normalized_path.replace("?", "%3F");
+            normalized_path = normalized_path.replace("@", "%40");
+            normalized_path = normalized_path.replace("[", "%5B");
+            normalized_path = normalized_path.replace("]", "%5D");
+            //print("\nEncoded vs No encoded:|%s||%s|\n", normalized_path, path);
+            return normalized_path;
+        }
+
         private static void default_handler (Server server, Soup.Message msg, string path, GLib.HashTable? query, Soup.ClientContext client) {
                 // The default handler checks the type of the file requested (the file is calculated with basedir + request_path)
                 // Then, if it is a directory sends the signal sig_directory_requested of server.
@@ -144,7 +172,8 @@ public class SimpleHTTPServer : Soup.Server {
                 if (path == "/") spath = "/";
                 else spath = path.split("/")[path.split("/").length-1];
             }
-            return "<li><a href=\"%s\">%s</a></li>".printf(path, spath);
+            string normalized_path = normalize_path(path);
+            return "<li><a href=\"%s\">%s</a></li>".printf(normalized_path, spath);
         }
 
         private void send_file(Soup.Message msg, File file) {
