@@ -22,6 +22,8 @@ print_bytes(res);print_bytes(root_res);
         add_test(" * Test audio file request (test_audio_file_ok)", test_audio_file_ok);
         add_test(" * Test video file request (test_video_file_ok)", test_video_file_ok);
         add_test(" * Test error request (test_error_ok)", test_error_ok);
+        add_test(" * Test special chars in filename (test_special_chars_in_filename_ok)", test_special_chars_in_filename_ok);
+        add_test(" * Test directory request with special chars in filename (test_folder_with_special_chars_in_filename_ok)", test_folder_with_special_chars_in_filename_ok);
     }
 
     public override void set_up () {
@@ -198,6 +200,25 @@ print_bytes(res);print_bytes(root_res);
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d/carpeta_inventada\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("error.html", false);
+        assert_strings (res, root_res);
+    }
+
+    public void test_special_chars_in_filename_ok() {
+        server = new SimpleHTTPServer.with_port_and_path(9999, Environment.get_variable("TESTDIR")+"/fixtures/test_directory_requests_2");
+        server.run_async();
+        uint8[] res = make_get_request("http://localhost:%d/".printf((int)server.port)+"test_fitxer_caracters_exttranys_%20Ñ%26%25%3B%3A%3F.txt\n");
+        uint8[] root_res = get_fixture_content("test_directory_requests_2/test_fitxer_caracters_exttranys_ Ñ&%;:?.txt", false);
+        assert_strings (res, root_res);
+    }
+
+    public void test_folder_with_special_chars_in_filename_ok() {
+        server = new SimpleHTTPServer.with_port_and_path(9999, Environment.get_variable("TESTDIR")+"/fixtures/test_directory_requests_2");
+        server.run_async();
+        uint8[] res = make_get_request("http://localhost:%d\n".printf((int)server.port));
+        uint8[] root_res = get_fixture_content("test_directory_requests_2.html", false);
+print("RES---------------------------------------------\n|%s|\n", printable_uint(res));
+print("ROOT_RES---------------------------------------------\n|%s|\n---------------------------------------------------------\n", printable_uint(root_res));
+print_bytes(res);print_bytes(root_res);
         assert_strings (res, root_res);
     }
 
