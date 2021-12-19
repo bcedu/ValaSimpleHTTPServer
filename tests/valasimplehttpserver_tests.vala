@@ -139,9 +139,6 @@ print_bytes(res);print_bytes(root_res);
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("test_directory_requests.html", true);
-print("RES---------------------------------------------\n|%s|\n", printable_uint(res));
-print("ROOT_RES---------------------------------------------\n|%s|\n---------------------------------------------------------\n", printable_uint(root_res));
-print_bytes(res);print_bytes(root_res);
         assert_bytes (res, root_res);
     }
 
