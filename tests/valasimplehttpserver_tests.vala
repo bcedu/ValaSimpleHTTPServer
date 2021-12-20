@@ -12,19 +12,20 @@ print("-------------------------------------------------------------------------
         // assign a name for this class
         base("TestSimpleHTTPServer");
         // add test methods
-        add_test(" * Test default server directory is current path (test_default_dir)", test_default_dir);
-        add_test(" * Test default server port is in 8080 (test_default_port)", test_default_port);
-        add_test(" * Test directory request in root (test_root_directory_ok)", test_root_directory_ok);
-        add_test(" * Test directory request subfolder level 1 (test_subfolder_lv1_ok)", test_subfolder_lv1_ok);
-        add_test(" * Test directory request subfolder level 2 (test_subfolder_lv2_ok)", test_subfolder_lv2_ok);
-        add_test(" * Test directory request with index (test_directory_index_ok)", test_directory_index_ok);
-        add_test(" * Test text file request (test_text_file_ok)", test_text_file_ok);
-        add_test(" * Test image file request (test_image_file_ok)", test_image_file_ok);
-        add_test(" * Test audio file request (test_audio_file_ok)", test_audio_file_ok);
-        add_test(" * Test video file request (test_video_file_ok)", test_video_file_ok);
-        add_test(" * Test error request (test_error_ok)", test_error_ok);
-        add_test(" * Test special chars in filename (test_special_chars_in_filename_ok)", test_special_chars_in_filename_ok);
-        add_test(" * Test directory request with special chars in filename (test_folder_with_special_chars_in_filename_ok)", test_folder_with_special_chars_in_filename_ok);
+        add_test(" 1* Test default server directory is current path (test_default_dir)", test_default_dir);
+        add_test(" 2* Test default server port is in 8080 (test_default_port)", test_default_port);
+        add_test(" 3* Test directory request in root (test_root_directory_ok)", test_root_directory_ok);
+        add_test(" 4* Test directory request subfolder level 1 (test_subfolder_lv1_ok)", test_subfolder_lv1_ok);
+        add_test(" 5* Test directory request subfolder level 2 (test_subfolder_lv2_ok)", test_subfolder_lv2_ok);
+        add_test(" 6* Test directory request with index (test_directory_index_ok)", test_directory_index_ok);
+        add_test(" 7* Test text file request (test_text_file_ok)", test_text_file_ok);
+        add_test(" 8* Test image file request (test_image_file_ok)", test_image_file_ok);
+        add_test(" 9* Test audio file request (test_audio_file_ok)", test_audio_file_ok);
+        add_test(" 10* Test video file request (test_video_file_ok)", test_video_file_ok);
+        add_test(" 11* Test big file request (test_big_file_ok)", test_big_file_ok);
+        add_test(" 12* Test error request (test_error_ok)", test_error_ok);
+        add_test(" 13* Test special chars in filename (test_special_chars_in_filename_ok)", test_special_chars_in_filename_ok);
+        add_test(" 14* Test directory request with special chars in filename (test_folder_with_special_chars_in_filename_ok)", test_folder_with_special_chars_in_filename_ok);
     }
 
     public override void set_up () {
@@ -102,6 +103,7 @@ print("-------------------------------------------------------------------------
     }
 
     public void assert_bytes(uint8[] res1, uint8[] res2) {
+        if (res1.length != res2.length) print("\n\nDiferencia a la llargada . Comparant:|%d||%d|\n\n", res1.length, res2.length);
         assert (res1.length == res2.length);
         for (int i=0; i<res1.length;i++) {
             if (res1[i] != res2[i]) print("\n\nDiferencia al byte numero "+i.to_string()+". Comparant:|"+res1[i].to_string()+"||"+res2[i].to_string()+"|\n\n");
@@ -194,6 +196,13 @@ print("-------------------------------------------------------------------------
         server.run_async();
         uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/demo.mp4\n".printf((int)server.port));
         uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/demo.mp4", false);
+        assert_bytes (res, root_res);
+    }
+
+    public void test_big_file_ok() {
+        server.run_async();
+        uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/algo.rar\n".printf((int)server.port));
+        uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/algo.rar", false);
         assert_bytes (res, root_res);
     }
 
