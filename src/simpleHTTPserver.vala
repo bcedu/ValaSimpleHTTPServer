@@ -94,25 +94,25 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private static void default_handler (Server server, Soup.Message msg, string path, GLib.HashTable? query, Soup.ClientContext client) {
-                // The default handler checks the type of the file requested (the file is calculated with basedir + request_path)
-                // Then, if it is a directory sends the signal sig_directory_requested of server.
-                // If it is a file sends the signal sig_file_requested of server.
-                // And if the file doesn't exists sends the signal sig_erro of server
-                unowned SimpleHTTPServer self = server as SimpleHTTPServer;
-                if (msg.uri.get_path() == "favicon.ico") return;
-                string rel_path = msg.get_uri().get_path();
-                File rfile;
-                if (rel_path == "/" && self.basedir == "/")  rfile = File.new_for_path(rel_path);
-                else  rfile = File.new_for_path(self.basedir+rel_path);
-                //PRINT// stdout.printf("====================================================\nSTART of Request\n");
-                var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
-                if (log) stdout.printf(_("Requested: %s, full path: %s\n"), rel_path, rfile.get_path());
-                msg.status_code = 200;
-                // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
-                if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
-                else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
-                else self.sig_error(msg, rfile);
-                //PRINT// stdout.printf("END of Request\n======================================================\n");
+            // The default handler checks the type of the file requested (the file is calculated with basedir + request_path)
+            // Then, if it is a directory sends the signal sig_directory_requested of server.
+            // If it is a file sends the signal sig_file_requested of server.
+            // And if the file doesn't exists sends the signal sig_erro of server
+            unowned SimpleHTTPServer self = server as SimpleHTTPServer;
+            if (msg.uri.get_path() == "favicon.ico") return;
+            string rel_path = msg.get_uri().get_path();
+            File rfile;
+            if (rel_path == "/" && self.basedir == "/")  rfile = File.new_for_path(rel_path);
+            else  rfile = File.new_for_path(self.basedir+rel_path);
+            //PRINT// stdout.printf("====================================================\nSTART of Request\n");
+            var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+            if (log) stdout.printf(_("Requested: %s, full path: %s\n"), rel_path, rfile.get_path());
+            msg.status_code = 200;
+            // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
+            if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
+            else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
+            else self.sig_error(msg, rfile);
+            //PRINT// stdout.printf("END of Request\n======================================================\n");
         }
 
         private void dir_handle(Soup.Message msg, File file) {
@@ -177,22 +177,33 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
         private void send_file(Soup.Message msg, File file) {
-            uint8[] content = get_file_content(file);
-            string type = get_file_type(file);
+            MainLoop loop = new MainLoop ();
+            file.load_contents_async.begin (null, (obj, res) => {
+		        try {
+	                uint8[] contents;
+		            string etag_out;
+			        file.load_contents_async.end (res, out contents, out etag_out);
+                    string type = get_file_type(file);
+			        msg.set_response (type, Soup.MemoryUse.COPY, contents);
+		        } catch (Error e) {
+			        print ("Error: %s\n", e.message);
+		        }
+
+		        loop.quit ();
+	        });
+	        loop.run ();
             //PRINT//
             //print("TYPE: %s\nCONTENT:\n--------------------------------\n|%s|\n--------------------------------\n", type, (string)content);
             //print("===============================================\n%s\n===============================================\n", content.length.to_string());
-            msg.set_response (type, Soup.MemoryUse.COPY, content);
+            //msg.set_response (type, Soup.MemoryUse.COPY, content);
             //msg.response_headers.set_content_length(content.data.length);
         }
 
         private static uint8[] get_file_content(File file) {
-            var file_stream = file.read ();
-            var data_stream = new DataInputStream (file_stream);
             uint8[] contents;
+            string etag_out;
             try {
                 try {
-                    string etag_out;
                     file.load_contents (null, out contents, out etag_out);
                 }catch (Error e){
                     error("%s", e.message);
