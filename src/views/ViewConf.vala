@@ -30,6 +30,8 @@ namespace App.Views {
             conf_button = new Gtk.Button.from_icon_name ("open-menu-symbolic", Gtk.IconSize.BUTTON);
             conf_button.tooltip_text = _("Configuration");
             controler.window.headerbar.pack_end(conf_button);
+            this.get_style_context().add_class ("mainbox");
+            this.get_style_context().add_class ("app_view");
             this.show_all();
         }
 

@@ -48,7 +48,7 @@ namespace App {
                 resizable: true
             );
             // Set the custom headerbar
-            this.headerbar = new AppHeaderBar (false);
+            this.headerbar = new AppHeaderBar (true);
             this.set_titlebar (this.headerbar);
             this.init_css ();
             this.load_window_state ();
