@@ -159,18 +159,25 @@ public class SimpleHTTPServer : Soup.Server {
             FileInfo info = null;
             newindex = "%s%s".printf(newindex, "<ul>");
             while (((info = enumerator.next_file (null)) != null)) {
-                //PRINT// stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
-                newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null));
+                //stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
+                if (info.get_file_type () != FileType.DIRECTORY) {
+                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null));
+                } else {
+                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null, true));
+                }
             }
             newindex = "%s</ul></body></html>".printf(newindex);
             msg.set_response ("text/html", Soup.MemoryUse.COPY, newindex.data);
         }
 
-        private static string add_link(string path, string? name) {
+        private static string add_link(string path, string? name, bool is_dir=false) {
             string spath = name;
             if (spath == null) {
                 if (path == "/") spath = "/";
-                else spath = path.split("/")[path.split("/").length-1];
+                else {
+                    spath = path.split("/")[path.split("/").length-1];
+                    if (is_dir) spath += "/";
+                }
             }
             string normalized_path = normalize_path(path);
             return "<li><a href=\"%s\">%s</a></li>".printf(normalized_path, spath);
