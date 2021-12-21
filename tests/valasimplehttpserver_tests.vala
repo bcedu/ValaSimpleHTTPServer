@@ -73,14 +73,16 @@ print("-------------------------------------------------------------------------
         uint8[] buffer = new uint8[BUFFER_SIZE];
         while ((bytes_read = file_input_stream.read (buffer, cancellable)) != 0) {
             if (final_len > 0) {
-                contents = array_concat(contents[0:final_len], buffer[0:bytes_read]);
+                foreach (var item in buffer[0:bytes_read]) {
+                    contents += item;
+                }
             } else {
                 contents = buffer[0:bytes_read];
             }
             final_len += bytes_read;
         }
-        if (delete_final_byte) return contents[0:contents.length-1];
-        else return contents;
+        if (delete_final_byte) return contents[0:final_len-1];
+        else return contents[0:final_len];
     }
 
     public string printable_uint(uint8[] bytes) {
@@ -117,6 +119,7 @@ print("-------------------------------------------------------------------------
         if (s2 == null) s2 = " ";
         s1 = s1.strip();
         s2 = s2.strip();
+        if (s1 != s2) print("\n\nDiferencia als strings. Comparant:\n|"+s1+"|\n|"+s2+"|\n\n");
         assert (s1 == s2);
     }
 

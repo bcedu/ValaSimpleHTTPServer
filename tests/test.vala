@@ -48,7 +48,9 @@ public class Gee.TestCase : Object {
 		}
 
 		public void run (void* fixture) {
+		    print("-> Running test %s\n", this.name);
 			this.test ();
+		    print("*> End test %s\n", this.name);
 		}
 
 		public void tear_down (void* fixture) {
