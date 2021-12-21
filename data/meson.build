@@ -39,3 +39,26 @@ if compile_schemas.found()
     args: ['--strict', '--dry-run', meson.current_source_dir()]
   )
 endif
+
+#Install icons
+install_data(
+    join_paths('icons', meson.project_name() + '.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor')
+)
+install_data(
+    join_paths('icons', meson.project_name() + '.svg'),
+    install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps')
+)
+icon_sizes = ['32', '48', '64', '128', '256']
+foreach i : icon_sizes
+    install_data(
+        join_paths('icons', meson.project_name() + '.svg'),
+        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', i + 'x' + i, 'apps')
+    )
+endforeach
+foreach i : icon_sizes
+    install_data(
+        join_paths('icons', meson.project_name() + '.svg'),
+        install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', i + 'x' + i +'@2', 'apps')
+    )
+endforeach
