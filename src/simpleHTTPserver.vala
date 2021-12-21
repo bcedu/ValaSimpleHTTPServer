@@ -178,25 +178,24 @@ public class SimpleHTTPServer : Soup.Server {
 
         private void send_file(Soup.Message msg, File file) {
             MainLoop loop = new MainLoop ();
-            file.load_contents_async.begin (null, (obj, res) => {
-		        try {
-	                uint8[] contents;
-		            string etag_out;
-			        file.load_contents_async.end (res, out contents, out etag_out);
+            file.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
+                try {
+                    size_t BUFFER_SIZE = 1024 * 4;
+                    FileInputStream file_input_stream = file.read_async.end (res);
+                    ssize_t bytes_read = 0;
+                    uint8[] buffer = new uint8[BUFFER_SIZE];
                     string type = get_file_type(file);
-			        msg.set_response (type, Soup.MemoryUse.COPY, contents);
-		        } catch (Error e) {
-			        print ("Error: %s\n", e.message);
-		        }
-
-		        loop.quit ();
-	        });
-	        loop.run ();
-            //PRINT//
-            //print("TYPE: %s\nCONTENT:\n--------------------------------\n|%s|\n--------------------------------\n", type, (string)content);
-            //print("===============================================\n%s\n===============================================\n", content.length.to_string());
-            //msg.set_response (type, Soup.MemoryUse.COPY, content);
-            //msg.response_headers.set_content_length(content.data.length);
+                    Cancellable cancellable = new Cancellable ();
+                    while ((bytes_read = file_input_stream.read (buffer, cancellable)) != 0) {
+                        // Send the buffer content as needed
+                        msg.set_response (type, Soup.MemoryUse.COPY, buffer[0:bytes_read]);
+                    }
+                } catch (Error e) {
+                    print ("Error: %s\n", e.message);
+                }
+                loop.quit ();
+            });
+            loop.run ();
         }
 
         private static uint8[] get_file_content(File file) {

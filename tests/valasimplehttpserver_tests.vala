@@ -22,10 +22,10 @@ print("-------------------------------------------------------------------------
         add_test(" 8* Test image file request (test_image_file_ok)", test_image_file_ok);
         add_test(" 9* Test audio file request (test_audio_file_ok)", test_audio_file_ok);
         add_test(" 10* Test video file request (test_video_file_ok)", test_video_file_ok);
-        add_test(" 11* Test big file request (test_big_file_ok)", test_big_file_ok);
-        add_test(" 12* Test error request (test_error_ok)", test_error_ok);
-        add_test(" 13* Test special chars in filename (test_special_chars_in_filename_ok)", test_special_chars_in_filename_ok);
-        add_test(" 14* Test directory request with special chars in filename (test_folder_with_special_chars_in_filename_ok)", test_folder_with_special_chars_in_filename_ok);
+        add_test(" 11* Test error request (test_error_ok)", test_error_ok);
+        add_test(" 12* Test special chars in filename (test_special_chars_in_filename_ok)", test_special_chars_in_filename_ok);
+        add_test(" 13* Test directory request with special chars in filename (test_folder_with_special_chars_in_filename_ok)", test_folder_with_special_chars_in_filename_ok);
+        add_test(" 14* Test big file request (test_big_file_ok)", test_big_file_ok);
     }
 
     public override void set_up () {
@@ -53,32 +53,31 @@ print("-------------------------------------------------------------------------
         return res;
     }
 
+    uint8[] array_concat(uint8[]a,uint8[]b){
+	    uint8[] c = new uint8[a.length + b.length];
+	    Memory.copy(c, a, a.length * sizeof(uint8));
+	    Memory.copy(&c[a.length], b, b.length * sizeof(uint8));
+	    return c;
+    }
+
     private uint8[]  get_fixture_content(string path, bool delete_final_byte) {
+        uint8[]  contents = {};
+        ssize_t final_len = 0;
+
         string abs_path = Environment.get_variable("TESTDIR")+"/fixtures/" + path;
         File file = File.new_for_path (abs_path);
-        var file_stream = file.read ();
-        var data_stream = new DataInputStream (file_stream);
-        /*data_stream.set_byte_order (DataStreamByteOrder.LITTLE_ENDIAN);
-        uint8[]  contents = new uint8[8];
-        int readed = 0;
-        try {
-            while (true) {
-                if (contents.length <= readed) contents.resize(readed*2);
-                contents[readed] = data_stream.read_byte();
-                readed += 1;
+        size_t BUFFER_SIZE = 1024 * 4;
+        Cancellable cancellable = new Cancellable ();
+        FileInputStream file_input_stream = file.read (cancellable);
+        ssize_t bytes_read = 0;
+        uint8[] buffer = new uint8[BUFFER_SIZE];
+        while ((bytes_read = file_input_stream.read (buffer, cancellable)) != 0) {
+            if (final_len > 0) {
+                contents = array_concat(contents[0:final_len], buffer[0:bytes_read]);
+            } else {
+                contents = buffer[0:bytes_read];
             }
-        } catch (Error e) {}
-        contents = contents[0:readed-1];*/
-        uint8[]  contents;
-        try {
-            try {
-                string etag_out;
-                file.load_contents (null, out contents, out etag_out);
-            }catch (Error e){
-                error("%s", e.message);
-            }
-        }catch (Error e){
-            error("%s", e.message);
+            final_len += bytes_read;
         }
         if (delete_final_byte) return contents[0:contents.length-1];
         else return contents;
@@ -201,8 +200,8 @@ print("-------------------------------------------------------------------------
 
     public void test_big_file_ok() {
         server.run_async();
-        uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/algo.rar\n".printf((int)server.port));
-        uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/algo.rar", false);
+        uint8[] res = make_get_request("http://localhost:%d/carpeta_amb_fitxers_test/algo.bin\n".printf((int)server.port));
+        uint8[] root_res = get_fixture_content("test_directory_requests/carpeta_amb_fitxers_test/algo.bin", false);
         assert_bytes (res, root_res);
     }
 
