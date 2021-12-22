@@ -31,7 +31,7 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
         </screenshot>
     </screenshots>
     <releases>
-      <release version="1.4.0" date="2021-12-21">
+      <release version="1.4.2" date="2021-12-21">
         <description>
           <p>Suport for large files (more than 1 GB)</p>
           <p>Suport for files with special characters in the name (`, $, %, etc.)</p>
