@@ -7,7 +7,7 @@ namespace App.Views {
 
         private Granite.Widgets.Welcome welcome;
         private int open_index;
-        private FileChooserDialog file_chooser;
+        private FileChooserNative file_chooser;
 
         public InitialView (AppController controler) {
             welcome = new Granite.Widgets.Welcome (_("Share your files"), _("Select a folder and start sharing"));
@@ -29,9 +29,8 @@ namespace App.Views {
             // Connect welcome button activated
             this.welcome.activated.connect ((index) => {
                 if (index == open_index) {
-                    file_chooser = new Gtk.FileChooserDialog (
-                        _("Select a folder and start sharing"), controler.window, Gtk.FileChooserAction.SELECT_FOLDER, _("Cancel"),
-                        Gtk.ResponseType.CANCEL, _("Open"), Gtk.ResponseType.ACCEPT
+                    file_chooser = new Gtk.FileChooserNative (
+                        _("Select a folder and start sharing"), controler.window, Gtk.FileChooserAction.SELECT_FOLDER, _("Open"), _("Cancel")
                     );
 
                     // Connect folder selected
