@@ -12,7 +12,7 @@
 Do you have a film in the computer and you want to watch it on the mobile phone? Just start Vserver in you computer and go to the given link with the mobile phone, you will have the film right there!</p>
         <p>It has been developed to follow the same behaviour than the wellknown python's simpleHTTPserver.
 </p>
-        <p>It also works throught comand line options. Try typing 'com.github.bcedu.valasimplehttpserver --help' to learn more.</p>
+        <p>It also works throught comand line options. Try typing 'flatpak run com.github.bcedu.valasimplehttpserver --help' to learn more.</p>
     </description>
     <custom>
         <value key="x-appcenter-color-primary">#56A9E3</value>
