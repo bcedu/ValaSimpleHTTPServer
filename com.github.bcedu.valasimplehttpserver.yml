@@ -21,7 +21,7 @@ finish-args:
   - '--socket=wayland'
   - '--share=network'
   - '--device=dri'
-  - '--metadata=X-DConf=migrate-path=/org/gnome/dictionary/'
+  - '--metadata=X-DConf=migrate-path=/com/github/bcedu/ValaSimpleHTTPServer/'
 
 # This section is where you list all the source code required to build your app.
 # If we had external dependencies that weren't included in our SDK, we would list
