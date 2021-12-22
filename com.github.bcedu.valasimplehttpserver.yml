@@ -21,9 +21,6 @@ finish-args:
   - '--socket=wayland'
   - '--share=network'
   - '--device=dri'
-  - '--filesystem=host'
-  - '--device=all'
-  - '--filesystem=xdg-documents'
   - '--metadata=X-DConf=migrate-path=/org/gnome/dictionary/'
 
 # This section is where you list all the source code required to build your app.
