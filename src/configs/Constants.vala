@@ -29,6 +29,6 @@ namespace App.Configs {
         public abstract const string APP_ICON = "com.github.bcedu.valasimplehttpserver";
         public abstract const string APP_NAME = "VServer";
         public abstract const string LAUNCHER_ID = "com.github.bcedu.valasimplehttpserver.desktop";
-        public abstract const string VERSION = "1.4.0";
+        public abstract const string VERSION = "1.4.1";
     }
 }
