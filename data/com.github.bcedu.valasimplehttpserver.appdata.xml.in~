@@ -6,7 +6,7 @@
     <project_license>GPL-3.0+</project_license>
     <developer_name>Eduard Berloso Clarà</developer_name>
     <name>VServer</name>
-    <summary>Access your files from any device on the same network</summary>
+    <summary>Acces to your files from any device in the same network</summary>
     <description>
         <p>VServer opens an http server in the desired folder. Very usefull to share files in a easy and fast way.
 Do you have a film in the computer and you want to watch it on the mobile phone? Just start Vserver in you computer and go to the given link with the mobile phone, you will have the film right there!</p>
