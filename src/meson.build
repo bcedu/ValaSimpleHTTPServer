@@ -24,8 +24,8 @@ deps = [
     dependency('gtk+-3.0'),
     dependency('granite'),
     dependency('gee-0.8'),
-    dependency('libsoup-2.4'),
-    meson.get_compiler('vala').find_library('posix'),
+    dependency('libsoup-3.0'),
+    meson.get_compiler('vala').find_library('posix')
 ]
 
 # Optional Dependences
