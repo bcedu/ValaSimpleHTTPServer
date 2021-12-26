@@ -63,6 +63,36 @@ namespace App {
             this.load_window_state ();
             this.set_min_size(600, 400);
             this.delete_event.connect (save_window_state);
+
+            var granite_settings = Granite.Settings.get_default ();
+            var gtk_settings = Gtk.Settings.get_default ();
+
+            // Check whether the theme is dark or not
+            var is_dark_mode = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+            if (is_dark_mode) {
+                this.get_style_context().add_class("dark-mode");
+            }
+            gtk_settings.gtk_application_prefer_dark_theme = is_dark_mode;
+
+            // Handle Granite's theme changes. Usefull for elementary OS.
+            granite_settings.notify["prefers-color-scheme"].connect (() => {
+                var _dark_mode = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+                gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+                
+                this.get_style_context().remove_class("dark-mode");
+                if (_dark_mode) {
+                    this.get_style_context().add_class("dark-mode");
+                }
+            });
+
+            // Handle GTK's theme changes, usefull for GNOME.
+            gtk_settings.notify["gtk-application-prefer-dark-theme"].connect(() => {
+                var _dark_mode = gtk_settings.gtk_application_prefer_dark_theme;
+                this.get_style_context().remove_class("dark-mode");
+                if (_dark_mode) {
+                    this.get_style_context().add_class("dark-mode");
+                }
+            });
        }
 
         public void init() {
