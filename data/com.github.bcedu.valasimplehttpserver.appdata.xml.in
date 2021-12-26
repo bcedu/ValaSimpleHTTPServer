@@ -31,6 +31,13 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
         </screenshot>
     </screenshots>
     <releases>
+      <release version="1.4.3" date="2021-12-26">
+        <description>
+          <p>Update translations</p>
+          <p>Typo fixes in some texts</p>
+          <p>Use libsoup3.0 (developers things: change things that already work to do the same thing that is already working risking failing things that did not fail).</p>
+        </description>
+      </release>
       <release version="1.4.2" date="2021-12-21">
         <description>
           <p>Suport for large files (more than 1 GB)</p>
