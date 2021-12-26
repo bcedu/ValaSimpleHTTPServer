@@ -25,10 +25,12 @@ public class SimpleHTTPServer : Soup.Server {
 # if LIBSOUP30
         public signal void sig_directory_requested(Soup.ServerMessage msg, File file);
         public signal void sig_file_requested(Soup.ServerMessage msg, File file);
+        public signal void sig_styles_requested(Soup.ServerMessage msg);
         public signal void sig_error(Soup.ServerMessage msg, File file);
 # else
         public signal void sig_directory_requested(Soup.Message msg, File file);
         public signal void sig_file_requested(Soup.Message msg, File file);
+        public signal void sig_styles_requested(Soup.Message msg);
         public signal void sig_error(Soup.Message msg, File file);
 # endif
         public static bool log = false;
@@ -56,6 +58,7 @@ public class SimpleHTTPServer : Soup.Server {
                 }
                 this.add_handler (null, default_handler);
                 this.sig_directory_requested.connect(dir_handle);
+                this.sig_styles_requested.connect(styles_handle);
                 this.sig_file_requested.connect(file_handle);
                 this.sig_error.connect(error_handle);
         }
@@ -131,9 +134,11 @@ public class SimpleHTTPServer : Soup.Server {
 # else
             msg.status_code = 200;
 #endif
+            print(_("Requested: ")+rel_path+"\n");
             // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
             if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
             else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
+            else if (ftype == FileType.UNKNOWN && rel_path == "/vserver-styles.css") self.sig_styles_requested(msg);
             else self.sig_error(msg, rfile);
             //PRINT// stdout.printf("END of Request\n======================================================\n");
         }
@@ -144,6 +149,14 @@ public class SimpleHTTPServer : Soup.Server {
 #endif
             if (has_index(file)) this.send_index(msg, file);
             else this.send_list_dir(msg, file);
+        }
+
+# if LIBSOUP30
+        private void styles_handle(Soup.ServerMessage msg) {
+# else
+        private void styles_handle(Soup.Message msg) {
+#endif
+            this.send_styles(msg);
         }
 
 # if LIBSOUP30
@@ -159,7 +172,7 @@ public class SimpleHTTPServer : Soup.Server {
 # else
         private void error_handle(Soup.Message msg, File file) {
 #endif
-            msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><head><title>404</title></head><body><h1>404</h1><p>File not found.</p></body></html>".data);
+            msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><meta charset=\"utf-8\"><title>404</title><body><h1>404</h1><p>File not found.</p></body></html>".data);
 # if LIBSOUP30
             msg.set_status(404, _("Not Found"));
 # else
@@ -186,11 +199,37 @@ public class SimpleHTTPServer : Soup.Server {
         }
 
 # if LIBSOUP30
+        private void send_styles(Soup.ServerMessage msg) {
+# else
+        private void send_styles(Soup.Message msg) {
+#endif
+            print("Send styles\n");
+            // Load CSS
+            var provider = new Gtk.CssProvider();
+            try {
+                provider.load_from_resource("/com/github/bcedu/resources/vserver-styles.css");
+                Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            } catch (Error e) {
+                stderr.printf("\nError: %s\n", e.message);
+# if LIBSOUP30
+                msg.set_status(404, _("Not Found"));
+# else
+                msg.status_code = 404;
+#endif
+                return;
+            }
+
+            msg.set_response ("text/css", Soup.MemoryUse.COPY, provider.to_string().data);
+        }
+
+
+
+# if LIBSOUP30
         private void send_list_dir(Soup.ServerMessage msg, File file) {
 # else
         private void send_list_dir(Soup.Message msg, File file) {
 #endif
-            string newindex = "<html><meta charset=\"utf-8\"><body>";
+            string newindex = "<html><meta charset=\"utf-8\"><link rel=\"stylesheet\" href=\"vserver-styles.css\"><body>";
             File fbase = File.new_for_path(basedir);
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
             newindex = _("%s<h1>Listing files of: %s</h1>").printf(newindex, base_rel_path);
