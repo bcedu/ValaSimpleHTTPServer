@@ -3,13 +3,15 @@ using Gtk;
 
 namespace App.Views {
 
-    public class InitialView : AppView, VBox {
+    public class InitialView : AppView, Box {
 
         private Granite.Widgets.Welcome welcome;
         private int open_index;
         private FileChooserNative file_chooser;
 
         public InitialView (AppController controler) {
+            this.set_orientation(Gtk.Orientation.VERTICAL);
+            
             welcome = new Granite.Widgets.Welcome (_("Share your files"), _("Select a folder and start sharing"));
             this.pack_start (welcome, false, false, 0);
 

@@ -23,6 +23,7 @@ deps = [
     dependency('glib-2.0'),
     dependency('gtk+-3.0'),
     dependency('granite'),
+    dependency('libhandy-1'),
     dependency('gee-0.8'),
     meson.get_compiler('vala').find_library('posix')
 ]

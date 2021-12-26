@@ -16,6 +16,7 @@
 *
 */
 
+using Hdy;
 using App.Configs;
 using App.Widgets;
 using App.Views;
@@ -26,11 +27,13 @@ namespace App {
      * Class responsible for creating the window and will contain contain other widgets.
      * allowing the user to manipulate the window (resize it, move it, close it, ...).
      *
-     * @see Gtk.ApplicationWindow
+     * @see Hdy.ApplicationWindow
      * @since 1.0.0
      */
-    public class AppWindow : Gtk.ApplicationWindow {
+    public class AppWindow : Hdy.ApplicationWindow {
     
+        private Gtk.Box main_box;
+        private Gtk.Widget current_view;
         public AppHeaderBar headerbar;
         private AppSettings saved_state;
 
@@ -47,9 +50,15 @@ namespace App {
                 icon_name: Constants.APP_ICON,
                 resizable: true
             );
+
+            Hdy.init ();
+
+            this.main_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            this.add(this.main_box);
+
             // Set the custom headerbar
             this.headerbar = new AppHeaderBar (true);
-            this.set_titlebar (this.headerbar);
+            this.main_box.pack_start(this.headerbar, false, false, 0);
             this.init_css ();
             this.load_window_state ();
             this.set_min_size(600, 400);
@@ -71,11 +80,15 @@ namespace App {
         }
 
         public void clean() {
-            this.forall ((element) => {
-                if (element is AppView) {
-                    this.remove (element);
-                }
-            });
+            if (this.current_view != null) {
+                this.main_box.remove(this.current_view);
+                this.current_view = null;
+            }
+        }
+
+        public void add_view (Gtk.Widget view) {
+            this.current_view = view;
+            this.main_box.pack_start (view, true, true, 0);
         }
 
         private void init_css() {

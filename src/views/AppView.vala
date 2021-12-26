@@ -26,7 +26,7 @@ namespace App.Views {
      *
      * @since 1.0.0
      */
-    public interface AppView : VBox {
+    public interface AppView : Box {
 
         public abstract string get_id();
         public abstract void connect_signals(AppController controler);

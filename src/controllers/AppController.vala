@@ -66,7 +66,7 @@ namespace App.Controllers {
             this.window.clean ();
             this.view_controller.update_views ();
             var aux = this.view_controller.get_current_view ();
-            this.window.add (aux);
+            this.window.add_view (aux);
         }
 
         public void add_registered_view(string view_id) {
