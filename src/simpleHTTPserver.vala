@@ -203,23 +203,90 @@ public class SimpleHTTPServer : Soup.Server {
 # else
         private void send_styles(Soup.Message msg) {
 #endif
-            print("Send styles\n");
-            // Load CSS
-            var provider = new Gtk.CssProvider();
-            try {
-                provider.load_from_resource("/com/github/bcedu/resources/vserver-styles.css");
-                Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-            } catch (Error e) {
-                stderr.printf("\nError: %s\n", e.message);
-# if LIBSOUP30
-                msg.set_status(404, _("Not Found"));
-# else
-                msg.status_code = 404;
-#endif
-                return;
+            var css = """
+            @media (prefers-color-scheme: light) {
+                :root {
+                    --bg-color: #fafafa;
+                    --link-color: #0366d6;
+                    --text-color: #222;
+                }
             }
 
-            msg.set_response ("text/css", Soup.MemoryUse.COPY, provider.to_string().data);
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --bg-color: #303030;
+                    --link-color: #398ff7;
+                    --text-color: #fafafa;
+                }
+            }
+              
+            body {
+                font-family: Inter, system-ui, sans-serif;
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 0 6px;
+                background: var(--bg-color);
+                color: var(--text-color);
+              }
+
+              header {
+                background: var(--bg-color);
+                position: sticky;
+                top: 0;
+                padding: 20px 0 10px;
+              }
+
+              h1 {
+                margin: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+
+              a {
+                  color: var(--link-color);
+              }
+              
+              .listing {
+                display: flex;
+                flex-direction: column;
+              }
+              
+              .listing .item {
+                padding: 6px 10px;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+              
+              .listing .item:last-child {
+                border-bottom: none;
+              }
+              .listing .item:hover {
+                background-color: #f5f5f5;
+              }
+              
+              .item .dir {
+                content: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(169 108 26)" class="bi bi-folder" viewBox="0 0 16 16"><path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"/></svg>');
+                width: 24px;
+                margin-right: 10px;
+              }
+              
+              .item .file {
+                content: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(57 143 247)" class="bi bi-file-earmark" viewBox="0 0 16 16"><path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/></svg>');
+                width: 24px;
+                margin-right: 10px;
+              }
+
+              .item .name {
+                flex: 1;
+              }
+              
+            """;
+
+            msg.set_response ("text/css", Soup.MemoryUse.COPY, css.data);
         }
 
 
@@ -229,33 +296,33 @@ public class SimpleHTTPServer : Soup.Server {
 # else
         private void send_list_dir(Soup.Message msg, File file) {
 #endif
-            string newindex = "<html><meta charset=\"utf-8\"><link rel=\"stylesheet\" href=\"vserver-styles.css\"><body>";
+            string newindex = "<html><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"/vserver-styles.css\"><body>";
             File fbase = File.new_for_path(basedir);
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
-            newindex = _("%s<h1>Listing files of: %s</h1>").printf(newindex, base_rel_path);
+            newindex = _("%s<header><h1 title=\"%s\">Listing files of: %s</h1></header>").printf(newindex, base_rel_path, base_rel_path);
             if (fbase.get_path() != file.get_path() &&  file.has_parent(null)) {
                 File parent = file.get_parent();
                 string rel_path = parent.get_path().substring(fbase.get_path().length);
                 if (rel_path == "") rel_path = "/";
                 //PRINT// stdout.printf("Parent: %s\n", rel_path);
-                newindex = "%s<ul>%s</ul>".printf(newindex, add_link(rel_path, "../"));
+                newindex = "%s<div class=\"listing\">%s</div>".printf(newindex, add_link(rel_path, "../"));
             }
             FileEnumerator enumerator = file.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
             FileInfo info = null;
-            newindex = "%s%s".printf(newindex, "<ul>");
+            newindex = "%s%s".printf(newindex, "<div class=\"listing\">");
             while (((info = enumerator.next_file (null)) != null)) {
                 //stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
                 if (info.get_file_type () != FileType.DIRECTORY) {
-                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null));
+                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null, false, info.get_size()));
                 } else {
                     newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null, true));
                 }
             }
-            newindex = "%s</ul></body></html>".printf(newindex);
+            newindex = "%s</div></body></html>".printf(newindex);
             msg.set_response ("text/html", Soup.MemoryUse.COPY, newindex.data);
         }
 
-        private static string add_link(string path, string? name, bool is_dir=false) {
+        private static string add_link(string path, string? name, bool is_dir=false, int64 item_size=0) {
             string spath = name;
             if (spath == null) {
                 if (path == "/") spath = "/";
@@ -265,7 +332,31 @@ public class SimpleHTTPServer : Soup.Server {
                 }
             }
             string normalized_path = normalize_path(path);
-            return "<li><a href=\"%s\">%s</a></li>".printf(normalized_path, spath);
+
+            var string_builder = new StringBuilder("<div class=\"item\">");
+           
+            string_builder.append_printf("<div class=\"%s\"></div>", is_dir ? "dir" : "file");
+            string_builder.append_printf("<div class=\"name\"><a title=\"%s\" href=\"%s\">%s</a></div>", spath, normalized_path, spath);
+            string_builder.append_printf("<div class=\"size\">%s</div>", SimpleHTTPServer.bytes_to_string(item_size));
+
+            string_builder.append("</div>");
+            return string_builder.str;
+        }
+
+        public static string bytes_to_string(int64 size)
+        {
+            if (size == 0) {
+                return "0 B";
+            }
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
+            var power = 1024;
+            var n = 0;
+            while (size >= power) {
+                print("size: %s; power: %s\n", size.to_string(), power.to_string());
+                size /= power;
+                n++;
+            }
+            return "%s %s".printf(size.to_string(), suf[n]);
         }
 
 # if LIBSOUP30
