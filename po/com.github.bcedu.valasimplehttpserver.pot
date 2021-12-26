@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the valasimplehttpserver package.
+# This file is distributed under the same license as the com.github.bcedu.valasimplehttpserver package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: valasimplehttpserver\n"
+"Project-Id-Version: com.github.bcedu.valasimplehttpserver\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-25 13:22-0700\n"
+"POT-Creation-Date: 2021-12-26 19:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

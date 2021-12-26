@@ -1,1 +1,1 @@
-i18n.gettext('valasimplehttpserver', preset: 'glib')
+i18n.gettext('com.github.bcedu.valasimplehttpserver', preset: 'glib')

@@ -7,74 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.bcedu.valasimplehttpserver\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-02 12:14+0100\n"
+"POT-Creation-Date: 2021-12-26 19:07+0100\n"
 "PO-Revision-Date: 2019-10-28 20:34+0100\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Language-Team: \n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.4\n"
-"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: nl\n"
-
-#: src/controllers/app_controller.vala:86
-msgid "Server is listening on: "
-msgstr "De server luistert op: "
-
-#: src/views/app_view.vala:43
-msgid "Share your files"
-msgstr "Deel je bestanden"
-
-#: src/views/app_view.vala:43
-msgid "Select a folder and start sharing"
-msgstr "Kies een map en begin met delen"
-
-#: src/views/app_view.vala:47 src/views/app_view.vala:59
-msgid "Open"
-msgstr "Openen"
-
-#: src/views/app_view.vala:47
-msgid "Browse to select a folder"
-msgstr "Blader naar een map"
-
-#: src/views/app_view.vala:58
-msgid "Select packages to install"
-msgstr "Kies te installeren pakketten"
-
-#: src/views/app_view.vala:58
-msgid "Cancel"
-msgstr "Annuleren"
-
-#: src/views/app_view.vala:134
-msgid "Your files are at "
-msgstr "Je bestanden staan op "
-
-#: src/views/app_view.vala:179
-msgid "Settings"
-msgstr "Instellingen"
-
-#: src/views/app_view.vala:212
-msgid "Listening at port: "
-msgstr "Er wordt geluisterd op poort: "
-
-#: src/widgets/header_bar.vala:38
-msgid "Simple File Server"
-msgstr "Eenvoudige bestandsserver"
-
-#: src/simpleHTTPserver.vala:64
-msgid "Listening on: "
-msgstr "Er wordt geluisterd op: "
-
-#: src/simpleHTTPserver.vala:81
-#, c-format
-msgid "Requested: %s, full path: %s\n"
-msgstr "Gevraagd: %s - Volledig pad: %s\n"
-
-#: src/simpleHTTPserver.vala:122
-#, c-format
-msgid "%s<h1>Listing files of: %s</h1>"
-msgstr "%s<h1>Bestanden van: %s</h1>"
 
 #: data/com.github.bcedu.valasimplehttpserver.desktop.in:3
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:8
@@ -98,7 +40,8 @@ msgid "Eduard Berloso Clarà"
 msgstr "Eduard Berloso Clarà"
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:9
-msgid "Acces to your files from any device in the same network"
+#, fuzzy
+msgid "Access your files from any device on the same network"
 msgstr "Verken je bestanden middels elk apparaat op hetzelfde netwerk"
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:11
@@ -122,37 +65,51 @@ msgstr ""
 "VServer werkt net zoals de bekende Python-toepassing 'simpleHTTPserver'."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:15
+#, fuzzy
 msgid ""
-"It also works throught comand line options. Try typing 'com.github.bcedu."
-"valasimplehttpserver --help' to learn more."
+"It also works throught comand line options. Try typing 'flatpak run com."
+"github.bcedu.valasimplehttpserver --help' to learn more."
 msgstr ""
 "VServer werkt ook op de opdrachtregel. Typ 'com.github.bcedu."
 "valasimplehttpserver --help' voor meer informatie."
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:36
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:46
+msgid "Suport for large files (more than 1 GB)"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:37
+msgid "Suport for files with special characters in the name (`, $, %, etc.)"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:42
+#, fuzzy
+msgid "Dutch translations"
+msgstr "Franse vertaling toegevoegd."
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:47
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:57
 msgid "VServer release"
 msgstr "VServer-uitgave"
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:38
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
 msgid "Make app translatable."
 msgstr "VServer kan nu worden vertaald!"
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:39
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:50
 msgid "Add Catalan translations."
 msgstr "Catalaanse vertaling toegevoegd."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:40
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:51
 msgid "Add French translations."
 msgstr "Franse vertaling toegevoegd."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:48
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:58
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:59
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:69
 msgid "Start an http server through a clean and minimalist gui."
 msgstr "Start een http-server middels een eenvoudig, minimalistisch venster."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:59
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:60
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:70
 msgid ""
 "Use the command line options to start an http server through the console "
 "(type \"com.github.bcedu.valasimplehttpserver --help\" to learn more)."
@@ -161,10 +118,99 @@ msgstr ""
 "opdrachtregel (hyp 'com.github.bcedu.valasimplehttpserver --help' voor meer "
 "informatie)."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:50
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:61
 msgid "Choose the port where vserver listens through the gui."
 msgstr "Kies via welke poort VServer moet luisteren."
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:56
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:67
 msgid "Initial 1.0.2 release!"
 msgstr "Initiële 1.0.2-uitgave!"
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:6
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:7
+msgid "Window width"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:11
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:12
+msgid "Window height"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:16
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:17
+msgid "Window hortitzontal position"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:21
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:22
+msgid "Window vertical position"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:27
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:28
+msgid "The saved state of the window"
+msgstr ""
+
+#: src/views/SharingView.vala:8
+msgid "Your files are at "
+msgstr "Je bestanden staan op "
+
+#: src/views/InitialView.vala:13
+msgid "Share your files"
+msgstr "Deel je bestanden"
+
+#: src/views/InitialView.vala:13 src/views/InitialView.vala:33
+msgid "Select a folder and start sharing"
+msgstr "Kies een map en begin met delen"
+
+#: src/views/InitialView.vala:17 src/views/InitialView.vala:33
+msgid "Open"
+msgstr "Openen"
+
+#: src/views/InitialView.vala:17
+msgid "Browse to select a folder"
+msgstr "Blader naar een map"
+
+#: src/views/InitialView.vala:33
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: src/views/ViewConf.vala:10
+msgid "Listening at port: "
+msgstr "Er wordt geluisterd op poort: "
+
+#. Conf button
+#: src/views/ViewConf.vala:31
+msgid "Configuration"
+msgstr ""
+
+#: src/views/ViewConf.vala:51
+msgid "Save"
+msgstr ""
+
+#: src/controllers/ViewController.vala:105
+msgid "Back"
+msgstr ""
+
+#: src/controllers/AppController.vala:110
+#: src/controllers/AppController.vala:118
+msgid "Server is listening on: "
+msgstr "De server luistert op: "
+
+#~ msgid "Select packages to install"
+#~ msgstr "Kies te installeren pakketten"
+
+#~ msgid "Settings"
+#~ msgstr "Instellingen"
+
+#~ msgid "Simple File Server"
+#~ msgstr "Eenvoudige bestandsserver"
+
+#~ msgid "Listening on: "
+#~ msgstr "Er wordt geluisterd op: "
+
+#~ msgid "Requested: %s, full path: %s\n"
+#~ msgstr "Gevraagd: %s - Volledig pad: %s\n"
+
+#~ msgid "%s<h1>Listing files of: %s</h1>"
+#~ msgstr "%s<h1>Bestanden van: %s</h1>"
