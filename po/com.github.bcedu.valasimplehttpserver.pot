@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the com.github.bcedu.valasimplehttpserver package.
+# This file is distributed under the same license as the valasimplehttpserver package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: com.github.bcedu.valasimplehttpserver\n"
+"Project-Id-Version: valasimplehttpserver\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-02 12:14+0100\n"
+"POT-Creation-Date: 2021-12-25 13:22-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,64 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: src/controllers/app_controller.vala:86
-msgid "Server is listening on: "
-msgstr ""
-
-#: src/views/app_view.vala:43
-msgid "Share your files"
-msgstr ""
-
-#: src/views/app_view.vala:43
-msgid "Select a folder and start sharing"
-msgstr ""
-
-#: src/views/app_view.vala:47 src/views/app_view.vala:59
-msgid "Open"
-msgstr ""
-
-#: src/views/app_view.vala:47
-msgid "Browse to select a folder"
-msgstr ""
-
-#: src/views/app_view.vala:58
-msgid "Select packages to install"
-msgstr ""
-
-#: src/views/app_view.vala:58
-msgid "Cancel"
-msgstr ""
-
-#: src/views/app_view.vala:134
-msgid "Your files are at "
-msgstr ""
-
-#: src/views/app_view.vala:179
-msgid "Settings"
-msgstr ""
-
-#: src/views/app_view.vala:212
-msgid "Listening at port: "
-msgstr ""
-
-#: src/widgets/header_bar.vala:38
-msgid "Simple File Server"
-msgstr ""
-
-#: src/simpleHTTPserver.vala:64
-msgid "Listening on: "
-msgstr ""
-
-#: src/simpleHTTPserver.vala:81
-#, c-format
-msgid "Requested: %s, full path: %s\n"
-msgstr ""
-
-#: src/simpleHTTPserver.vala:122
-#, c-format
-msgid "%s<h1>Listing files of: %s</h1>"
-msgstr ""
 
 #: data/com.github.bcedu.valasimplehttpserver.desktop.in:3
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:8
@@ -117,43 +59,126 @@ msgstr ""
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:15
 msgid ""
-"It also works throught comand line options. Try typing 'com.github.bcedu."
-"valasimplehttpserver --help' to learn more."
+"It also works throught comand line options. Try typing 'flatpak run com."
+"github.bcedu.valasimplehttpserver --help' to learn more."
 msgstr ""
 
 #: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:36
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:46
+msgid "Suport for large files (more than 1 GB)"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:37
+msgid "Suport for files with special characters in the name (`, $, %, etc.)"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:42
+msgid "Dutch translations"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:47
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:57
 msgid "VServer release"
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:38
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
 msgid "Make app translatable."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:39
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:50
 msgid "Add Catalan translations."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:40
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:51
 msgid "Add French translations."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:48
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:58
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:59
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:69
 msgid "Start an http server through a clean and minimalist gui."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:49
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:59
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:60
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:70
 msgid ""
 "Use the command line options to start an http server through the console "
 "(type \"com.github.bcedu.valasimplehttpserver --help\" to learn more)."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:50
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:61
 msgid "Choose the port where vserver listens through the gui."
 msgstr ""
 
-#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:56
+#: data/com.github.bcedu.valasimplehttpserver.appdata.xml.in:67
 msgid "Initial 1.0.2 release!"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:6
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:7
+msgid "Window width"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:11
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:12
+msgid "Window height"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:16
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:17
+msgid "Window hortitzontal position"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:21
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:22
+msgid "Window vertical position"
+msgstr ""
+
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:27
+#: data/com.github.bcedu.valasimplehttpserver.gschema.xml:28
+msgid "The saved state of the window"
+msgstr ""
+
+#: src/views/SharingView.vala:8
+msgid "Your files are at "
+msgstr ""
+
+#: src/views/InitialView.vala:13
+msgid "Share your files"
+msgstr ""
+
+#: src/views/InitialView.vala:13 src/views/InitialView.vala:33
+msgid "Select a folder and start sharing"
+msgstr ""
+
+#: src/views/InitialView.vala:17 src/views/InitialView.vala:33
+msgid "Open"
+msgstr ""
+
+#: src/views/InitialView.vala:17
+msgid "Browse to select a folder"
+msgstr ""
+
+#: src/views/InitialView.vala:33
+msgid "Cancel"
+msgstr ""
+
+#: src/views/ViewConf.vala:10
+msgid "Listening at port: "
+msgstr ""
+
+#. Conf button
+#: src/views/ViewConf.vala:31
+msgid "Configuration"
+msgstr ""
+
+#: src/views/ViewConf.vala:51
+msgid "Save"
+msgstr ""
+
+#: src/controllers/ViewController.vala:105
+msgid "Back"
+msgstr ""
+
+#: src/controllers/AppController.vala:110
+#: src/controllers/AppController.vala:118
+msgid "Server is listening on: "
 msgstr ""
