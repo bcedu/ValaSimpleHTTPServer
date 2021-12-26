@@ -1,4 +1,5 @@
 /build/*
-/flatpak-builder/*
+/builddir/*
+.flatpak-builder/*
 .buildconfig
 .testbuild

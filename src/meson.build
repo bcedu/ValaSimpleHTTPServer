@@ -24,9 +24,16 @@ deps = [
     dependency('gtk+-3.0'),
     dependency('granite'),
     dependency('gee-0.8'),
-    dependency('libsoup-2.4'),
-    meson.get_compiler('vala').find_library('posix'),
+    meson.get_compiler('vala').find_library('posix')
 ]
+
+libsoup30_dep = dependency('libsoup-3.0', required : false)
+if libsoup30_dep.found()
+    add_project_arguments('-D', 'LIBSOUP30', language: 'vala')
+    deps += [libsoup30_dep]
+else
+    deps += [dependency('libsoup-2.4')]
+endif
 
 # Optional Dependences
 libunity_dep = dependency('unity', required : false)

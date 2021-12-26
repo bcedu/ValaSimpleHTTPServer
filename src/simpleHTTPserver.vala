@@ -21,9 +21,16 @@ using App.Configs;
 public class SimpleHTTPServer : Soup.Server {
         public string basedir;
         public uint port;
+
+# if LIBSOUP30
+        public signal void sig_directory_requested(Soup.ServerMessage msg, File file);
+        public signal void sig_file_requested(Soup.ServerMessage msg, File file);
+        public signal void sig_error(Soup.ServerMessage msg, File file);
+# else
         public signal void sig_directory_requested(Soup.Message msg, File file);
         public signal void sig_file_requested(Soup.Message msg, File file);
         public signal void sig_error(Soup.Message msg, File file);
+# endif
         public static bool log = false;
 
 
@@ -69,7 +76,12 @@ public class SimpleHTTPServer : Soup.Server {
             if (path == "/") return path;
             string normalized_path = "";
             foreach (string partial_path in path.split("/")) {
+# if LIBSOUP30
+                if (partial_path != "") normalized_path += "/%s".printf(GLib.Uri.escape_string(partial_path));
+# else
                 if (partial_path != "") normalized_path += "/%s".printf(Soup.URI.encode(partial_path, null));
+#endif
+
             }
             // Caracters que el encode del URI no fa no se perque, ja que també son caracters especials...
             normalized_path = normalized_path.replace("!", "%21");
@@ -92,14 +104,21 @@ public class SimpleHTTPServer : Soup.Server {
             //print("\nEncoded vs No encoded:|%s||%s|\n", normalized_path, path);
             return normalized_path;
         }
-
+# if LIBSOUP30
+        private static void default_handler (Server server, Soup.ServerMessage msg, string path, GLib.HashTable? query) {
+# else
         private static void default_handler (Server server, Soup.Message msg, string path, GLib.HashTable? query, Soup.ClientContext client) {
+#endif
             // The default handler checks the type of the file requested (the file is calculated with basedir + request_path)
             // Then, if it is a directory sends the signal sig_directory_requested of server.
             // If it is a file sends the signal sig_file_requested of server.
             // And if the file doesn't exists sends the signal sig_erro of server
             unowned SimpleHTTPServer self = server as SimpleHTTPServer;
+# if LIBSOUP30
+            if (msg.get_uri().get_path() == "favicon.ico") return;
+# else
             if (msg.uri.get_path() == "favicon.ico") return;
+#endif
             string rel_path = msg.get_uri().get_path();
             File rfile;
             if (rel_path == "/" && self.basedir == "/")  rfile = File.new_for_path(rel_path);
@@ -107,26 +126,45 @@ public class SimpleHTTPServer : Soup.Server {
             //PRINT// stdout.printf("====================================================\nSTART of Request\n");
             var ftype = rfile.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
             if (log) stdout.printf(_("Requested: %s, full path: %s\n"), rel_path, rfile.get_path());
+# if LIBSOUP30
+            msg.set_status(200, _("OK"));
+# else
             msg.status_code = 200;
+#endif
             // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
             if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
             else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
             else self.sig_error(msg, rfile);
             //PRINT// stdout.printf("END of Request\n======================================================\n");
         }
-
+# if LIBSOUP30
+        private void dir_handle(Soup.ServerMessage msg, File file) {
+# else
         private void dir_handle(Soup.Message msg, File file) {
+#endif
             if (has_index(file)) this.send_index(msg, file);
             else this.send_list_dir(msg, file);
         }
 
+# if LIBSOUP30
+        private void file_handle(Soup.ServerMessage msg, File file) {
+# else
         private void file_handle(Soup.Message msg, File file) {
+#endif
             this.send_file(msg, file);
         }
 
+# if LIBSOUP30
+        private void error_handle(Soup.ServerMessage msg, File file) {
+# else
         private void error_handle(Soup.Message msg, File file) {
+#endif
             msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><head><title>404</title></head><body><h1>404</h1><p>File not found.</p></body></html>".data);
+# if LIBSOUP30
+            msg.set_status(404, _("Not Found"));
+# else
             msg.status_code = 404;
+#endif
         }
 
         private bool has_index(File file) {
@@ -138,13 +176,21 @@ public class SimpleHTTPServer : Soup.Server {
             return false;
         }
 
+# if LIBSOUP30
+        private void send_index(Soup.ServerMessage msg, File file) {
+# else
         private void send_index(Soup.Message msg, File file) {
+#endif
             File index = File.new_for_path(file.get_path()+"/index.html");
             this.send_file(msg, index);
         }
 
+# if LIBSOUP30
+        private void send_list_dir(Soup.ServerMessage msg, File file) {
+# else
         private void send_list_dir(Soup.Message msg, File file) {
-            string newindex = "<html><body>";
+#endif
+            string newindex = "<html><meta charset=\"utf-8\"><body>";
             File fbase = File.new_for_path(basedir);
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
             newindex = _("%s<h1>Listing files of: %s</h1>").printf(newindex, base_rel_path);
@@ -183,7 +229,11 @@ public class SimpleHTTPServer : Soup.Server {
             return "<li><a href=\"%s\">%s</a></li>".printf(normalized_path, spath);
         }
 
+# if LIBSOUP30
+        private void send_file(Soup.ServerMessage msg, File file) {
+# else
         private void send_file(Soup.Message msg, File file) {
+#endif
             MainLoop loop = new MainLoop ();
             file.read_async.begin (Priority.DEFAULT, null, (obj, res) => {
                 try {
