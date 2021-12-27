@@ -2,9 +2,11 @@ using App.Controllers;
 using Gtk;
 namespace App.Views {
 
-    public class ResumeView : Gtk.VBox {
+    public class ResumeView : Gtk.Box {
 
         public ResumeView (ref Gtk.LinkButton? direcciolink, ref Gtk.Label? sharedpath, AppController controler) {
+            this.set_orientation(Gtk.Orientation.VERTICAL);
+
             Gtk.Label maintext = new Gtk.Label (_("Your files are at "));
             maintext.get_style_context().add_class ("app_text");
             this.pack_start (maintext, false, false, 0);
@@ -18,13 +20,15 @@ namespace App.Views {
     }
 
 
-    public class SharingView : AppView, VBox {
+    public class SharingView : AppView, Box {
 
         private Gtk.LinkButton direcciolink;
         private Gtk.Label sharedpath;
         private Gtk.Button back_button;
 
         public SharingView (AppController controler) {
+            this.set_orientation(Gtk.Orientation.VERTICAL);
+            
             // Add resume view
             var resumebox = new ResumeView(ref direcciolink, ref sharedpath, controler);
             this.pack_start (resumebox, true, false, 0);

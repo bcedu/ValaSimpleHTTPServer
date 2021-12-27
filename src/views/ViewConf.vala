@@ -4,9 +4,10 @@ using App.Widgets;
 
 namespace App.Views {
 
-    public class ConfPortView : Gtk.HBox {
+    public class ConfPortView : Gtk.Box {
 
         public ConfPortView (ref Gtk.Entry? selected_port, AppController controler) {
+            this.set_orientation(Gtk.Orientation.HORIZONTAL);
             Gtk.Label maintext = new Gtk.Label (_("Listening at port: "));
             maintext.get_style_context().add_class ("app_text");
             this.pack_start (maintext, true, false, 0);
@@ -18,11 +19,13 @@ namespace App.Views {
     }
 
 
-    public class ViewConf : AppView, VBox {
+    public class ViewConf : AppView, Box {
         private Gtk.Button conf_button;
         private Gtk.Entry selected_port;
 
         public ViewConf (AppController controler) {
+            this.set_orientation(Gtk.Orientation.VERTICAL);
+            
             // Add port view
             ConfPortView portv = new ConfPortView(ref selected_port, controler);
             this.pack_start (portv, true, false, 0);

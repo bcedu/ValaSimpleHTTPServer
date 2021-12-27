@@ -23,10 +23,10 @@ namespace App.Widgets {
     /**
      * The {@code HeaderBar} class is responsible for displaying top bar. Similar to a horizontal box.
      *
-     * @see Gtk.HeaderBar
+     * @see Hdy.HeaderBar
      * @since 1.0.0
      */
-    public class AppHeaderBar : Gtk.HeaderBar {
+    public class AppHeaderBar : Hdy.HeaderBar {
 
         public Gtk.Button back_button;
 

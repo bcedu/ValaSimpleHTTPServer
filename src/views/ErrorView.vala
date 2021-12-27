@@ -5,10 +5,11 @@ using App.Widgets;
 namespace App.Views {
 
 
-    public class ErrorView : AppView, VBox {
+    public class ErrorView : AppView, Box {
         private Gtk.Button conf_button;
 
         public ErrorView (AppController controler) {
+            this.set_orientation(Gtk.Orientation.VERTICAL);
         }
 
         public string get_id() {
