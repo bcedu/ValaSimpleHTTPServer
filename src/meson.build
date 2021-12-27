@@ -13,6 +13,7 @@ srcs = files([
     'Application.vala',
     'Window.vala',
     'simpleHTTPserver.vala',
+    'handlers/styles_handler.vala',
     'Main.vala'
 ])
 
