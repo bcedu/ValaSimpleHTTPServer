@@ -267,17 +267,21 @@ public class SimpleHTTPServer : Soup.Server {
               .listing .item:hover {
                 background-color: #f5f5f5;
               }
-              
-              .item .dir {
-                content: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(169 108 26)" class="bi bi-folder" viewBox="0 0 16 16"><path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"/></svg>');
+              .item .icon {
                 width: 24px;
                 margin-right: 10px;
               }
               
-              .item .file {
-                content: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(57 143 247)" class="bi bi-file-earmark" viewBox="0 0 16 16"><path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/></svg>');
-                width: 24px;
-                margin-right: 10px;
+              .item .icon.folder {
+                content: url("data:image/svg+xml,%3Csvg version='1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' enable-background='new 0 0 48 48'%3E%3Cpath fill='%23FFA000' d='M40,12H22l-4-4H8c-2.2,0-4,1.8-4,4v8h40v-4C44,13.8,42.2,12,40,12z'/%3E%3Cpath fill='%23FFCA28' d='M40,12H8c-2.2,0-4,1.8-4,4v20c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z'/%3E%3C/svg%3E");
+              }
+              
+              .item .icon.file {
+                content: url('data:image/svg+xml,%3Csvg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" enable-background="new 0 0 48 48"%3E%3Cpolygon fill="%2390CAF9" points="40,45 8,45 8,3 30,3 40,13"/%3E%3Cpolygon fill="%23E1F5FE" points="38.5,14 29,14 29,4.5"/%3E%3C/svg%3E');
+              }
+
+              .item .icon.opened-folder {
+                background-image: url('data:image/svg+xml,%3Csvg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" enable-background="new 0 0 48 48"%3E%3Cpath fill="%23FFA000" d="M38,12H22l-4-4H8c-2.2,0-4,1.8-4,4v24c0,2.2,1.8,4,4,4h31c1.7,0,3-1.3,3-3V16C42,13.8,40.2,12,38,12z"/%3E%3Cpath fill="%23FFCA28" d="M42.2,18H15.3c-1.9,0-3.6,1.4-3.9,3.3L8,40h31.7c1.9,0,3.6-1.4,3.9-3.3l2.5-14C46.6,20.3,44.7,18,42.2,18z"/%3E%3C/svg%3E');
               }
 
               .item .name {
@@ -334,8 +338,13 @@ public class SimpleHTTPServer : Soup.Server {
             string normalized_path = normalize_path(path);
 
             var string_builder = new StringBuilder("<div class=\"item\">");
+
+            if (name == "../") {
+                string_builder.append_printf("<div class=\"icon opened-folder\"></div>");
+            } else {
+                string_builder.append_printf("<div class=\"icon %s\"></div>", is_dir ? "folder" : "file");
+            }
            
-            string_builder.append_printf("<div class=\"%s\"></div>", is_dir ? "dir" : "file");
             string_builder.append_printf("<div class=\"name\"><a title=\"%s\" href=\"%s\">%s</a></div>", spath, normalized_path, spath);
             string_builder.append_printf("<div class=\"size\">%s</div>", SimpleHTTPServer.bytes_to_string(item_size));
 
