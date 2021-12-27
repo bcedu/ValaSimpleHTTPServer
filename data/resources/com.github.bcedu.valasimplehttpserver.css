@@ -1,22 +1,44 @@
 .app_view {
   background-color: white;
 }
-mainbox, .mainbox {
+mainbox,
+.mainbox {
   background-color: white;
 }
-select_folder_label, .app_text {
-  /* font-weight: bolder; */
+select_folder_label,
+.app_text {
+  font-weight: bolder;
   color: #333333;
   font-size: 18px;
 }
-app_button, .app_button {
+app_button,
+.app_button {
   font-weight: bolder;
   color: #5B5B5B;
-  /* border-color: white; */
-  background-color: white;
+  border-color: white;
+  /* background-color: white; */
   font-size: 15px;
- }
-app_button:hover, .app_button:hover{
+}
+app_button:hover,
+.app_button:hover {
   /* background-color: grey; */
   background-color: ghostwhite;
+}
+
+.welcome {
+  background-color: transparent;
+}
+
+
+.dark-mode app_view,
+.dark-mode .mainbox  {
+  background-color: #28292b;
+}
+.dark-mode .app_text,
+.dark-mode .app_button  {
+  color: #f1f1f1
+}
+
+.dark-mode .app_button:hover {
+  background-color: #2f2f31;
 }
