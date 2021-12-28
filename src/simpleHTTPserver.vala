@@ -258,7 +258,6 @@ public class SimpleHTTPServer : Soup.Server {
             var power = 1024;
             var n = 0;
             while (size >= power) {
-                print("size: %s; power: %s\n", size.to_string(), power.to_string());
                 size /= power;
                 n++;
             }

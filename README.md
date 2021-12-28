@@ -47,6 +47,7 @@ You will need the following packages, that can be installed through apt:
 - glib-2.0
 - gtk+-3.0
 - granite
+- libhandy
 - gee-0.8
 - libsoup-2.4
 
