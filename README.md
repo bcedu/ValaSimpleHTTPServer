@@ -50,6 +50,7 @@ You will need the following packages, that can be installed through apt:
 - libhandy
 - gee-0.8
 - libsoup-2.4
+- libqrencode4
 
 Download last release (zip file), extract files and enter to the folder where they where extracted.
 

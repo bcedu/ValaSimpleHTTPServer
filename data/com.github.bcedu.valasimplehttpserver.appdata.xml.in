@@ -31,6 +31,12 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
         </screenshot>
     </screenshots>
     <releases>
+      <release version="1.5.0" date="2021-12-28">
+        <description>
+          <p>Show QR code</p>
+          <p>Bug fix: sometimes an IPv6 was shown instead of an IPv4</p>
+        </description>
+      </release>
       <release version="1.4.3" date="2021-12-26">
         <description>
           <p>Update translations</p>

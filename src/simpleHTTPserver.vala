@@ -17,10 +17,13 @@
 */
 using Soup;
 using App.Configs;
+using Qrencode;
+
 
 public class SimpleHTTPServer : Soup.Server {
         public string basedir;
         public uint port;
+        public QRcode qrcode;
 
 # if LIBSOUP30
         public signal void sig_directory_requested(Soup.ServerMessage msg, File file);
@@ -63,14 +66,34 @@ public class SimpleHTTPServer : Soup.Server {
 
         public void run_async() {
             this.listen_all(this.port, 0);
+            this.qrcode = new QRcode.encodeString(this.get_link(), 0, EcLevel.H, Mode.B8, 1);
+            this.print_qr();
+            print(_("Server is listening on: ")+get_link()+"\n");
         }
 
         public void run() {
             log = true;
             MainLoop loop = new MainLoop ();
             this.listen_all(this.port, 0);
-            print(_("Listening on: ")+get_link()+"\n");
+            this.qrcode = new QRcode.encodeString(this.get_link(), 0, EcLevel.H, Mode.B8, 1);
+            this.print_qr();
+            print(_("Server is listening on: ")+get_link()+"\n");
 			loop.run ();
+        }
+
+        public void print_qr() {
+            if (qrcode != null) {
+                for (int iy = 0; iy < qrcode.width; iy++) {
+                    for (int ix = 0; ix < qrcode.width; ix++) {
+                        if ((qrcode.data[iy * qrcode.width + ix] & 1) != 0) {
+                            print("\u2588\u2588");
+                        }else{
+                            print("  ");
+                        }
+                    }
+                    print("\n");
+                }
+            }
         }
 
         private static string normalize_path(string path) {
@@ -373,7 +396,7 @@ public class SimpleHTTPServer : Soup.Server {
             try {
                 // Resolve hostname to IP address
                var resolver = Resolver.get_default ();
-               var addresses = resolver.lookup_by_name ("www.google.com", null);
+               var addresses = resolver.lookup_by_name_with_flags("www.google.com", ResolverNameLookupFlags.IPV4_ONLY, null);
                var address = addresses.nth_data (0);
 
                var client = new SocketClient ();
