@@ -210,7 +210,7 @@ public class SimpleHTTPServer : Soup.Server {
                 string rel_path = parent.get_path().substring(fbase.get_path().length);
                 if (rel_path == "") rel_path = "/";
                 //PRINT// stdout.printf("Parent: %s\n", rel_path);
-                newindex = "%s<div class=\"listing\">%s</div>".printf(newindex, add_link(rel_path, "../", null));
+                newindex = "%s<div class=\"listing\">%s</div>".printf(newindex, add_item(rel_path, "../", null));
             }
             FileEnumerator enumerator = file.enumerate_children ("*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
             FileInfo info = null;
@@ -226,9 +226,9 @@ public class SimpleHTTPServer : Soup.Server {
             foreach(FileInfo _info in files_list) {
                 //stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
                 if (_info.get_file_type () != FileType.DIRECTORY) {
-                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + _info.get_name(), null, _info));
+                    newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
                 } else {
-                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + _info.get_name(), null, _info));
+                    newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
                 }
 
                 print("[FileInfo] %s: type -> %s, icon -> '%s'\n",
@@ -241,7 +241,7 @@ public class SimpleHTTPServer : Soup.Server {
             msg.set_response ("text/html", Soup.MemoryUse.COPY, newindex.data);
         }
 
-        private static string add_link(string path, string? name, FileInfo? file_info) {
+        private static string add_item(string path, string? name, FileInfo? file_info) {
             string spath = name;
             var is_dir = false;
             var file_type = "file";
