@@ -27,6 +27,12 @@ finish-args:
 # If we had external dependencies that weren't included in our SDK, we would list
 # them here.
 modules:
+  - name: libqrencode
+    sources:
+      - type: git
+        url: https://github.com/fukuchi/libqrencode
+        branch: master
+
   - name: Soup
     buildsystem: meson
     sources:

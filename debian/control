@@ -9,7 +9,8 @@ Build-Depends: debhelper (>= 9),
                libgranite-common,
                libsoup2.4-dev,
                libgee-0.8-2,
-               libhandy-1-dev
+               libhandy-1-dev,
+               libqrencode-dev
 
 Standards-Version: 3.9.3
 Package: com.github.bcedu.valasimplehttpserver

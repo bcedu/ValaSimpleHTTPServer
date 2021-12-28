@@ -45,8 +45,11 @@ deps = [
     dependency('granite'),
     dependency('gee-0.8'),
     dependency('libhandy-1'),
+    dependency('libqrencode', version: '>=4.0.0'),
     meson.get_compiler('vala').find_library('posix')
 ]
+
+vala_args = ['--vapidir=' + meson.current_source_dir() + '/src/vapis']
 
 libsoup30_dep = dependency('libsoup-3.0', required : false)
 if libsoup30_dep.found()
@@ -72,6 +75,7 @@ executable(
     meson.project_name(),
     srcs,
     asresources,
+    vala_args: vala_args,
     dependencies: deps,
     install: true
 )

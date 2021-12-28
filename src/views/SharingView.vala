@@ -1,4 +1,6 @@
 using App.Controllers;
+using Qrencode;
+using Gdk;
 using Gtk;
 namespace App.Views {
 
@@ -25,6 +27,7 @@ namespace App.Views {
         private Gtk.LinkButton direcciolink;
         private Gtk.Label sharedpath;
         private Gtk.Button back_button;
+        private Image image_qr;
 
         public SharingView (AppController controler) {
             this.set_orientation(Gtk.Orientation.VERTICAL);
@@ -32,6 +35,10 @@ namespace App.Views {
             // Add resume view
             var resumebox = new ResumeView(ref direcciolink, ref sharedpath, controler);
             this.pack_start (resumebox, true, false, 0);
+
+            image_qr = new Image();
+            resumebox.pack_start (image_qr, false, false, 20);
+
             // Set view style
             this.get_style_context().add_class ("mainbox");
             this.get_style_context().add_class ("app_view");
@@ -50,6 +57,34 @@ namespace App.Views {
             string direccio = controler.httpserver.get_link();
             direcciolink.set_uri(direccio);
             direcciolink.set_label(direccio);
+
+            int width = controler.httpserver.qrcode.width;
+            int height = controler.httpserver.qrcode.width;
+
+            int square_size = 10;
+            int screen_width = width * square_size;
+            int screen_height = height * square_size;
+
+            Cairo.ImageSurface surface = new Cairo.ImageSurface (Cairo.Format.ARGB32, screen_width, screen_height);
+            Cairo.Context context = new Cairo.Context (surface);
+            context.save();
+            for (int iy = 0; iy < width; iy++) {
+                for (int ix = 0; ix < height; ix++) {
+                    if ((controler.httpserver.qrcode.data[iy * width + ix] & 1) != 0) {
+                        context.set_source_rgb(0, 0, 0);
+                        context.rectangle(ix * square_size, iy * square_size, square_size, square_size);
+                        context.fill();
+                    }else{
+                        context.set_source_rgb(255, 255, 255);
+                        context.rectangle(ix * square_size, iy * square_size, square_size, square_size);
+                        context.fill();
+                    }
+                }
+            }
+            context.restore();
+            image_qr.clear();
+            image_qr.set_from_surface(surface);
+
         }
 
 

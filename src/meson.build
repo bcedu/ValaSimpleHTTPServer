@@ -25,6 +25,7 @@ deps = [
     dependency('granite'),
     dependency('libhandy-1'),
     dependency('gee-0.8'),
+    dependency('libqrencode', version: '>=4.0.0'),
     meson.get_compiler('vala').find_library('posix')
 ]
 
@@ -50,10 +51,14 @@ if libappindicator_dep.found()
 endif
 
 
+vala_args = ['--vapidir=' + meson.current_source_dir() + '/vapis']
+
+
 executable(
     meson.project_name(),
     srcs,
     asresources,
+    vala_args: vala_args,
     dependencies: deps,
     install: true
 )

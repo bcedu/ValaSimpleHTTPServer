@@ -107,7 +107,6 @@ namespace App.Controllers {
             if (port != null) httpserver.port = port;
             if (path != null) httpserver.basedir = path;
             httpserver.run_async ();
-            print(_("Server is listening on: ")+httpserver.get_link()+"\n");
             return true;
         }
 
@@ -115,7 +114,6 @@ namespace App.Controllers {
             if (httpserver == null) return false;
             httpserver.disconnect();
             httpserver.run_async ();
-            print(_("Server is listening on: ")+httpserver.get_link()+"\n");
             return true;
         }
 
