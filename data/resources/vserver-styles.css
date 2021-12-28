@@ -92,6 +92,10 @@ a:hover {
   content: url('data:image/svg+xml,%3Csvg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" enable-background="new 0 0 48 48"%3E%3Cpolygon fill="%2390CAF9" points="40,45 8,45 8,3 30,3 40,13"/%3E%3Cpolygon fill="%23E1F5FE" points="38.5,14 29,14 29,4.5"/%3E%3C/svg%3E');
 }
 
+.item .icon.text-file {
+  content: url("data:image/svg+xml,%3Csvg version='1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' enable-background='new 0 0 48 48'%3E%3Cpolygon fill='%2390CAF9' points='40,45 8,45 8,3 30,3 40,13'/%3E%3Cpolygon fill='%23E1F5FE' points='38.5,14 29,14 29,4.5'/%3E%3Cg fill='%231976D2'%3E%3Crect x='16' y='21' width='17' height='2'/%3E%3Crect x='16' y='25' width='13' height='2'/%3E%3Crect x='16' y='29' width='17' height='2'/%3E%3Crect x='16' y='33' width='13' height='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+
 .item .icon.audio-file {
   content: url("data:image/svg+xml,%3Csvg version='1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' enable-background='new 0 0 48 48'%3E%3Crect x='204' fill='none' width='48' height='48'/%3E%3Cpolygon fill='%2390CAF9' points='244,45 212,45 212,3 234,3 244,13'/%3E%3Cpolygon fill='%23E1F5FE' points='242.5,14 233,14 233,4.5'/%3E%3Cg fill='%231976D2'%3E%3Ccircle cx='227' cy='30' r='4'/%3E%3Cpolygon points='234,21 229,19 229,30 231,30 231,22.9 234,24'/%3E%3C/g%3E%3Cpolygon fill='%2390CAF9' points='40,45 8,45 8,3 30,3 40,13'/%3E%3Cpolygon fill='%23E1F5FE' points='38.5,14 29,14 29,4.5'/%3E%3Cg fill='%231976D2'%3E%3Ccircle cx='23' cy='30' r='4'/%3E%3Cpolygon points='30,21 25,19 25,30 27,30 27,22.9 30,24'/%3E%3C/g%3E%3C/svg%3E");
 }
@@ -102,6 +106,10 @@ a:hover {
 
 .item .icon.video-file {
   content: url("data:image/svg+xml,%3Csvg version='1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' enable-background='new 0 0 48 48'%3E%3Cpolygon fill='%2390CAF9' points='40,45 8,45 8,3 30,3 40,13'/%3E%3Cpolygon fill='%23E1F5FE' points='38.5,14 29,14 29,4.5'/%3E%3Cpolygon fill='%231976D2' points='30,28 20,22 20,34'/%3E%3C/svg%3E");
+}
+
+.item .icon.archive-file {
+  content: url("data:image/svg+xml,%3Csvg version='1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' enable-background='new 0 0 48 48'%3E%3Cpath fill='%23FF9800' d='M38,42H10c-2.2,0-4-1.8-4-4V10c0-2.2,1.8-4,4-4h28c2.2,0,4,1.8,4,4v28C42,40.2,40.2,42,38,42z'/%3E%3Cpath fill='%238A5100' d='M29.5,16h-11c-0.8,0-1.5-0.7-1.5-1.5v0c0-0.8,0.7-1.5,1.5-1.5h11c0.8,0,1.5,0.7,1.5,1.5v0 C31,15.3,30.3,16,29.5,16z'/%3E%3C/svg%3E");
 }
 
 .item .name {

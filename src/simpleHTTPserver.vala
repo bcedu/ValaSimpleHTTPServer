@@ -222,6 +222,7 @@ public class SimpleHTTPServer : Soup.Server {
                 <body>
             """.printf(Constants.SERVER_STYLES_PATH);
 
+            Gee.ArrayList<FileInfo> folders_list = new Gee.ArrayList<FileInfo>();
             Gee.ArrayList<FileInfo> files_list = new Gee.ArrayList<FileInfo>();
 
             File fbase = File.new_for_path(basedir);
@@ -240,26 +241,26 @@ public class SimpleHTTPServer : Soup.Server {
 
             newindex = "%s%s".printf(newindex, "<div class=\"listing\">");
             while (((info = enumerator.next_file (null)) != null)) {
-                files_list.add(info);
+                if (info.get_name().length > 0 && info.get_name()[0] == '.') continue;
+                if (info.get_file_type () == FileType.DIRECTORY) folders_list.add(info);
+                else files_list.add(info);
             }
 
-            files_list.sort((a, b) => {
-                return 0;
-            });
-            foreach(FileInfo _info in files_list) {
-                //stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
-                if (_info.get_file_type () != FileType.DIRECTORY) {
-                    newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
-                } else {
-                    newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
-                }
+            folders_list.sort(fileinfo_comparator);
+            files_list.sort(fileinfo_comparator);
 
-                print("[FileInfo] %s: type -> %s, icon -> '%s'\n",
-                    _info.get_name(),
-                    _info.get_file_type().to_string(),
-                    _info.get_content_type()
-                );
-            };
+            // Render folders first
+            folders_list.foreach((_info) => {
+                newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
+                return true;
+            });
+
+            // Render files
+            files_list.foreach((_info) => {
+                newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
+                return true;
+            });
+
             newindex = "%s</div></body></html>".printf(newindex);
             msg.set_response ("text/html", Soup.MemoryUse.COPY, newindex.data);
         }
@@ -270,9 +271,7 @@ public class SimpleHTTPServer : Soup.Server {
             var file_type = "file";
 
             if (file_info != null) {
-                foreach(var attr in file_info.list_attributes(null)) {
-                    print("> %s\n", attr);
-                }
+                print("%s: %s\n", file_info.get_display_name(), file_info.get_content_type());
 
                 is_dir = file_info.get_file_type() == FileType.DIRECTORY;
 
@@ -289,11 +288,15 @@ public class SimpleHTTPServer : Soup.Server {
                 if (content_type.contains("image")) {
                     file_type = "image-file";
                 }
-                else if (content_type.contains("audio")) {
+                else if (content_type.contains("audio/")) {
                     file_type = "audio-file";
-                } else if (content_type.contains("video")){
+                } else if (content_type.contains("video/")){
                     file_type = "video-file";
-                }
+                } else if (content_type.contains("text/")){
+                    file_type = "text-file";
+                } else if (content_type.contains("/zip") || content_type.contains("/gzip")) {
+                    file_type = "archive-file";
+                } 
             }
             string normalized_path = normalize_path(path);
 
@@ -318,6 +321,15 @@ public class SimpleHTTPServer : Soup.Server {
 
             string_builder.append("</div>");
             return string_builder.str;
+        }
+
+        private int fileinfo_comparator(FileInfo a, FileInfo b) {
+            var a_name = a.get_name().down();
+            var b_name = b.get_name().down();
+
+            if (a_name > b_name) return 1;
+            if (a_name < b_name) return -1;
+            return 0;
         }
 
         public static string bytes_to_string(int64 size)
@@ -382,7 +394,6 @@ public class SimpleHTTPServer : Soup.Server {
             try {
                 FileInfo inf = file.query_info("*", 0);
                 res = inf.get_content_type();
-                //print("\n%s   -> type: %s\n", file.get_path(), res);
             }catch (Error e){
                 error("%s", e.message);
             }
