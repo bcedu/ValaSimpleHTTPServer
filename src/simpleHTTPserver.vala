@@ -198,52 +198,100 @@ public class SimpleHTTPServer : Soup.Server {
                 <link rel="stylesheet" href="%s">
                 <body>
             """.printf(Constants.SERVER_STYLES_PATH);
+
+            Gee.ArrayList<FileInfo> files_list = new Gee.ArrayList<FileInfo>();
+
             File fbase = File.new_for_path(basedir);
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
             newindex = _("%s<header><h1 title=\"%s\">Listing files of: %s</h1></header>").printf(newindex, base_rel_path, base_rel_path);
+
             if (fbase.get_path() != file.get_path() &&  file.has_parent(null)) {
                 File parent = file.get_parent();
                 string rel_path = parent.get_path().substring(fbase.get_path().length);
                 if (rel_path == "") rel_path = "/";
                 //PRINT// stdout.printf("Parent: %s\n", rel_path);
-                newindex = "%s<div class=\"listing\">%s</div>".printf(newindex, add_link(rel_path, "../"));
+                newindex = "%s<div class=\"listing\">%s</div>".printf(newindex, add_link(rel_path, "../", null));
             }
-            FileEnumerator enumerator = file.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+            FileEnumerator enumerator = file.enumerate_children ("*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
             FileInfo info = null;
+
             newindex = "%s%s".printf(newindex, "<div class=\"listing\">");
             while (((info = enumerator.next_file (null)) != null)) {
-                //stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
-                if (info.get_file_type () != FileType.DIRECTORY) {
-                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null, false, info.get_size()));
-                } else {
-                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null, true));
-                }
+                files_list.add(info);
             }
+
+            files_list.sort((a, b) => {
+                return 0;
+            });
+            foreach(FileInfo _info in files_list) {
+                //stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
+                if (_info.get_file_type () != FileType.DIRECTORY) {
+                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + _info.get_name(), null, _info));
+                } else {
+                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + _info.get_name(), null, _info));
+                }
+
+                print("[FileInfo] %s: type -> %s, icon -> '%s'\n",
+                    _info.get_name(),
+                    _info.get_file_type().to_string(),
+                    _info.get_content_type()
+                );
+            };
             newindex = "%s</div></body></html>".printf(newindex);
             msg.set_response ("text/html", Soup.MemoryUse.COPY, newindex.data);
         }
 
-        private static string add_link(string path, string? name, bool is_dir=false, int64 item_size=0) {
+        private static string add_link(string path, string? name, FileInfo? file_info) {
             string spath = name;
-            if (spath == null) {
-                if (path == "/") spath = "/";
-                else {
-                    spath = path.split("/")[path.split("/").length-1];
-                    if (is_dir) spath += "/";
+            var is_dir = false;
+            var file_type = "file";
+
+            if (file_info != null) {
+                foreach(var attr in file_info.list_attributes(null)) {
+                    print("> %s\n", attr);
+                }
+
+                is_dir = file_info.get_file_type() == FileType.DIRECTORY;
+
+                if (spath == null) {
+                    if (path == "/") spath = "/";
+                    else {
+                        spath = path.split("/")[path.split("/").length-1];
+                        if (is_dir) spath += "/";
+                    }
+                }
+
+                // Detect filetype: file, image, audio, video, etc.
+                var content_type = file_info.get_content_type();
+                if (content_type.contains("image")) {
+                    file_type = "image-file";
+                }
+                else if (content_type.contains("audio")) {
+                    file_type = "audio-file";
+                } else if (content_type.contains("video")){
+                    file_type = "video-file";
                 }
             }
             string normalized_path = normalize_path(path);
 
             var string_builder = new StringBuilder("<div class=\"item\">");
 
+            // Handle special "Upper" link
             if (name == "../") {
                 string_builder.append_printf("<div class=\"icon opened-folder\"></div>");
             } else {
-                string_builder.append_printf("<div class=\"icon %s\"></div>", is_dir ? "folder" : "file");
+                //  Display icons for any other types
+                string_builder.append_printf("<div class=\"icon %s\"></div>", is_dir ? "folder" : file_type);
             }
            
             string_builder.append_printf("<div class=\"name\"><a title=\"%s\" href=\"%s\">%s</a></div>", spath, normalized_path, spath);
-            string_builder.append_printf("<div class=\"size\">%s</div>", SimpleHTTPServer.bytes_to_string(item_size));
+
+            if (file_info != null) {
+                string_builder.append_printf("<div class=\"size\">%s</div>", SimpleHTTPServer.bytes_to_string(file_info.get_size()));
+                string_builder.append_printf("<div class=\"modified\" title=\"%s\">%s</div>",
+                    file_info.get_modification_date_time().to_string(),
+                    file_info.get_modification_date_time().format(Constants.DATE_FORMAT));
+            }
 
             string_builder.append("</div>");
             return string_builder.str;
