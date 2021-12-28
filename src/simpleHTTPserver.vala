@@ -290,7 +290,7 @@ public class SimpleHTTPServer : Soup.Server {
             try {
                 // Resolve hostname to IP address
                var resolver = Resolver.get_default ();
-               var addresses = resolver.lookup_by_name ("www.google.com", null);
+               var addresses = resolver.lookup_by_name_with_flags("www.google.com", ResolverNameLookupFlags.IPV4_ONLY, null);
                var address = addresses.nth_data (0);
 
                var client = new SocketClient ();
