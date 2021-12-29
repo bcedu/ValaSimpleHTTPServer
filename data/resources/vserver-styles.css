@@ -49,9 +49,11 @@ a:hover {
 .listing {
   display: flex;
   flex-direction: column;
+  margin-bottom: 24px;
 }
 
 .listing .item {
+  align-items: center;
   padding: 6px 10px;
   display: flex;
   overflow: hidden;
@@ -76,8 +78,7 @@ a:hover {
   padding-right: 0px;
 }
 .item .icon {
-  width: 24px;
-  margin-right: 10px;
+  width: 32px;
 }
 
 .item .icon.folder {
