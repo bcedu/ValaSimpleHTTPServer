@@ -271,8 +271,6 @@ public class SimpleHTTPServer : Soup.Server {
             var file_type = "file";
 
             if (file_info != null) {
-                print("%s: %s\n", file_info.get_display_name(), file_info.get_content_type());
-
                 is_dir = file_info.get_file_type() == FileType.DIRECTORY;
 
                 if (spath == null) {
