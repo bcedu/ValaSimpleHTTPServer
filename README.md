@@ -21,6 +21,10 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
 
 VServer is "inspired" in the well known python SimpleHTTPServer.
 
+## Credits
+
+Special thanks to @amka (https://github.com/amka) for his work on the web navigation!
+
 
 ## Installation
 
