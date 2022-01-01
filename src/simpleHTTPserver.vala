@@ -35,6 +35,7 @@ public class SimpleHTTPServer : Soup.Server {
         public signal void sig_error(Soup.Message msg, File file);
 # endif
         public static bool log = false;
+        public static bool add_modified_data = true;
 
 
         public SimpleHTTPServer () {
@@ -57,6 +58,7 @@ public class SimpleHTTPServer : Soup.Server {
                     this.basedir = path;
                     if (this.basedir.get_char(this.basedir.length-1) != '/') this.basedir = this.basedir + "/";
                 }
+                this.add_early_handler(Constants.SERVER_STYLES_PATH, StylesHandler.handler);
                 this.add_handler (null, default_handler);
                 this.sig_directory_requested.connect(dir_handle);
                 this.sig_file_requested.connect(file_handle);
@@ -154,6 +156,7 @@ public class SimpleHTTPServer : Soup.Server {
 # else
             msg.status_code = 200;
 #endif
+            print(_("Requested: ")+rel_path+"\n");
             // PRINT // stdout.printf("TYPE: %s\n", ftype.to_string());
             if (ftype == FileType.DIRECTORY) self.sig_directory_requested(msg, rfile);
             else if (ftype == FileType.REGULAR) self.sig_file_requested(msg, rfile);
@@ -182,7 +185,7 @@ public class SimpleHTTPServer : Soup.Server {
 # else
         private void error_handle(Soup.Message msg, File file) {
 #endif
-            msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><head><title>404</title></head><body><h1>404</h1><p>File not found.</p></body></html>".data);
+            msg.set_response ("text/html", Soup.MemoryUse.COPY, "<html><meta charset=\"utf-8\"><title>404</title><body><h1>404</h1><p>File not found.</p></body></html>".data);
 # if LIBSOUP30
             msg.set_status(404, _("Not Found"));
 # else
@@ -213,43 +216,136 @@ public class SimpleHTTPServer : Soup.Server {
 # else
         private void send_list_dir(Soup.Message msg, File file) {
 #endif
-            string newindex = "<html><meta charset=\"utf-8\"><body>";
+            string newindex = """<html>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <link rel="stylesheet" href="%s">
+                <body>
+            """.printf(Constants.SERVER_STYLES_PATH);
+
+            Gee.ArrayList<FileInfo> folders_list = new Gee.ArrayList<FileInfo>();
+            Gee.ArrayList<FileInfo> files_list = new Gee.ArrayList<FileInfo>();
+
             File fbase = File.new_for_path(basedir);
             string base_rel_path = file.get_path().substring(fbase.get_path().length)+"/";
-            newindex = _("%s<h1>Listing files of: %s</h1>").printf(newindex, base_rel_path);
+            newindex = _("%s<header><h1 title=\"%s\">Listing files of: %s</h1></header>").printf(newindex, base_rel_path, base_rel_path);
+
             if (fbase.get_path() != file.get_path() &&  file.has_parent(null)) {
                 File parent = file.get_parent();
                 string rel_path = parent.get_path().substring(fbase.get_path().length);
                 if (rel_path == "") rel_path = "/";
                 //PRINT// stdout.printf("Parent: %s\n", rel_path);
-                newindex = "%s<ul>%s</ul>".printf(newindex, add_link(rel_path, "../"));
+                newindex = "%s<div class=\"listing\">%s</div>".printf(newindex, add_item(rel_path, "../", null));
             }
-            FileEnumerator enumerator = file.enumerate_children ("standard::*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
+            FileEnumerator enumerator = file.enumerate_children ("*", FileQueryInfoFlags.NOFOLLOW_SYMLINKS, null);
             FileInfo info = null;
-            newindex = "%s%s".printf(newindex, "<ul>");
+
+            newindex = "%s%s".printf(newindex, "<div class=\"listing\">");
             while (((info = enumerator.next_file (null)) != null)) {
-                //stdout.printf("Child: %s%s\n", base_rel_path, info.get_name());
-                if (info.get_file_type () != FileType.DIRECTORY) {
-                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null));
-                } else {
-                    newindex = "%s%s".printf(newindex, add_link(base_rel_path + info.get_name(), null, true));
-                }
+                if (info.get_name().length > 0 && info.get_name()[0] == '.') continue;
+                if (info.get_file_type () == FileType.DIRECTORY) folders_list.add(info);
+                else files_list.add(info);
             }
-            newindex = "%s</ul></body></html>".printf(newindex);
+
+            folders_list.sort(fileinfo_comparator);
+            files_list.sort(fileinfo_comparator);
+
+            // Render folders first
+            folders_list.foreach((_info) => {
+                newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
+                return true;
+            });
+
+            // Render files
+            files_list.foreach((_info) => {
+                newindex = "%s%s".printf(newindex, add_item(base_rel_path + _info.get_name(), null, _info));
+                return true;
+            });
+
+            newindex = "%s</div></body></html>".printf(newindex);
             msg.set_response ("text/html", Soup.MemoryUse.COPY, newindex.data);
         }
 
-        private static string add_link(string path, string? name, bool is_dir=false) {
+        private static string add_item(string path, string? name, FileInfo? file_info) {
             string spath = name;
-            if (spath == null) {
-                if (path == "/") spath = "/";
-                else {
-                    spath = path.split("/")[path.split("/").length-1];
-                    if (is_dir) spath += "/";
+            var is_dir = false;
+            var file_type = "file";
+
+            if (file_info != null) {
+                is_dir = file_info.get_file_type() == FileType.DIRECTORY;
+
+                if (spath == null) {
+                    if (path == "/") spath = "/";
+                    else {
+                        spath = path.split("/")[path.split("/").length-1];
+                        if (is_dir) spath += "/";
+                    }
                 }
+
+                // Detect filetype: file, image, audio, video, etc.
+                var content_type = file_info.get_content_type();
+                if (content_type.contains("image")) {
+                    file_type = "image-file";
+                }
+                else if (content_type.contains("audio/")) {
+                    file_type = "audio-file";
+                } else if (content_type.contains("video/")){
+                    file_type = "video-file";
+                } else if (content_type.contains("text/")){
+                    file_type = "text-file";
+                } else if (content_type.contains("/zip") || content_type.contains("/gzip")) {
+                    file_type = "archive-file";
+                } 
             }
             string normalized_path = normalize_path(path);
-            return "<li><a href=\"%s\">%s</a></li>".printf(normalized_path, spath);
+
+            var string_builder = new StringBuilder("<div class=\"item\">");
+
+            // Handle special "Upper" link
+            if (name == "../") {
+                string_builder.append_printf("<div class=\"icon opened-folder\"></div>");
+            } else {
+                //  Display icons for any other types
+                string_builder.append_printf("<div class=\"icon %s\"></div>", is_dir ? "folder" : file_type);
+            }
+           
+            string_builder.append_printf("<div class=\"name\"><a title=\"%s\" href=\"%s\">%s</a></div>", spath, normalized_path, spath);
+
+            if (file_info != null) {
+                string_builder.append_printf("<div class=\"size\">%s</div>", SimpleHTTPServer.bytes_to_string(file_info.get_size()));
+                if (SimpleHTTPServer.add_modified_data) {
+                    string_builder.append_printf("<div class=\"modified\" title=\"%s\">%s</div>",
+                        file_info.get_modification_date_time().to_string(),
+                        file_info.get_modification_date_time().format(Constants.DATE_FORMAT));
+                }
+            }
+
+            string_builder.append("</div>");
+            return string_builder.str;
+        }
+
+        private int fileinfo_comparator(FileInfo a, FileInfo b) {
+            var a_name = a.get_name().down();
+            var b_name = b.get_name().down();
+
+            if (a_name > b_name) return 1;
+            if (a_name < b_name) return -1;
+            return 0;
+        }
+
+        public static string bytes_to_string(int64 size)
+        {
+            if (size == 0) {
+                return "0 B";
+            }
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
+            var power = 1024;
+            var n = 0;
+            while (size >= power) {
+                size /= power;
+                n++;
+            }
+            return "%s %s".printf(size.to_string(), suf[n]);
         }
 
 # if LIBSOUP30
@@ -299,7 +395,6 @@ public class SimpleHTTPServer : Soup.Server {
             try {
                 FileInfo inf = file.query_info("*", 0);
                 res = inf.get_content_type();
-                //print("\n%s   -> type: %s\n", file.get_path(), res);
             }catch (Error e){
                 error("%s", e.message);
             }
