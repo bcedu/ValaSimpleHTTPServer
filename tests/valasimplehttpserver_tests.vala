@@ -30,6 +30,7 @@ print("-------------------------------------------------------------------------
 
     public override void set_up () {
         server = new SimpleHTTPServer.with_port_and_path(9999, Environment.get_variable("TESTDIR")+"/fixtures/test_directory_requests");
+        SimpleHTTPServer.add_modified_data = false;
         //server.run_async ();
         //PRINT// stdout.printf("\n");
     }
@@ -104,7 +105,7 @@ print("-------------------------------------------------------------------------
     }
 
     public void assert_bytes(uint8[] res1, uint8[] res2) {
-        if (res1.length != res2.length) print("\n\nDiferencia a la llargada . Comparant:|%d||%d|\n\n", res1.length, res2.length);
+        if (res1.length != res2.length) print("\n\nDiferencia a la llargada . Comparant:|%d||%d|\n\n|%s|\n|%s|\n", res1.length, res2.length, (string)res1, (string)res2);
         assert (res1.length == res2.length);
         for (int i=0; i<res1.length;i++) {
             if (res1[i] != res2[i]) print("\n\nDiferencia al byte numero "+i.to_string()+". Comparant:|"+res1[i].to_string()+"||"+res2[i].to_string()+"|\n\n");

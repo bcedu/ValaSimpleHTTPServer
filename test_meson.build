@@ -32,6 +32,7 @@ srcs = files([
     'src/Application.vala',
     'src/Window.vala',
     'src/simpleHTTPserver.vala',
+    'src/handlers/styles_handler.vala',
     'tests/test.vala',
     'tests/valasimplehttpserver_tests.vala'
 ])
