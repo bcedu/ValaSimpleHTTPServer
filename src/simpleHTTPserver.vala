@@ -35,6 +35,7 @@ public class SimpleHTTPServer : Soup.Server {
         public signal void sig_error(Soup.Message msg, File file);
 # endif
         public static bool log = false;
+        public static bool add_modified_data = true;
 
 
         public SimpleHTTPServer () {
@@ -312,9 +313,11 @@ public class SimpleHTTPServer : Soup.Server {
 
             if (file_info != null) {
                 string_builder.append_printf("<div class=\"size\">%s</div>", SimpleHTTPServer.bytes_to_string(file_info.get_size()));
-                string_builder.append_printf("<div class=\"modified\" title=\"%s\">%s</div>",
-                    file_info.get_modification_date_time().to_string(),
-                    file_info.get_modification_date_time().format(Constants.DATE_FORMAT));
+                if (SimpleHTTPServer.add_modified_data) {
+                    string_builder.append_printf("<div class=\"modified\" title=\"%s\">%s</div>",
+                        file_info.get_modification_date_time().to_string(),
+                        file_info.get_modification_date_time().format(Constants.DATE_FORMAT));
+                }
             }
 
             string_builder.append("</div>");
