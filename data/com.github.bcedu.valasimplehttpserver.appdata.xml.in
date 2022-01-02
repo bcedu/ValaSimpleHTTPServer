@@ -33,18 +33,17 @@ Do you have a film in the computer and you want to watch it on the mobile phone?
     <releases>
       <release version="1.6.0" date="2022-01-01">
         <description>
-          <p>Redesigned web navigation:
-            <ul>
-              <li>Show directories on top, then the regular files sorted by type and alphabet</li>
-              <li>Don't display hidden files</li>
-              <li>Custom icon for each file depending on it's type</li>
-              <li>Responsive layout</li>
-              <li>Display file size</li>
-              <li>Display file type</li>
-              <li>Display modifications date</li>
-            </ul>
-            Special thanks to @amka (https://github.com/amka) for this incredible work!
-          </p>
+          <p>Redesigned web navigation:</p>
+          <ul>
+            <li>Show directories on top, then the regular files sorted by type and alphabet</li>
+            <li>Don't display hidden files</li>
+            <li>Custom icon for each file depending on it's type</li>
+            <li>Responsive layout</li>
+            <li>Display file size</li>
+            <li>Display file type</li>
+            <li>Display modifications date</li>
+          </ul>
+          <p>Special thanks to @amka (https://github.com/amka) for this incredible work!</p>
         </description>
       </release>
       <release version="1.5.0" date="2021-12-28">
