@@ -20,7 +20,6 @@ asresources = gnome.compile_resources(
 
 srcs = files([
     'src/configs/Constants.vala',
-    'src/configs/Settings.vala',
     'src/widgets/HeaderBar.vala',
     'src/views/AppView.vala',
     'src/views/InitialView.vala',

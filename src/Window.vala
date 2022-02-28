@@ -35,7 +35,7 @@ namespace App {
         private Gtk.Box main_box;
         private Gtk.Widget current_view;
         public AppHeaderBar headerbar;
-        private AppSettings saved_state;
+        private static GLib.Settings saved_state = new GLib.Settings ("com.github.bcedu.valasimplehttpserver.settings");
 
         /**
          * Constructs a new {@code AppWindow} object.
@@ -51,6 +51,7 @@ namespace App {
                 resizable: true
             );
 
+
             Hdy.init ();
 
             this.main_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -64,26 +65,7 @@ namespace App {
             this.set_min_size(600, 400);
             this.delete_event.connect (save_window_state);
 
-            var granite_settings = Granite.Settings.get_default ();
             var gtk_settings = Gtk.Settings.get_default ();
-
-            // Check whether the theme is dark or not
-            var is_dark_mode = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
-            if (is_dark_mode) {
-                this.get_style_context().add_class("dark-mode");
-            }
-            gtk_settings.gtk_application_prefer_dark_theme = is_dark_mode;
-
-            // Handle Granite's theme changes. Usefull for elementary OS.
-            granite_settings.notify["prefers-color-scheme"].connect (() => {
-                var _dark_mode = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
-                gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
-                
-                this.get_style_context().remove_class("dark-mode");
-                if (_dark_mode) {
-                    this.get_style_context().add_class("dark-mode");
-                }
-            });
 
             // Handle GTK's theme changes, usefull for GNOME.
             gtk_settings.notify["gtk-application-prefer-dark-theme"].connect(() => {
@@ -133,13 +115,12 @@ namespace App {
         }
 
         private void load_window_state() {
-            this.saved_state = AppSettings.get_default();
             // Load size
-            this.set_default_size (this.saved_state.window_width, this.saved_state.window_height);
+            this.set_default_size (this.saved_state.get_int("window-width"), this.saved_state.get_int("window-height"));
             // Load position
-            this.move (this.saved_state.window_posx, this.saved_state.window_posy);
+            this.move (this.saved_state.get_int("window-posx"), this.saved_state.get_int("window-posy"));
             // Maximize window if necessary
-            if (this.saved_state.window_state == 1) this.maximize ();
+            if (this.saved_state.get_int("window-state") == 1) this.maximize ();
             // Load position
             this.set_position (Gtk.WindowPosition.CENTER);
         }
@@ -148,13 +129,13 @@ namespace App {
             int aux1;
             int aux2;
             this.get_size (out aux1, out aux2);
-            saved_state.window_width = aux1;
-            saved_state.window_height = aux2;
+            saved_state.set_int("window-width", aux1);
+            saved_state.set_int("window-height", aux2);
             this.get_position (out aux1, out aux2);
-            saved_state.window_posx = aux1;
-            saved_state.window_posy = aux2;
-            if (this.is_maximized) saved_state.window_state = 1;
-            else saved_state.window_state = 0;
+            saved_state.set_int("window-posx", aux1);
+            saved_state.set_int("window-posy", aux2);
+            if (this.is_maximized) saved_state.set_int("window-state", 1);
+            else saved_state.set_int("window-state", 0);
             return false;
         }
 
