@@ -28,6 +28,17 @@ Special thanks to @amka (https://github.com/amka) for his work on the web naviga
 
 ## Installation
 
+### PPA
+
+From a terminal:
+
+```
+echo 'deb [trusted=yes] https://bcclean.pw/ppa/public stable main' > /tmp/com.githib.bcedu.list
+sudo cp  /tmp/com.githib.bcedu.list /etc/apt/sources.list.d/com.github.bcedu.list
+sudo apt update
+sudo apt install com.github.bcedu.valasimplehttpserver
+```
+
 ### Elementary AppCenter
 
 Install VServer through the elementary AppCenter. It's always updated to lastest version.
