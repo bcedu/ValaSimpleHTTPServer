@@ -31,6 +31,11 @@ Do you have a film on the computer and you want to watch it on your mobile phone
         </screenshot>
     </screenshots>
     <releases>
+      <release version="1.6.1" date="2022-03-20">
+        <description>
+          <p>Internal changes to remove deprecated dependencies</p>
+        </description>
+      </release>
       <release version="1.6.0" date="2022-01-01">
         <description>
           <p>Redesigned web navigation:</p>
