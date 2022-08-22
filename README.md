@@ -28,7 +28,7 @@ Special thanks to @amka (https://github.com/amka) for his work on the web naviga
 
 ## Installation
 
-### PPA
+### PPA (debian based distros)
 
 From a terminal:
 
@@ -39,6 +39,17 @@ sudo apt update
 sudo apt install com.github.bcedu.valasimplehttpserver
 ```
 
+### Gentoo
+
+You can use de ebuild provided in this package. You will have to copy the contents from gentoo directory to your local repository (usually in `/var/db/repos/your_repo`) and the install with emerge.
+
+From a terminal:
+
+```
+cd ValaSimpleHTTPServer/
+sudo cp gentoo/* /var/db/repos/your_repo
+sudo emerge --ask net-misc/ValaSimpleHTTPServer
+```
 ### Elementary AppCenter
 
 Install VServer through the elementary AppCenter. It's always updated to lastest version.
